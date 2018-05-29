@@ -23,15 +23,6 @@ str(df1)
 ###Create a dataframe of codes for each neighbourhood
 neigh.codes <- as.data.frame(cbind(colnames(df1[,-c(1,2)]), as.vector(unlist(b[1,-c(1:4)]))))
 colnames(neigh.codes) <- c("Neighborhood", "Hood_ID")
-<<<<<<< HEAD
-
-=======
-j <- as.data.frame(cbind(unlist(b[b$Characteristic == "Population, 2016",-c(1:4)]), neigh.codes$Hood_ID))
-i <- as.data.frame(cbind(unlist(b[b$Characteristic == "Total private dwellings",-c(1:4)]), neigh.codes$Hood_ID))
-
-colnames(j) <- c("Population, 2016", "Hood_ID")
-colnames(i) <- c("Total private dwellings", "Hood_ID")
->>>>>>> dba114284069e904b7bc412971ab68329ae67912
 
 #####Remove thousands seperator commas from numbers and replace % sign eith e-2, 
 ####so we can use as.numeric to convert from a character to a number
