@@ -1,5 +1,9 @@
 
 
+
+
+
+
 toronto_map <- get_map(location = "toronto", maptype = "satellite", zoom = 12)
 
 ggmap(toronto_map, extent = "device") + geom_point(aes(x = X, y = Y), colour = "red", 
