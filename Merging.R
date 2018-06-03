@@ -38,8 +38,42 @@ for(i in y){
 
 ###end test#### -> works perfectly 
 
+c <- read_csv("wellbeing_toronto.csv")
+d <- read_csv("toronto_drug_arrests.csv")
+
+df <- c %>% select(- c(1:3)) %>% bind_cols(agg, .)
+df <- d %>% select(- c(1:3)) %>% bind_cols(df, .)
 
 
+reg1 <- lm(Assault~ Unemployed, data = df)
+res1 <- residuals(reg1)
+plot(res1)
+
+####calculate percentage rates cp. to pop.size####
+agg <- df
+
+pcts = lapply(agg[,-c(1,5,24,22)], function(x) {
+  x / agg$`Population, 2016`
+})
+pcts <- as.data.frame(pcts)
+
+pcts$Hood_id <- agg$Hood_ID
+pcts$HFI <- agg$`Healthy Food Index`
+pcts$EDI <- agg$`Early Development Instrument (EDI)`
+
+df1 <- pcts
+
+scatter.smooth(df1$Unemployed, df1$Assault)
+
+reg2 <- lm(Assault~Unemployed, data = df1)
+summary(reg2)
+res2 <- residuals(reg2)
+plot(res2)
+
+
+reg3 <- lm(Assault ~ Youth.15.24 + Visible.Minority.Category + In.Labour.Force + With.Bachelor.Degree.or.Higher ,data = df1)
+summary(reg3)
+plot(reg3)
 
 
 
