@@ -15,6 +15,17 @@ ggmap(toronto_map) +
 #(from: http://www.sharpsightlabs.com/blog/how-to-create-a-crime-heatmap-in-r/)
 
 
+shp <- readOGR(".", "NEIGHBORHOODS_WGS84")
+
+# with polygon 
+# ggplot(map.df, aes(x=long,y=lat,group=group))+
+#   geom_polygon(aes(fill=Count))+
+#   geom_path()+ 
+#   scale_fill_gradientn(colours=rev(heat.colors(10)),na.value="grey90")+
+#   coord_map()
+# 
+
+
 
 # toronto_map_g_str <- get_map(location = "toronto", zoom = 10)
 # 
