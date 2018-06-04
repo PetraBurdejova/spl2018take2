@@ -13,4 +13,6 @@ pacman::p_load("tidyverse",
                "ggplot2", 
                "ggmap", 
                "viridis", 
-               "forecast")
+               "forecast",
+               "sp",
+               "rgdal")
