@@ -15,4 +15,5 @@ pacman::p_load("tidyverse",
                "viridis", 
                "forecast",
                "sp",
-               "rgdal")
+               "rgdal",
+               "data.table")

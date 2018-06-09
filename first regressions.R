@@ -2,22 +2,19 @@ library(data.table)
 library(reshape2)
 library(forcats)
 library(dplyr)
+library(plyr)
 #####create agg#####
 
 #read csvs
 a <- read.csv("MCI_2014_to_2017.csv")
 b <- read.csv("2016_neighbourhood_profiles.csv")
 
-#Create aggregate data frame using data table
-a.dt <- as.data.table(a)
-setkey(a.dt, "MCI", "Hood_ID")
-agg <- a.dt[, .(count = .N), by = c("MCI", "Hood_ID")]
-agg <- dcast(agg, Hood_ID ~ MCI)
-agg$Hood_ID <- as.factor(agg$Hood_ID)
+
 
 #b --> df1
 df1 <- as.data.frame(b)
 df1 <- b[-c(1,2),-c(1,2,3,5)]
+
 
 ###Data frame with Hood IDs
 neigh.codes <- as.data.frame(cbind(colnames(df1[,-1]), as.vector(unlist(b[1,-c(1:5)]))))
@@ -31,15 +28,16 @@ df1[,-1] <- lapply(df1[,-1], as.numeric)
 str(df1)
 
 ####HERE
-df1 <- fct_collapse(df1$Characteristic,
+
+df1$Characteristic <- fct_collapse(df1$Characteristic,
                     "young_male" = c("Male: 15 to 19 years", "Male: 20 to 24 years", "Male: 25 to 29 years",
                                    "Male: 30 to 34 years", "Male: 35 to 39 years"))
 
-
-
+colnames(df1[,-1])
+df1 <- aggregate(colnames(df1[,-1]) ~ Characteristic, df1, sum, na.rm = TRUE)
 
 get.data <- function(x, z, y) {
-  m <- as.data.frame(cbind(unlist(x[x$Characteristic == y, -c(1:2)]), neigh.codes))
+  m <- as.data.frame(cbind(unlist(x[x$Characteristic == y, -1]), neigh.codes))
   m$Neighborhood <- NULL
   colnames(m) <- c(y, "Hood_ID")
   p <- merge(m,z, by.x = "Hood_ID", by.y = "Hood_ID")
