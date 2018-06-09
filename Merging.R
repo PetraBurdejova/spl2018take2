@@ -109,6 +109,25 @@ population.2016 <- subset(df2, Characteristic == "population.2016")
 population.2016 <- as.data.frame(colSums(population.2016[,-1]))
 colnames(population.2016) <- c("population.2016")
 
+###Get Lone Parent Families by sex of parent
+df2 <- as.data.frame(df1)
+df2 <- df2[c(92:94),]
+
+###Total # of Lone parent families
+lone.parent.families <- subset(df2, Characteristic == "Total lone-parent families by sex of parent")
+lone.parent.families <- as.data.frame(colSums(lone.parent.families[,-1]))
+colnames(lone.parent.families) <- "lone.parent.families"
+
+### No of lone parent families with female parent
+fem.lone.parent.families <- subset(df2, Characteristic == "Female parent")
+fem.lone.parent.families <- as.data.frame(colSums(fem.lone.parent.families[,-1]))
+colnames(fem.lone.parent.families) <- "fem.lone.parent.families"
+
+### No of lone parent families with male parent
+male.lone.parent.families <- subset(df2, Characteristic == "Male parent")
+male.lone.parent.families <- as.data.frame(colSums(male.lone.parent.families[,-1]))
+colnames(male.lone.parent.families) <- "male.lone.parent.families"
+
 #####Get income groups
 df2 <- as.data.frame(df1)
 
@@ -196,6 +215,30 @@ colnames(no.hholds.bottom.20per) <- "no.hholds.bottom.20per"
 
 ##Calculate percentage of households in bottom 20% of income distribution
 per.hholds.bottom.20per <- round(no.hholds.bottom.20per / colSums(df2[,-1]), 2)
+
+###Get number of low income individuals
+df2 <- as.data.frame(df1)
+df2 <- df2[c(1122:1131),]
+
+#Total number of low income individuals according to low income measure
+low.income.pop <- subset(df2, Characteristic == "In low income based on the Low-income measure, after tax (LIM-AT)")
+low.income.pop <- as.data.frame(colSums(low.income.pop[,-1]))
+colnames(low.income.pop) <- c("low.income.pop")
+
+###Number of low income individuals according to low income measure 18-64 years
+low.income.pop.18.to.64 <- subset(df2, Characteristic == "18 to 64 years")
+low.income.pop.18.to.64 <- as.data.frame(colSums(low.income.pop.18.to.64[,-1]))
+colnames(low.income.pop.18.to.64) <- c("low.income.pop.18.to.64")  
+
+###Perc of low income individuals according to low income measure
+low.income.pop.perc <- subset(df2, Characteristic == "Prevalence of low income based on the Low-income measure, after tax (LIM-AT) (%)")
+low.income.pop.perc <- as.data.frame(colSums(low.income.pop.perc[,-1]))
+colnames(low.income.pop.perc) <- c("low.income.pop.perc")  
+
+###Perc of low income individuals according to low income measure 18-64 years
+low.income.pop.perc.18.to.64 <- subset(df2, Characteristic == "18 to 64 years (%)")
+low.income.pop.perc.18.to.64 <- as.data.frame(colSums(low.income.pop.perc.18.to.64[,-1]))
+colnames(low.income.pop.perc.18.to.64) <- c("low.income.pop.perc.18.to.64")  
 
 
 ###TESTING
