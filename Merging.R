@@ -58,18 +58,24 @@ df1[,-c(1,2)] <- lapply(df1[,-c(1,2)], function(x) {gsub("%", "e-2", x)})
 ###Turn n/as into NA
 df1[df1 == "n/a"] <- NA
 
+###Create function to get data from main dataset
+getData <- function(x, characteristic) {
+  a <- subset(x, Characteristic == characteristic) 
+  a <-  as.data.frame(colSums(a[,-1]))
+}
+
 ####Turn columns into numeric
 df1[,-c(1,2)] <- lapply(df1[,-c(1,2)], as.numeric)
 df1[,c("Topic", "City.of.Toronto")] <- NULL
 df2 <- as.data.frame(df1)
+
 
 ####Get number of males from 15 - 35 in 2016
 df2$Characteristic <- fct_collapse(df2$Characteristic,
                          male.15.to.35 = c("Male: 15 to 19 years", "Male: 20 to 24 years", "Male: 25 to 29 years", "Male: 30 to 34 years")
                     )
 
-male.15.to.30 <- subset(df2, Characteristic == "male.15.to.35")
-male.15.to.30 <- as.data.frame(colSums(male.15.to.30[,-1]))
+male.15.to.30 <- getData(df2, "male.15.to.35")
 colnames(male.15.to.30) <- c("males.15.to.30")
 
 ####Get number of males in 2016
@@ -90,13 +96,11 @@ df2$Characteristic <- fct_collapse(df2$Characteristic,
                                                        "Female: 75 to 79 years", "Female: 80 to 84 years", "Female: 85 to 89 years",
                                                        "Female: 90 to 94 years", "Female: 95 to 99 years", "Female: 100 years and over"))
 #SUbset males above 15 years old
-male.above.15 <- subset(df2, Characteristic == "male.above.15")
-male.above.15 <- as.data.frame(colSums(male.above.15[,-1]))
+male.above.15 <- getData(df2, "male.above.15")
 colnames(male.above.15) <- c("male.above.15")
 
 #SUbset females above 15 years old
-female.above.15 <- subset(df2, Characteristic == "female.above.15")
-female.above.15 <- as.data.frame(colSums(female.above.15[,-1]))
+female.above.15 <- getData(df2, "female.above.15")
 colnames(female.above.15) <- c("female.above.15")
 
 #Get population for 2016
@@ -105,8 +109,7 @@ df2 <- as.data.frame(df1)
 df2$Characteristic <- fct_collapse(df2$Characteristic,
                                    population.2016 = c("Population, 2016"))
 
-population.2016 <- subset(df2, Characteristic == "population.2016")
-population.2016 <- as.data.frame(colSums(population.2016[,-1]))
+population.2016 <- getData(df2, "population.2016")
 colnames(population.2016) <- c("population.2016")
 
 ###Get Lone Parent Families by sex of parent
@@ -114,18 +117,15 @@ df2 <- as.data.frame(df1)
 df2 <- df2[c(92:94),]
 
 ###Total # of Lone parent families
-lone.parent.families <- subset(df2, Characteristic == "Total lone-parent families by sex of parent")
-lone.parent.families <- as.data.frame(colSums(lone.parent.families[,-1]))
+lone.parent.families <- getData(df2, "Total lone-parent families by sex of parent")
 colnames(lone.parent.families) <- "lone.parent.families"
 
 ### No of lone parent families with female parent
-fem.lone.parent.families <- subset(df2, Characteristic == "Female parent")
-fem.lone.parent.families <- as.data.frame(colSums(fem.lone.parent.families[,-1]))
+fem.lone.parent.families <- getData(df2, "Female parent")
 colnames(fem.lone.parent.families) <- "fem.lone.parent.families"
 
 ### No of lone parent families with male parent
-male.lone.parent.families <- subset(df2, Characteristic == "Male parent")
-male.lone.parent.families <- as.data.frame(colSums(male.lone.parent.families[,-1]))
+male.lone.parent.families <- getData(df2, "Male parent")
 colnames(male.lone.parent.families) <- "male.lone.parent.families"
 
 #####Get income groups
@@ -141,18 +141,15 @@ df2$Characteristic <- fct_collapse(df2$Characteristic,
                                    high.income = c("$90,000 to $99,999", "$100,000 to $149,999", "$150,000 and over"))
 
 ####GEt number of low income people in each neighbourhood
-low.income <- subset(df2, Characteristic == "low.income")
-low.income <- as.data.frame(colSums(low.income[,-1]))
+low.income <- getData(df2, "low.income")
 colnames(low.income) <- c("low.income")
 
 ####GEt number of middle income people in each neighbourhood
-middle.income <- subset(df2, Characteristic == "middle.income")
-middle.income <- as.data.frame(colSums(middle.income[,-1]))
+middle.income <- getData(df2, "middle.income")
 colnames(middle.income) <- c("middle.income")
 
 ####GEt number of high income people in each neighbourhood
-high.income <- subset(df2, Characteristic == "high.income")
-high.income <- as.data.frame(colSums(high.income[,-1]))
+high.income <- getData(df2, "high.income")
 colnames(high.income) <- c("high.income")
 
 ####Calculate average total income per person for 2016
@@ -221,24 +218,110 @@ df2 <- as.data.frame(df1)
 df2 <- df2[c(1122:1131),]
 
 #Total number of low income individuals according to low income measure
-low.income.pop <- subset(df2, Characteristic == "In low income based on the Low-income measure, after tax (LIM-AT)")
-low.income.pop <- as.data.frame(colSums(low.income.pop[,-1]))
+low.income.pop <- getData(df2, "In low income based on the Low-income measure, after tax (LIM-AT)")
 colnames(low.income.pop) <- c("low.income.pop")
 
 ###Number of low income individuals according to low income measure 18-64 years
-low.income.pop.18.to.64 <- subset(df2, Characteristic == "18 to 64 years")
-low.income.pop.18.to.64 <- as.data.frame(colSums(low.income.pop.18.to.64[,-1]))
+low.income.pop.18.to.64 <- getData(df2, "18 to 64 years")
 colnames(low.income.pop.18.to.64) <- c("low.income.pop.18.to.64")  
 
 ###Perc of low income individuals according to low income measure
-low.income.pop.perc <- subset(df2, Characteristic == "Prevalence of low income based on the Low-income measure, after tax (LIM-AT) (%)")
-low.income.pop.perc <- as.data.frame(colSums(low.income.pop.perc[,-1]))
+low.income.pop.perc <- getData(df2, "Prevalence of low income based on the Low-income measure, after tax (LIM-AT) (%)")
 colnames(low.income.pop.perc) <- c("low.income.pop.perc")  
 
 ###Perc of low income individuals according to low income measure 18-64 years
-low.income.pop.perc.18.to.64 <- subset(df2, Characteristic == "18 to 64 years (%)")
-low.income.pop.perc.18.to.64 <- as.data.frame(colSums(low.income.pop.perc.18.to.64[,-1]))
+low.income.pop.perc.18.to.64 <- getData(df2, "18 to 64 years (%)")
 colnames(low.income.pop.perc.18.to.64) <- c("low.income.pop.perc.18.to.64")  
+
+###GEt number of non-Canadian citizens in each neighbourhood
+df2 <- as.data.frame(df1)
+df2 <- df2[c(1142:1146),]
+
+####Get number of non-Canadian citizens in each neighborhood
+non.citizens <- getData(df2, "Not Canadian citizens")
+colnames(non.citizens) <- "non.citizens"
+
+###Get percentage of non-citizens in neighbourhood
+non.citizens.perc <- getData(df2, "Not Canadian citizens") / getData(df2, "Total - Citizenship for the population in private households - 25% sample data")
+colnames(non.citizens.perc) <- "non.citizens.perc"
+
+###Get number of immigrants in each neighbourhood
+df2 <- as.data.frame(df1)
+df2 <- df2[c(1147:1156),]
+
+###Get number of immigrants in each neighbourhood
+immigrants <- getData(df2, "Immigrants")
+colnames(immigrants) <- "immigrants"
+
+###Get percentage of immigrants in each neighbourhood
+immigrants.perc <- getData(df2, "Immigrants") / getData(df2, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data")
+colnames(immigrants.perc) <- "immigrants.perc"
+
+####Number of immigrants in last 5 years as recent immigrants
+immigrants.recent <- getData(df2, "2011 to 2016")
+colnames(immigrants.recent) <- "immigrants.recent"
+
+###percentage of population that are recent immigrants
+immigrants.recent.perc <- getData(df2, "2011 to 2016") / getData(df2, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data")
+colnames(immigrants.recent.perc) <- "immigrants.recent.perc"
+
+####Get number of refugees who landed from1986-2016 in each neighbourhood
+df2 <- as.data.frame(df1)
+df2 <- df2[c(1289:1295),]
+
+####Get number of refugees who landed from 1986-2016 in each neighbourhood
+refugees <- getData(df2, "Refugees")
+colnames(refugees) <- "refugees"
+
+####Get percent of refugees who landed from 1986-2016 in each neighbourhood
+refugees.perc <- getData(df2, "Refugees") / population.2016
+colnames(refugees.perc) <- "refugees.perc"
+
+####Get number of visible minorities in each neighbourhood
+df2 <- as.data.frame(df1)
+df2 <- df2[c(1330:1344),]
+
+####Get number of visible minorities in each neighbourhood
+vis.minorities <- getData(df2, "Total visible minority population")
+colnames(vis.minorities) <- "vis.minorities"
+
+###Get percent of pop that are visible minorities
+vis.minorities.perc <- getData(df2, "Total visible minority population") / getData(df2, "Total - Visible minority for the population in private households - 25% sample data")
+colnames(vis.minorities.perc) <- "vis.minorities.perc"
+
+###Get number of renters
+df2 <- as.data.frame(df1)
+df2 <- df2[c(1624:1626),]
+
+renters <- getData(df2, "Renter")
+colnames(renters) <- "renters"
+
+####Get percent of renters in each neighbourhood
+renters.perc <- getData(df2, "Renter") / getData(df2, "Total - Private households by tenure - 25% sample data")
+colnames(renters.perc) <- "renters.perc"
+
+###Get number of dwellings that are not condominiums in each neighbourhood
+df2 <- as.data.frame(df1)
+df2 <- df2[c(1628:1630),]
+
+houses <- getData(df2, "Not condominium")
+
+###Get percent of buildings that are not condominiums in each neighbourhood
+houses.perc <- getData(df2, "Not condominium") / getData(df2, "Total - Occupied private dwellings by condominium status - 25% sample data")
+colnames(houses.perc) <- "houses.perc"
+
+###Get number of households with more than one person per room
+df2 <- as.data.frame(df1)
+df2 <- df2[c(1643:1645),]
+
+hhlds.2pplplus.room <- getData(df2, "More than 1 person per room")
+colnames(hhlds.2pplplus.room) <- "hhlds.2pplplus.room"
+
+###percent hholds more than 1 person per room
+hhlds.2pplplus.room.perc <- getData(df2, "More than 1 person per room") / getData(df2, "Total - Private households by number of persons per room - 25% sample data")
+colnames(hhlds.2pplplus.room.perc) <- "hhlds.2pplplus.room.perc"
+
+
 
 
 ###TESTING
