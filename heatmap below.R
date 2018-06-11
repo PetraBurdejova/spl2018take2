@@ -1,8 +1,7 @@
 
 
 
-
-
+#heatmap of exact location
 
 toronto_map <- get_map(location = "toronto", maptype = "satellite", zoom = 12)
 
@@ -15,25 +14,65 @@ ggmap(toronto_map) +
 #(from: http://www.sharpsightlabs.com/blog/how-to-create-a-crime-heatmap-in-r/)
 
 
+#heatmap per neighbourhood
+#try to calculate the actual density
+
+
 shp <- readOGR(".", "NEIGHBORHOODS_WGS84")
 
-# with polygon 
-# ggplot(map.df, aes(x=long,y=lat,group=group))+
-#   geom_polygon(aes(fill=Count))+
-#   geom_path()+ 
-#   scale_fill_gradientn(colours=rev(heat.colors(10)),na.value="grey90")+
-#   coord_map()
-# 
+
+heatMap <-function(data,shape=NULL,col="blue",main="Sample HeatMap"){
+  # Plots a Heat Map of a Polygons Data Frame.  This will 
+  # demonstrate density within a finite set of polygons
+  #
+  # Args:
+  #   data:   Spatial Points dataframe
+  #   shape:  Polygons Data Frame 
+  #
+  #
+  #   Notes:  This function requires the sp and RColorBrewer
+  #           Packages
+  #
+  #   Beskow: 03/28/11   
+  #
+  is.installed <- function(mypkg) is.element(mypkg, 
+                                             installed.packages()[,1])
+  if (is.installed(mypkg="sp")==FALSE)  {
+    stop("sp package is not installed")}
+  if (is.installed(mypkg="RColorBrewer")==FALSE)  {
+    stop("RColorBrewer package is not installed")}
+  if (!class(data)=="SpatialPointsDataFrame")  {
+    stop("data argument is not SpatialPointsDataFrame")}
+  require(sp)
+  require(RColorBrewer)
+  freq_table<-data.frame(tabulate(over(as(data,"SpatialPoints"),
+                                       as(shape,"SpatialPolygons")),nbins=length(shape)))
+  names(freq_table)<-"counts"
+  
+  shape1<-spChFIDs(shape,as.character(1:length(shape)))
+  row.names(as(shape1,"data.frame"))
+  spdf<-SpatialPolygonsDataFrame(shape1, freq_table, match.ID = TRUE)
+  
+  rw.colors<-colorRampPalette(c("white",col))
+  spplot(spdf,scales = list(draw = TRUE),
+         col.regions=rw.colors(max(freq_table)), main=main)
+}
+
+
+library(sp)
+library(RColorBrewer)
 
 
 
-# toronto_map_g_str <- get_map(location = "toronto", zoom = 10)
-# 
-# ggmap(toronto_map_g_str, extent = "device") + geom_density2d(data = a, 
-#                                                            aes(x = X, y = Y), size = 0.3) + stat_density2d(data = a, 
-#                                                                                                                aes(x = X, y = Y, fill = ..level.., alpha = ..level..), size = 0.01, 
-#                                                                                                                bins = 16, geom = "polygon") + scale_fill_gradient(low = "green", high = "red") + 
-#   scale_alpha(range = c(0, 0.3), guide = FALSE)
+crime.sp<-a    ##create a new object that we will coerce to a SpatialPointsDataFrame
+coordinates(crime.sp)<-c("ï..X","Y")       ##Assigning coordinates coerces this to a SpatialPointsDataFrame
+proj4string(crime.sp)<-proj4string(shp)
+
+
+heatMap(crime.sp,shp,col="red",main="Toronto Total Crimes per Neighbourhood")
+
+
+
 
 
 #https://www.r-bloggers.com/visualising-thefts-using-heatmaps-in-ggplot2/
