@@ -73,3 +73,20 @@ ggplot(aes(x = Neighbourhood, y=n, fill = MCI), data=offence.type.by.location.to
   theme(plot.title = element_text(size = 16),
         axis.title = element_text(size = 12, face = "bold"),
         axis.text.x = element_text(angle = 90, hjust = 1, vjust = .4))
+
+##Crime count by month
+crime.count <- group_by(a.dt, occurrencemonth, MCI) %>% summarise(Total = n())
+crime.count$occurrencemonth <- ordered(crime.count$occurrencemonth, levels = c('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'))
+
+ggplot(crime.count, aes(occurrencemonth, MCI, fill = Total)) +
+  geom_tile(size = 1, color = "white") +
+  scale_fill_gradient(
+    low = "green",
+    high = "red"
+  )  +
+  geom_text(aes(label=Total), color='black') +
+  ggtitle("Major Crime Indicators by Month 2016") +
+  xlab('Month') +
+  theme(plot.title = element_text(size = 16), 
+        axis.title = element_text(size = 12, face = "bold"))
+ 
