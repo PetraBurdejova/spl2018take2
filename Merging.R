@@ -482,5 +482,8 @@ agg.2016 <- merge(agg, agg.2016, by.x = "Hood_ID", by.y = "Hood_ID" )
 ###TESTING
 
 
+#remove redundant data: 
+
+rm(list=(ls()[ls()!="agg.2016"]))
 
 
