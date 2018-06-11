@@ -27,4 +27,6 @@ regressiondata$With.Bachelor.Degree.or.Higher <- regressiondata$With.Bachelor.De
 regressiondata$Low.Income.Population <- regressiondata$Low.Income.Population/regressiondata$Population
 regressiondata$Lone.Parent.Families <- regressiondata$Lone.Parent.Families/regressiondata$Population
 
+regressiondata <- regressiondata[order(regressiondata$Hood_ID),]
+
 write.csv(regressiondata, "regressiondata.csv", row.names=FALSE)
