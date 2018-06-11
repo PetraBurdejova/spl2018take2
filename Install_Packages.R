@@ -16,4 +16,5 @@ pacman::p_load("tidyverse",
                "forecast",
                "sp",
                "rgdal",
-               "data.table")
+               "data.table",
+               "maptools")

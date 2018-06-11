@@ -90,3 +90,6 @@ ggplot(crime.count, aes(occurrencemonth, MCI, fill = Total)) +
   theme(plot.title = element_text(size = 16), 
         axis.title = element_text(size = 12, face = "bold"))
  
+shpfile <- "NEIGHBORHOODS_WGS84.shp"
+sh <- readShapePoly(shpfile, repair = TRUE)
+plot(sh)

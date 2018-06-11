@@ -477,7 +477,7 @@ colnames(unemployment.rate.males) <- "unemployment.rate.males"
 agg.2016 <- cbind.data.frame(agg.2016, unemployment.rate.males)
 
 ###Merge crime data with 2016 agg data
-agg.2016 <- merge(agg, agg.2016, by.x = "Hood_ID", by.y = "Hood_ID" )
+agg.2016 <- as.data.frame(merge(agg, agg.2016, by.x = "Hood_ID", by.y = "Hood_ID" ))
 
 ###TESTING
 
