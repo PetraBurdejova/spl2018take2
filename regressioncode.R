@@ -1,5 +1,8 @@
+#read csv
 regressiondata <- read.csv("regressiondata.csv")
+regressiondata <- regressiondata[order(regressiondata$Hood_ID),]
 
+#regression
 model<-lm(Robbery~Unemployed,data=agg)
 summary(model)
 
