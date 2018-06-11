@@ -1,4 +1,3 @@
-#read csv
 regressiondata <- read.csv("regressiondata.csv")
 
 model<-lm(Robbery~Unemployed,data=agg)
