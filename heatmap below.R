@@ -10,7 +10,7 @@ ggmap(toronto_map, extent = "device") + geom_point(aes(x = X, y = Y), colour = "
                                                  alpha = 0.1, size = 2, data = a)
 
 ggmap(toronto_map) +
-  stat_density2d(data = a, aes(x = X, y = Y, fill = ..density..), geom = 'tile', contour = F, alpha = .5) +
+  stat_density2d(data = a, aes(x = ï..X, y = Y, fill = ..density..), geom = 'tile', contour = F, alpha = .5) +
   scale_fill_viridis(option = 'inferno')
 #(from: http://www.sharpsightlabs.com/blog/how-to-create-a-crime-heatmap-in-r/)
 
