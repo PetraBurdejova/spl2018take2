@@ -27,9 +27,40 @@ r$youth.perc
 
 
 #regression
-model<-lm(Assault~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
+model_Assault<-lm(Assault~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
             renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+
+model_Auto.Theft<-lm(Auto.Theft~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
+             renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+
+model_Break.and.Enter<-lm(Break.and.Enter~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
+             renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+
+model_Robbery<-lm(Robbery~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
+             renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+
+model_Theft.Over<-lm(Theft.Over~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
+             renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+
+
+
+
+
+
+
+
+
+
+
+
 summary(model)
+
+
+
+
+
+
+
 
 #plot errors
 plot(x=agg$Hood_ID,y=residuals(model),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
