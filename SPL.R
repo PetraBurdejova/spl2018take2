@@ -11,6 +11,10 @@ rm(list=ls())
     source("Merging.R") # code I deleted in SPL_X1 can be found in deleted_code
 
 
+#####F-test####
+
+    source("F-Test.R")
+
 ###heatmap ####
 
     source("heatmap_below.R")

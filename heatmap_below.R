@@ -11,6 +11,8 @@ a1 <- a %>% select(X, Y, occurrenceyear) %>% filter(occurrenceyear == 2016)
 # ggmap(toronto_map, extent = "device") + geom_point(aes(x = X, y = Y), colour = "red",
 #                                                  alpha = 0.1, size = 2, data = a1)
 
+if (exists('.GeocodedInformation')) rm(.GeocodedInformation)
+
 #nice 
 ggmap(toronto_map) +
   stat_density2d(data = a1, aes(x = X, y = Y, fill = ..density..), geom = 'tile', contour = F, alpha = .5) +
