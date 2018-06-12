@@ -59,7 +59,11 @@ plot(x=r$Hood_ID,y=residuals(model_Theft.Over),xlab="Hood", ylab="Residuals",pan
 
 #autocorrelation
 library(car)
-dwt(model)
+dwt(model_Assault)
+dwt(model_Auto.Theft)
+dwt(model_Break.and.Enter)
+dwt(model_Robbery)
+dwt(model_Theft.Over)
 
 
 #normailty
