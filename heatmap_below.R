@@ -5,11 +5,15 @@
 
 toronto_map <- get_map(location = "toronto", maptype = "satellite", zoom = 12)
 
-ggmap(toronto_map, extent = "device") + geom_point(aes(x = X, y = Y), colour = "red", 
-                                                 alpha = 0.1, size = 2, data = a)
+a1 <- a %>% select(X, Y, occurrenceyear) %>% filter(occurrenceyear == 2016)
 
+#not so nice
+# ggmap(toronto_map, extent = "device") + geom_point(aes(x = X, y = Y), colour = "red",
+#                                                  alpha = 0.1, size = 2, data = a1)
+
+#nice 
 ggmap(toronto_map) +
-  stat_density2d(data = a, aes(x = ï..X, y = Y, fill = ..density..), geom = 'tile', contour = F, alpha = .5) +
+  stat_density2d(data = a1, aes(x = X, y = Y, fill = ..density..), geom = 'tile', contour = F, alpha = .5) +
   scale_fill_viridis(option = 'inferno')
 #(from: http://www.sharpsightlabs.com/blog/how-to-create-a-crime-heatmap-in-r/)
 
@@ -63,9 +67,10 @@ library(sp)
 library(RColorBrewer)
 
 
-
-crime.sp<-a    ##create a new object that we will coerce to a SpatialPointsDataFrame
-coordinates(crime.sp)<-c("ï..X","Y")       ##Assigning coordinates coerces this to a SpatialPointsDataFrame
+  
+  
+crime.sp<-a1    ##create a new object that we will coerce to a SpatialPointsDataFrame
+coordinates(crime.sp)<-c("X","Y")       ##Assigning coordinates coerces this to a SpatialPointsDataFrame
 proj4string(crime.sp)<-proj4string(shp)
 
 

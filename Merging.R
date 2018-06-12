@@ -6,6 +6,8 @@ b <- read.csv("2016_neighbourhood_profiles.csv")
 drugs <- read.csv("toronto_drug_arrests.csv")
 wbt <- read.csv("wellbeing_toronto.csv")
 
+a$X <- a$ï..X
+
 #Create aggregate data frame using data table
 a.dt <- as.data.frame(a)
 
