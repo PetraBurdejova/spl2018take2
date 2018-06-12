@@ -49,7 +49,6 @@ summary(model_Robbery)
 summary(model_Theft.Over)
 
 
-
 #plot errors
 plot(x=r$Hood_ID,y=residuals(model_Assault),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
 plot(x=r$Hood_ID,y=residuals(model_Auto.Theft),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
@@ -58,12 +57,10 @@ plot(x=r$Hood_ID,y=residuals(model_Robbery),xlab="Hood", ylab="Residuals",panel.
 plot(x=r$Hood_ID,y=residuals(model_Theft.Over),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
 
 
-
-
-
 #autocorrelation
 library(car)
 dwt(model)
+
 
 #normailty
 library(nortest)
