@@ -42,28 +42,24 @@ model_Robbery<-lm(Robbery~lone.parent.families.perc+avg.income+low.income.pop.pe
 model_Theft.Over<-lm(Theft.Over~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
              renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
 
-
-
-
-
-
-
-
-
-
-
-
-summary(model)
-
-
-
-
-
+summary(model_Assault)
+summary(model_Auto.Theft)
+summary(model_Break.and.Enter)
+summary(model_Robbery)
+summary(model_Theft.Over)
 
 
 
 #plot errors
-plot(x=agg$Hood_ID,y=residuals(model),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
+plot(x=r$Hood_ID,y=residuals(model_Assault),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
+plot(x=r$Hood_ID,y=residuals(model_Auto.Theft),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
+plot(x=r$Hood_ID,y=residuals(model_Break.and.Enter),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
+plot(x=r$Hood_ID,y=residuals(model_Robbery),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
+plot(x=r$Hood_ID,y=residuals(model_Theft.Over),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
+
+
+
+
 
 #autocorrelation
 library(car)
