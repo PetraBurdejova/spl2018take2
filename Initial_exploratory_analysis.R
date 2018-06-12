@@ -4,7 +4,7 @@ mci.group <- group_by(a.dt, MCI)
 crime.by.mci <- summarise(mci.group, n=n()) #count of events by MCI
 crime.by.mci <- crime.by.mci[order(crime.by.mci$n, decreasing = TRUE),]
 
-(ggplot(aes(x = reorder(MCI, n), y = n), data = crime.by.mci) +
+plot(ggplot(aes(x = reorder(MCI, n), y = n), data = crime.by.mci) +
   geom_bar(stat = 'identity', width = 0.5) +
   geom_text(aes(label = n), stat = 'identity', data = crime.by.mci, hjust = -0.1, size = 3.5) +
   coord_flip() +
