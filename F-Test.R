@@ -18,15 +18,16 @@ summary(reg2)
 
 df(95,1,1)
 
+f.test(agg.2016, "Total.crime", c("youth", "immigrants"), reg2, 2)
 
 ###Can try to add density and add an if statemnt to say whethere ho is rejected or not
 ###Wrote an F-test function in case you want to test it on multiple columns
 ###or on different variables
 f.test <- function(data, y, x, model.name, no.pred) {
-  RSS0 <- sum((data$y - mean(data$y))^2) #20181.97, this is same as TSS really
-  RSS <- sum((model.name$residuals)^2) #20181.64
+  RSS0 <- sum((data[,y] - mean(data[, y]))^2) #20181.97, this is same as TSS really
+  RSS <- sum(model.name$residuals^2) #20181.64
   p <-  no.pred #predictors whos coefficient we are testing.
-  n <- nrow(data$x) #number of observations
+  n <- nrow(data[, x]) #number of observations
   
   F <- ( (RSS0-RSS)/p ) / (RSS/(n-p-1))
   
@@ -37,6 +38,3 @@ f.test <- function(data, y, x, model.name, no.pred) {
     print("you can not reject the null hypothesis")
   }
 }
-
-G <- f.test(agg.2016, "Total.crime", c("youth", "immigrants"), reg2, 2)
-
