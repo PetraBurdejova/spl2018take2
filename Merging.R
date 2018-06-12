@@ -1,4 +1,3 @@
-source("Install_Packages.R")
 
 ###load and filter datasets----
 a <- read.csv("MCI_2014_to_2017.csv")
@@ -6,7 +5,7 @@ b <- read.csv("2016_neighbourhood_profiles.csv")
 drugs <- read.csv("toronto_drug_arrests.csv")
 wbt <- read.csv("wellbeing_toronto.csv")
 
-a$X <- a$ï..X
+colnames(a)[1] <- "X"
 
 #Create aggregate data frame using data table
 a.dt <- as.data.frame(a)
