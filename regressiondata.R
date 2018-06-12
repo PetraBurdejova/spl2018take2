@@ -49,4 +49,17 @@ regressiondata$unemployment.rate.males <- NULL
 
 regressiondata <- round(regressiondata, digits = 3)
 
+agg <- read.csv("aggregated.csv")
+agg$Hood_ID <- as.factor(agg$Hood_ID)
+char <- read.csv("regressiondata.csv")
+char$Hood_ID <- as.factor(char$Hood_ID)
+regressiondata <- merge(agg, char, by.x = "Hood_ID", by.y = "Hood_ID")
+regressiondata$Assault <- regressiondata$Assault/regressiondata$population.2016
+regressiondata$Auto.Theft <- regressiondata$Auto.Theft/regressiondata$population.2016
+regressiondata$Break.and.Enter <- regressiondata$Break.and.Enter/regressiondata$population.2016
+regressiondata$Robbery <- regressiondata$Robbery/regressiondata$population.2016
+regressiondata$Theft.Over <- regressiondata$Theft.Over/regressiondata$population.2016
+
+regressiondata <- regressiondata[order(regressiondata$Hood_ID),] 
+
 write.csv(regressiondata, "regressiondata.csv", row.names=FALSE)
