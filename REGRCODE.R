@@ -61,10 +61,13 @@ step(model_Assault, k=log(140))
 
 ###test for multicollinearity
 cor(r$avg.income, r$youth.perc)
+chart.Correlation(r[,8:21], histogram=TRUE)
+
+
 #check correlations
 #variance inflation factors
 
-###normailty
+###normality
 library(nortest)
 ad.test(residuals(model_Assault)) 
 shapiro.test(residuals(model_Assault)) 
