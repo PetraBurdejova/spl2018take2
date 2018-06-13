@@ -17,4 +17,7 @@ pacman::p_load("tidyverse",
                "sp",
                "rgdal",
                "data.table",
-               "maptools")
+               "maptools",
+               "sf",
+               "lwgeom", 
+               "nabor")
