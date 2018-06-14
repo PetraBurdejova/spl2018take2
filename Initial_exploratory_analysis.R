@@ -1,7 +1,7 @@
 
 ###Group crimes by MCI
 mci.group <- group_by(a.dt, MCI)
-crime.by.mci <- summarize(mci.group, n=n()) #count of events by MCI
+crime.by.mci <- dplyr::summarise(mci.group, n=n()) #count of events by MCI
 crime.by.mci <- crime.by.mci[order(crime.by.mci$n, decreasing = TRUE),]
 
 plot(ggplot(aes(x = reorder(MCI, n), y = n), data = crime.by.mci) +
@@ -17,7 +17,7 @@ plot(ggplot(aes(x = reorder(MCI, n), y = n), data = crime.by.mci) +
 
 ###Group crimes by time of day
 hour.group <- group_by(a.dt, occurrencehour)
-crime.hour <- summarise(hour.group, n=n()) #count of crimes by hour
+crime.hour <- dplyr::summarise(hour.group, n=n()) #count of crimes by hour
 
 plot(ggplot(aes(x=occurrencehour, y=n), data = crime.hour) + geom_line(size = 2.5, alpha = 0.7, color = "mediumseagreen", group=1) + 
   geom_point(size = 0.5) + 
@@ -30,7 +30,7 @@ plot(ggplot(aes(x=occurrencehour, y=n), data = crime.hour) + geom_line(size = 2.
 
 ###Crime types by hour
 crime.type.by.hour <- group_by(a.dt, occurrencehour, MCI)
-hour.crime <- summarise(crime.type.by.hour, n=n()) #count of crime types by hour
+hour.crime <- dplyr::summarise(crime.type.by.hour, n=n()) #count of crime types by hour
 
 plot(ggplot(aes(x=occurrencehour, y=n, color=MCI), data =hour.crime) + 
   geom_line(size=1.5) + 
@@ -43,7 +43,7 @@ plot(ggplot(aes(x=occurrencehour, y=n, color=MCI), data =hour.crime) +
 
 ##neighbourhoods with most crime
 location.group <- group_by(a.dt, Neighbourhood)
-crime.by.location <- summarise(location.group, n=n())
+crime.by.location <- dplyr::summarise(location.group, n=n())
 crime.by.location <- crime.by.location[order(crime.by.location$n, decreasing = TRUE), ] #order neighbourhoods by crime
 crime.by.location.top20 <- head(crime.by.location, 20) #top 20 neighbourhoods by crime
 
@@ -60,7 +60,7 @@ plot(ggplot(aes(x = reorder(Neighbourhood, n), y = n), data = crime.by.location.
 
 ##offence types by neighbourhood
 offence.location.group <- group_by(a.dt, Neighbourhood, MCI) #group crime by neighbourhod and offence
-offence.type.by.location <- summarise(offence.location.group, n=n()) #get counts of crimes by neighbourhood
+offence.type.by.location <- dplyr::summarise(offence.location.group, n=n()) #get counts of crimes by neighbourhood
 offence.type.by.location <- offence.type.by.location[order(offence.type.by.location$n, decreasing = TRUE), ]
 offence.type.by.location.top20 <- head(offence.type.by.location, 20)
 
@@ -74,7 +74,7 @@ plot(ggplot(aes(x = Neighbourhood, y=n, fill = MCI), data=offence.type.by.locati
         axis.text.x = element_text(angle = 90, hjust = 1, vjust = .4)))
 
 ##Crime count by month
-crime.count <- group_by(a.dt, occurrencemonth, MCI) %>% summarise(Total = n())
+crime.count <- group_by(a.dt, occurrencemonth, MCI) %>% dplyr::summarise(Total = n())
 crime.count$occurrencemonth <- ordered(crime.count$occurrencemonth, levels = c('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'))
 
 plot(ggplot(crime.count, aes(occurrencemonth, MCI, fill = Total)) +
@@ -99,7 +99,7 @@ geo.data$Hood_ID <- str_pad(geo.data$Hood_ID, width = 3, side = 'left', pad = '0
 
 toronto <- readOGR(dsn = "." ,"NEIGHBORHOODS_WGS84")
 
-library("plyr")
+
 # fortify and merge: muni.df is used in ggplot
 toronto@data$id <- rownames(toronto@data)
 toronto.geo <- fortify(toronto)
@@ -125,7 +125,7 @@ print(g.pop.2016) # render the map
 
 # Plot neighbourhoods with highest total crime 
 g.total.crime <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
-  geom_polygon(aes(fill= Total.crime)) +    # draw polygons and add fill with population variable
+  geom_polygon(aes(fill= total.crime)) +    # draw polygons and add fill with population variable
   geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
   scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
@@ -147,7 +147,7 @@ print(g.pop.density)
 
 #Plot neighbourhoods by robberies
 g.robberies <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
-  geom_polygon(aes(fill= Robbery)) +    # draw polygons and add fill with population variable
+  geom_polygon(aes(fill= robbery)) +    # draw polygons and add fill with population variable
   geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
   scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
@@ -155,3 +155,15 @@ g.robberies <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
                       guide = "colourbar")+
   labs(title="Roberries by Neighbourhood")
 print(g.robberies)
+
+
+#Plot neighbourhoods by break and enters
+g.break.n.enter <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= break.and.enter)) +    # draw polygons and add fill with break and enter variable
+  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Break and Enters by Neighbourhood")
+print(g.break.n.enter)
