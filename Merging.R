@@ -1,9 +1,9 @@
-
 ###load and filter datasets----
 a <- read.csv("MCI_2014_to_2017.csv")
 b <- read.csv("2016_neighbourhood_profiles.csv")
 drugs <- read.csv("toronto_drug_arrests.csv")
 wbt <- read.csv("wellbeing_toronto.csv")
+area <- read_csv("toronto_area.csv")
 
 colnames(a)[1] <- "X"
 
@@ -36,6 +36,7 @@ agg <- merge(agg, drugs[,c("Neighbourhood.Id", "Drug.Arrests")], by.x = "Hood_ID
 
 ###GEt crime totals for each neighbourhood
 agg$Total.crime <- rowSums(agg[,-1])
+colnames(agg) <- c("Hood_ID", "assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
 
 ##Merge agg with wbt to get crime and neighbourhood profiles in 1 data frame
 wbt$Neighbourhood.Id <- as.factor(wbt$Neighbourhood.Id)
@@ -135,6 +136,11 @@ df2$Characteristic <- fct_collapse(df2$Characteristic,
 population.2016 <- getData(df2, "population.2016")
 colnames(population.2016) <- c("population.2016")
 agg.2016 <- cbind.data.frame(agg.2016, population.2016)
+
+###Get area and density of each neighbourhood
+colnames(area)[c(2,3)] <- c("Hood_ID", "total.area")
+agg.2016 <- merge(agg.2016, area[,-1], by.x = "Hood_ID", by.y = "Hood_ID" )
+agg.2016$density <- agg.2016$population.2016 / agg.2016$total.area
 
 ###Get Lone Parent Families by sex of parent
 df2 <- as.data.frame(df1)
