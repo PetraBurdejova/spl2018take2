@@ -1,7 +1,7 @@
 
 ###Group crimes by MCI
 mci.group <- group_by(a.dt, MCI)
-crime.by.mci <- summarise(mci.group, n=n()) #count of events by MCI
+crime.by.mci <- summarize(mci.group, n=n()) #count of events by MCI
 crime.by.mci <- crime.by.mci[order(crime.by.mci$n, decreasing = TRUE),]
 
 plot(ggplot(aes(x = reorder(MCI, n), y = n), data = crime.by.mci) +
@@ -88,5 +88,70 @@ plot(ggplot(crime.count, aes(occurrencemonth, MCI, fill = Total)) +
   xlab('Month') +
   theme(plot.title = element_text(size = 16), 
         axis.title = element_text(size = 12, face = "bold")))
- 
 
+
+#Heatmap of toonto by population 
+# Read the neighborhood shapefile data and plot
+geo.data <- data.frame(agg.2016)
+geo.data$Hood_ID <- str_pad(geo.data$Hood_ID, width = 3, side = 'left', pad = '0')
+
+# the path to shape file
+
+toronto <- readOGR(dsn = "." ,"NEIGHBORHOODS_WGS84")
+
+library("plyr")
+# fortify and merge: muni.df is used in ggplot
+toronto@data$id <- rownames(toronto@data)
+toronto.geo <- fortify(toronto)
+toronto.geo <- join(toronto.geo, toronto@data, by="id")
+names(toronto.geo)[names(toronto.geo) == 'AREA_S_CD'] <- 'Hood_ID'
+
+toronto.geo <- join(geo.data, toronto.geo, by = "Hood_ID")
+
+
+
+
+
+# Plot neighbourhoods with highest population 
+g.pop.2016 <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+        geom_polygon(aes(fill= population.2016)) +    # draw polygons and add fill with population variable
+          geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+           coord_equal() + 
+            scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                                 space = "Lab", na.value = "grey50",
+                                 guide = "colourbar")+
+               labs(title="Population by Neighbourhood, 2016")
+print(g.pop.2016) # render the map
+
+# Plot neighbourhoods with highest total crime 
+g.total.crime <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= Total.crime)) +    # draw polygons and add fill with population variable
+  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Total crime")
+print(g.total.crime) # render the map
+
+#Plot neighbourhoods by density
+g.pop.density <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= density)) +    # draw polygons and add fill with population variable
+  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Density of Neighbourhoods")
+print(g.pop.density)
+
+#Plot neighbourhoods by robberies
+g.robberies <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= Robbery)) +    # draw polygons and add fill with population variable
+  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Roberries by Neighbourhood")
+print(g.robberies)
