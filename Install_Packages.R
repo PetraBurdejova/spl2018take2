@@ -20,4 +20,5 @@ pacman::p_load("tidyverse",
                "maptools",
                "sf",
                "lwgeom", 
-               "nabor")
+               "nabor",
+               "plyr")
