@@ -37,7 +37,7 @@ r$middle.income.perc
 r$high.income.perc
 #lone.parent.families.perc + avg.income + people.ei.per + median.income + low.income.pop.perc + low.income.pop.perc.18.to.64 + non.citizens.perc + immigrants.perc + immigrants.recent.perc + refugees.perc + vis.minorities.perc + renters.perc + houses.perc + unsuitable.housing.perc + hhlds.mjr.rprs.perc + unaffordable.housing.perc + less.than.high.school.perc + high.school.cert.perc + post.sec.or.above.perc + unemployment.rate + youth.perc + male.youth.perc + low.income.pop.perc + middle.income.perc + high.income.perc
 
-#preselection
+#preselection of regressors to avoid multicollinearity
 library(PerformanceAnalytics) #for chart.Correlation
 chart.Correlation(r[,10:35], histogram=TRUE)
 cortable <- cor(r[,10:35])
@@ -63,31 +63,35 @@ chart.Correlation(r[,10:15], histogram=TRUE)
 #median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc
 
 #####regression models#####
-model_Assault<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+r <- read.csv("r.csv")
 
-model_Auto.Theft<-lm(Auto.Theft~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_Assault0<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
-model_Break.and.Enter<-lm(Break.and.Enter~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_Auto.Theft0<-lm(Auto.Theft~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
-model_Robbery<-lm(Robbery~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_Break.and.Enter0<-lm(Break.and.Enter~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
-model_Theft.Over<-lm(Theft.Over~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_Robbery0<-lm(Robbery~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
-model_Drug.Arrests<-lm(Drug.Arrests~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_Theft.Over0<-lm(Theft.Over~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+
+model_Drug.Arrests0<-lm(Drug.Arrests~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 model_Total.crime<-lm(Total.crime~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 #####Assault#####
-summary(model_Assault)
-
 ###outliers and influential observations
-plot(x=r$Hood_ID,y=residuals(model_Assault),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
-sort(model_Assault$residuals)[c(1,140)]
-plot(cooks.distance(model_Assault))
-cooks.distance(model_Assault)[cooks.distance(model_Assault)>4/140]
-plot(dffits(model_Assault))
-dffits(model_Assault)[dffits(model_Assault)>2*sqrt(14/140)]
-plot(rstudent(model_Assault))
+#plot(x=r$Hood_ID,y=residuals(model_Assault0),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
+#sort(model_Assault0$residuals)[c(1,140)]
+#cooks.distance(model_Assault0)[cooks.distance(model_Assault0)>4/140]
+#plot(dffits(model_Assault0))
+#dffits(model_Assault0)[dffits(model_Assault0)>2*sqrt(14/140)]
+#plot(rstudent(model_Assault0))
+plot(cooks.distance(model_Assault0))
+sort(cooks.distance(model_Assault0))
+r_Assault <- r[-c(51, 73, 75, 76, 77, 78, 79, 98),]
+model_Assault<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_Assault)
+summary(model_Assault)
 
 ###variable selection
 #backward selection using aic
@@ -95,12 +99,6 @@ step(model_Assault)
 #backward selection using bic
 step(model_Assault, k=log(140))
 #backward selection using significance of coefficients
-
-###test for multicollinearity
-cor(r$avg.income, r$youth.perc)
-library(PerformanceAnalytics) #for chart.Correlation
-chart.Correlation(r[,10:35], histogram=TRUE)
-
 
 #check correlations
 #variance inflation factors
