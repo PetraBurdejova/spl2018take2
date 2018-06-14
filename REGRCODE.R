@@ -1,44 +1,81 @@
 #####read csv#####
 regressiondata <- read.csv("regressiondata.csv")
 r <- regressiondata
-#dependent variables (dont run it)
+#dependent variables (don´t run it)
 r$Assault
 r$Auto.Theft
 r$Break.and.Enter
 r$Robbery
 r$Theft.Over
-#independent variables (dont run it)
+r$Drug.Arrests
+r$Total.crime
+#independent variables (don´t run it)
 r$lone.parent.families.perc
 r$avg.income
+r$people.ei.per
+r$median.income
 r$low.income.pop.perc
+r$low.income.pop.perc.18.to.64
 r$non.citizens.perc
+r$immigrants.perc
 r$immigrants.recent.perc
 r$refugees.perc
 r$vis.minorities.perc
 r$renters.perc
 r$houses.perc
+r$unsuitable.housing.perc
+r$hhlds.mjr.rprs.perc
+r$unaffordable.housing.perc
 r$less.than.high.school.perc
 r$high.school.cert.perc
 r$post.sec.or.above.perc
 r$unemployment.rate
 r$youth.perc
+r$male.youth.perc
+r$low.income.pop.perc
+r$middle.income.perc
+r$high.income.perc
+#lone.parent.families.perc + avg.income + people.ei.per + median.income + low.income.pop.perc + low.income.pop.perc.18.to.64 + non.citizens.perc + immigrants.perc + immigrants.recent.perc + refugees.perc + vis.minorities.perc + renters.perc + houses.perc + unsuitable.housing.perc + hhlds.mjr.rprs.perc + unaffordable.housing.perc + less.than.high.school.perc + high.school.cert.perc + post.sec.or.above.perc + unemployment.rate + youth.perc + male.youth.perc + low.income.pop.perc + middle.income.perc + high.income.perc
 
+#preselection
+library(PerformanceAnalytics) #for chart.Correlation
+chart.Correlation(r[,10:35], histogram=TRUE)
+cortable <- cor(r[,10:35])
+cortablefiltered <- ifelse(cortable>0.5, cortable, NA)
+
+r$avg.income <- NULL #high correlation with median.income, median.income is a more robust representation
+r$low.income.pop.perc.18.to.64 <- NULL #high correlation with low.income pop.perc
+r$non.citizens.perc <- NULL; r$immigrants.recent.perc <- NULL; r$refugees.perc <- NULL; r$vis.minorities.perc <- NULL #as high correlation with variable r$immigrants.perc
+r$unaffordable.housing.perc <- NULL; r$unsuitable.housing.perc <- NULL #high correlation with r$low.income.pop.perc
+r$high.school.cert.perc <- NULL; r$post.sec.or.above.perc <- NULL #high correlation with income variables
+r$unemployment.rate <- NULL #high correlation with unemployment.rate.males
+r$youth.perc <- NULL #high correlation with male.youth; studies show male youth the highest risk of crime activity
+r$low.income.perc <- NULL; r$middle.income.perc <- NULL; r$high.income.perc <- NULL #high correlation with income variables
+r$lone.parent.families.perc <- NULL #high correlation with several variables
+r$people.ei.per <- NULL ; r$low.income.pop.perc <- NULL #high correlaiton with income variables
+r$hhlds.mjr.rprs.perc <- NULL #high correlatio with r$renters
+r$renters.perc <- NULL
+
+cortable <- cor(r[,10:15])
+cortablefiltered <- ifelse(cortable>0.5, cortable, NA)
+chart.Correlation(r[,10:15], histogram=TRUE)
+
+#median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc
 
 #####regression models#####
-model_Assault<-lm(Assault~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
-            renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+model_Assault<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
-model_Auto.Theft<-lm(Auto.Theft~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
-             renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+model_Auto.Theft<-lm(Auto.Theft~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
-model_Break.and.Enter<-lm(Break.and.Enter~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
-             renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+model_Break.and.Enter<-lm(Break.and.Enter~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
-model_Robbery<-lm(Robbery~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
-             renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+model_Robbery<-lm(Robbery~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
-model_Theft.Over<-lm(Theft.Over~lone.parent.families.perc+avg.income+low.income.pop.perc+non.citizens.perc+immigrants.recent.perc+refugees.perc+vis.minorities.perc+
-             renters.perc+houses.perc+less.than.high.school.perc+high.school.cert.perc+post.sec.or.above.perc+unemployment.rate+youth.perc, data=r)
+model_Theft.Over<-lm(Theft.Over~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+
+model_Drug.Arrests<-lm(Drug.Arrests~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+
+model_Total.crime<-lm(Total.crime~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 #####Assault#####
 summary(model_Assault)
@@ -61,7 +98,8 @@ step(model_Assault, k=log(140))
 
 ###test for multicollinearity
 cor(r$avg.income, r$youth.perc)
-chart.Correlation(r[,8:21], histogram=TRUE)
+library(PerformanceAnalytics) #for chart.Correlation
+chart.Correlation(r[,10:35], histogram=TRUE)
 
 
 #check correlations
@@ -96,3 +134,7 @@ plot(x=r$Hood_ID,y=residuals(model_Robbery),xlab="Hood", ylab="Residuals",panel.
 #####Theft.Over#####
 summary(model_Theft.Over)
 plot(x=r$Hood_ID,y=residuals(model_Theft.Over),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
+
+#####Drug.Arrests#####
+
+#####Total.crime#####
