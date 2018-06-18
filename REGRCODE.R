@@ -1,3 +1,5 @@
+#####overview#####
+#Merging.R -> regressiondata0.csv -> preparation -> regressiondata/r -> preselection -> r -> regression analysis
 #####preparation#####
 regressiondata <- read.csv("regressiondata0.csv")
 
@@ -64,48 +66,47 @@ regressiondata$post.sec.or.above.perc <- regressiondata$post.sec.or.above.perc*1
 regressiondata$unemployed <- NULL
 regressiondata$unemployed.males <- NULL
 #regressiondata <- round(regressiondata, digits = 3)
-write.csv(regressiondata, "regressiondata.csv", row.names=FALSE)
-
-#####read csv#####
-regressiondata <- read.csv("regressiondata.csv")
+#write.csv(regressiondata, "regressiondata.csv", row.names=FALSE)
+#regressiondata <- read.csv("regressiondata.csv")
 r <- regressiondata
 #dependent variables (don´t run it)
-r$Assault
-r$Auto.Theft
-r$Break.and.Enter
-r$Robbery
-r$Theft.Over
-r$Drug.Arrests
-r$Total.crime
+#r$Assault
+#r$Auto.Theft
+#r$Break.and.Enter
+#r$Robbery
+#r$Theft.Over
+#r$Drug.Arrests
+#r$Total.crime
 #independent variables (don´t run it)
-r$lone.parent.families.perc
-r$avg.income
-r$people.ei.per
-r$median.income
-r$low.income.pop.perc
-r$low.income.pop.perc.18.to.64
-r$non.citizens.perc
-r$immigrants.perc
-r$immigrants.recent.perc
-r$refugees.perc
-r$vis.minorities.perc
-r$renters.perc
-r$houses.perc
-r$unsuitable.housing.perc
-r$hhlds.mjr.rprs.perc
-r$unaffordable.housing.perc
-r$less.than.high.school.perc
-r$high.school.cert.perc
-r$post.sec.or.above.perc
-r$unemployment.rate
-r$youth.perc
-r$male.youth.perc
-r$low.income.pop.perc
-r$middle.income.perc
-r$high.income.perc
+#r$lone.parent.families.perc
+#r$avg.income
+#r$people.ei.per
+#r$median.income
+#r$low.income.pop.perc
+#r$low.income.pop.perc.18.to.64
+#r$non.citizens.perc
+#r$immigrants.perc
+#r$immigrants.recent.perc
+#r$refugees.perc
+#r$vis.minorities.perc
+#r$renters.perc
+#r$houses.perc
+#r$unsuitable.housing.perc
+#r$hhlds.mjr.rprs.perc
+#r$unaffordable.housing.perc
+#r$less.than.high.school.perc
+#r$high.school.cert.perc
+#r$post.sec.or.above.perc
+#r$unemployment.rate
+#r$youth.perc
+#r$male.youth.perc
+#r$low.income.pop.perc
+#r$middle.income.perc
+#r$high.income.perc
 #lone.parent.families.perc + avg.income + people.ei.per + median.income + low.income.pop.perc + low.income.pop.perc.18.to.64 + non.citizens.perc + immigrants.perc + immigrants.recent.perc + refugees.perc + vis.minorities.perc + renters.perc + houses.perc + unsuitable.housing.perc + hhlds.mjr.rprs.perc + unaffordable.housing.perc + less.than.high.school.perc + high.school.cert.perc + post.sec.or.above.perc + unemployment.rate + youth.perc + male.youth.perc + low.income.pop.perc + middle.income.perc + high.income.perc
 
-#preselection of regressors to avoid multicollinearity
+#####preselection of regressors#####
+#to avoid multicollinearity
 library(PerformanceAnalytics) #for chart.Correlation
 chart.Correlation(r[,10:35], histogram=TRUE)
 cortable <- cor(r[,10:35])
@@ -127,11 +128,9 @@ r$renters.perc <- NULL
 cortable <- cor(r[,10:15])
 cortablefiltered <- ifelse(cortable>0.5, cortable, NA)
 chart.Correlation(r[,10:15], histogram=TRUE)
-
 #median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc
 
-#####shortcut#####
-r <- read.csv("r.csv")
+#r <- read.csv("r.csv")
 
 #####Assault#####
 ###model
