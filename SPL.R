@@ -28,8 +28,6 @@ rm(list=ls())
 
 ###regression analysis
 
-    source("regressiondata.R")
-
     source("REGRCODE.R")
 
 
