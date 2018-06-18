@@ -26,6 +26,12 @@ rm(list=ls())
   #  source("heatmap_below.R")
 
 
+###regression analysis
+
+    source("REGRCODE.R")
+
+
+
 # ###ideas#####
 # distance from city center for each neighbourhood
 # 
