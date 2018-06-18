@@ -1,15 +1,15 @@
 #####overview#####
 #Merging.R -> regressiondata0.csv -> preparation -> regressiondata/r -> preselection -> r -> regression analysis
 #####preparation#####
-regressiondata <- read.csv("regressiondata0.csv")
+regressiondata <- agg.2016
 
-regressiondata$Assault <- regressiondata$Assault/regressiondata$population.2016
-regressiondata$Auto.Theft <- regressiondata$Auto.Theft/regressiondata$population.2016
-regressiondata$Break.and.Enter <- regressiondata$Break.and.Enter/regressiondata$population.2016
-regressiondata$Robbery <- regressiondata$Robbery/regressiondata$population.2016
-regressiondata$Theft.Over <- regressiondata$Theft.Over/regressiondata$population.2016
-regressiondata$Drug.Arrests <- regressiondata$Drug.Arrests/regressiondata$population.2016
-regressiondata$Total.crime <- regressiondata$Total.crime/regressiondata$population.2016
+regressiondata$assault <- regressiondata$assault/regressiondata$population.2016
+regressiondata$auto.theft <- regressiondata$auto.theft/regressiondata$population.2016
+regressiondata$break.and.enter <- regressiondata$break.and.enter/regressiondata$population.2016
+regressiondata$robbery <- regressiondata$robbery/regressiondata$population.2016
+regressiondata$theft.over <- regressiondata$theft.over/regressiondata$population.2016
+regressiondata$drug.arrests <- regressiondata$drug.arrests/regressiondata$population.2016
+regressiondata$total.crime <- regressiondata$total.crime/regressiondata$population.2016
 
 regressiondata$youth.perc <- (regressiondata$youth/regressiondata$population.2016)*100 
 regressiondata$youth <- NULL
@@ -25,13 +25,11 @@ regressiondata$low.income.perc <- (regressiondata$low.income/regressiondata$popu
 regressiondata$low.income <- NULL
 regressiondata$middle.income.perc <- (regressiondata$middle.income/regressiondata$population.2016)*100
 regressiondata$middle.income <- NULL
-colnames(regressiondata)[11] <-"high.income"
 regressiondata$high.income.perc <- (regressiondata$high.income/regressiondata$population.2016)*100
 regressiondata$high.income <- NULL
 
 regressiondata$people.ei <- NULL
 regressiondata$people.ei.per <- regressiondata$people.ei.per*100
-regressiondata$median.income
 regressiondata$no.hholds.bottom.20per <- NULL
 regressiondata$hholds.bottom.20per.per <- NULL
 regressiondata$low.income.pop <- NULL
@@ -70,13 +68,13 @@ regressiondata$unemployed.males <- NULL
 #regressiondata <- read.csv("regressiondata.csv")
 r <- regressiondata
 #dependent variables (don´t run it)
-#r$Assault
-#r$Auto.Theft
-#r$Break.and.Enter
-#r$Robbery
-#r$Theft.Over
-#r$Drug.Arrests
-#r$Total.crime
+#r$assault
+#r$auto.theft
+#r$break.and.enter
+#r$robbery
+#r$theft.over
+#r$drug.arrests
+#r$total.crime
 #independent variables (don´t run it)
 #r$lone.parent.families.perc
 #r$avg.income
@@ -132,28 +130,28 @@ chart.Correlation(r[,10:15], histogram=TRUE)
 
 #r <- read.csv("r.csv")
 
-#####Assault#####
+#####assault#####
 ###model
-model_Assault0<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_assault0<-lm(assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 ###outliers and influential observations
-#plot(x=r$Hood_ID,y=residuals(model_Assault0),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
-#sort(model_Assault0$residuals)[c(1,140)]
-#plot(dffits(model_Assault0))
-#dffits(model_Assault0)[dffits(model_Assault0)>2*sqrt(14/140)]
-#plot(rstudent(model_Assault0))
-plot(cooks.distance(model_Assault0))
-sort(cooks.distance(model_Assault0))
-cooks.distance(model_Assault0)[cooks.distance(model_Assault0)>4/140]
-r_Assault <- r[-c(51, 73, 75, 76, 77, 78, 79, 98),]
-model_Assault<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_Assault)
-summary(model_Assault)
+#plot(x=r$Hood_ID,y=residuals(model_assault0),xlab="Hood", ylab="Residuals",panel.last = abline(h=0, lty=2))
+#sort(model_assault0$residuals)[c(1,140)]
+#plot(dffits(model_assault0))
+#dffits(model_assault0)[dffits(model_assault0)>2*sqrt(14/140)]
+#plot(rstudent(model_assault0))
+plot(cooks.distance(model_assault0))
+sort(cooks.distance(model_assault0))
+cooks.distance(model_assault0)[cooks.distance(model_assault0)>4/140]
+r_assault <- r[-c(51, 73, 75, 76, 77, 78, 79, 98),]
+model_assault<-lm(assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_assault)
+summary(model_assault)
 
 ###variable selection
 #backward selection using aic
-step(model_Assault)
+step(model_assault)
 #backward selection using bic
-step(model_Assault, k=log(140))
+step(model_assault, k=log(140))
 #backward selection using significance of coefficients
 
 #check correlations
@@ -161,152 +159,152 @@ step(model_Assault, k=log(140))
 
 ###normality
 library(nortest)
-ad.test(residuals(model_Assault)) 
-shapiro.test(residuals(model_Assault)) 
-lillie.test(residuals(model_Assault))
+ad.test(residuals(model_assault)) 
+shapiro.test(residuals(model_assault)) 
+lillie.test(residuals(model_assault))
 
 ###homoscedasticity
 library(lmtest)
-bptest(model_Assault)
-#library(car);leveneTest(model_Assault)
+bptest(model_assault)
+#library(car);leveneTest(model_assault)
 
 ###nonlinearity
-crPlots(model_Assault)
+crPlots(model_assault)
 
-#####Auto.Theft#####
+#####auto.theft#####
 ###model
-model_Auto.Theft0<-lm(Auto.Theft~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_auto.theft0<-lm(auto.theft~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 ###outliers and influential observations
-plot(cooks.distance(model_Auto.Theft0))
-cooks.distance(model_Auto.Theft0)[cooks.distance(model_Auto.Theft0)>4/140]
-sort(cooks.distance(model_Auto.Theft0))
-r_Auto.Theft <- r[-c(1,21,41,76,109,110),]
-model_Auto.Theft<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_Auto.Theft)
-summary(model_Auto.Theft)
+plot(cooks.distance(model_auto.theft0))
+cooks.distance(model_auto.theft0)[cooks.distance(model_auto.theft0)>4/140]
+sort(cooks.distance(model_auto.theft0))
+r_auto.theft <- r[-c(1,21,41,76,109,110),]
+model_auto.theft<-lm(assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_auto.theft)
+summary(model_auto.theft)
 
 ###variable selection using backward aic
-step(model_Auto.Theft)
+step(model_auto.theft)
 
 ###normality
-ad.test(residuals(model_Auto.Theft)) 
-shapiro.test(residuals(model_Auto.Theft))
-lillie.test(residuals(model_Auto.Theft))
+ad.test(residuals(model_auto.theft)) 
+shapiro.test(residuals(model_auto.theft))
+lillie.test(residuals(model_auto.theft))
 
 ###homoscedasticity
 bptest(model_)
 
-#####Break.and.Enter#####
+#####break.and.enter#####
 ###model
-model_Break.and.Enter0<-lm(Break.and.Enter~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_break.and.enter0<-lm(break.and.enter~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 ###outliers and influential observations
-plot(cooks.distance(model_Break.and.Enter0))
-cooks.distance(model_Break.and.Enter0)[cooks.distance(model_Break.and.Enter0)>4/140]
+plot(cooks.distance(model_break.and.enter0))
+cooks.distance(model_break.and.enter0)[cooks.distance(model_break.and.enter0)>4/140]
 sort(cooks.distance(model_))
-r_Break.and.Enter <- r[-c(31, 41, 66, 71, 73, 76, 79, 121),]
-model_Break.and.Enter<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_Break.and.Enter)
-summary(model_Break.and.Enter)
+r_break.and.enter <- r[-c(31, 41, 66, 71, 73, 76, 79, 121),]
+model_break.and.enter<-lm(assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_break.and.enter)
+summary(model_break.and.enter)
 
 ###variable selection using backward aic
-step(model_Break.and.Enter)
+step(model_break.and.enter)
 
 ###normality
-ad.test(residuals(model_Break.and.Enter)) 
-shapiro.test(residuals(model_Break.and.Enter)) 
-lillie.test(residuals(model_Break.and.Enter))
+ad.test(residuals(model_break.and.enter)) 
+shapiro.test(residuals(model_break.and.enter)) 
+lillie.test(residuals(model_break.and.enter))
 
 ###homoscedasticity
-bptest(model_Break.and.Enter)
+bptest(model_break.and.enter)
 
-#####Robbery#####
+#####robbery#####
 ###model
-model_Robbery0<-lm(Robbery~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_robbery0<-lm(robbery~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 ###outliers and influential observations
-plot(cooks.distance(model_Robbery0))
-cooks.distance(model_Robbery0)[cooks.distance(model_Robbery0)>4/140]
-sort(cooks.distance(model_Robbery0))
-r_Robbery <- r[-c(66, 73, 75, 76, 79, 112),]
-model_Robbery<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_Robbery)
-summary(model_Robbery)
+plot(cooks.distance(model_robbery0))
+cooks.distance(model_robbery0)[cooks.distance(model_robbery0)>4/140]
+sort(cooks.distance(model_robbery0))
+r_robbery <- r[-c(66, 73, 75, 76, 79, 112),]
+model_robbery<-lm(assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_robbery)
+summary(model_robbery)
 
 ###variable selection using backward aic
-step(model_Robbery)
+step(model_robbery)
 
 ###normality
-ad.test(residuals(model_Robbery)) 
-shapiro.test(residuals(model_Robbery)) 
-lillie.test(residuals(model_Robbery))
+ad.test(residuals(model_robbery)) 
+shapiro.test(residuals(model_robbery)) 
+lillie.test(residuals(model_robbery))
 
 ###homoscedasticity
-bptest(model_Robbery)
+bptest(model_robbery)
 
-#####Theft.Over#####
+#####theft.over#####
 ###model
-model_Theft.Over0<-lm(Theft.Over~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_theft.over0<-lm(theft.over~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 ###outliers and influential observations
-plot(cooks.distance(model_Theft.Over0))
-cooks.distance(model_Theft.Over0)[cooks.distance(model_Theft.Over0)>4/140]
-sort(cooks.distance(model_Theft.Over0))
-r_Theft.Over <- r[-c(1,21,27,31,55,75,76,121),]
-model_Theft.Over<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_Theft.Over)
-summary(model_Theft.Over)
+plot(cooks.distance(model_theft.over0))
+cooks.distance(model_theft.over0)[cooks.distance(model_theft.over0)>4/140]
+sort(cooks.distance(model_theft.over0))
+r_theft.over <- r[-c(1,21,27,31,55,75,76,121),]
+model_theft.over<-lm(assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_theft.over)
+summary(model_theft.over)
 
 ###variable selection using backward aic
-step(model_Theft.Over)
+step(model_theft.over)
 
 ###normality
-ad.test(residuals(model_Theft.Over)) 
-shapiro.test(residuals(model_Theft.Over))
-lillie.test(residuals(model_Theft.Over))
+ad.test(residuals(model_theft.over)) 
+shapiro.test(residuals(model_theft.over))
+lillie.test(residuals(model_theft.over))
 
 ###homoscedasticity
-bptest(model_Theft.Over)
+bptest(model_theft.over)
 
-#####Drug.Arrests#####
+#####drug.arrests#####
 ###model
-model_Drug.Arrests0<-lm(Drug.Arrests~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_drug.arrests0<-lm(drug.arrests~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 ###outliers and influential observations
-plot(cooks.distance(model_Drug.Arrests0))
-cooks.distance(model_Drug.Arrests0)[cooks.distance(model_Drug.Arrests0)>4/140]
-sort(cooks.distance(model_Drug.Arrests0))
-r_Drug.Arrests <- r[-c(72,73,75,76,78,79),]
-model_Drug.Arrests<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_Drug.Arrests)
-summary(model_Drug.Arrests)
+plot(cooks.distance(model_drug.arrests0))
+cooks.distance(model_drug.arrests0)[cooks.distance(model_drug.arrests0)>4/140]
+sort(cooks.distance(model_drug.arrests0))
+r_drug.arrests <- r[-c(72,73,75,76,78,79),]
+model_drug.arrests<-lm(assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_drug.arrests)
+summary(model_drug.arrests)
 
 ###variable selection using backward aic
-step(model_Drug.Arrests)
+step(model_drug.arrests)
 
 ###normality
-ad.test(residuals(model_Drug.Arrests)) 
-shapiro.test(residuals(model_Drug.Arrests)) 
-lillie.test(residuals(model_Drug.Arrests))
+ad.test(residuals(model_drug.arrests)) 
+shapiro.test(residuals(model_drug.arrests)) 
+lillie.test(residuals(model_drug.arrests))
 
 ###homoscedasticity
-bptest(model_Drug.Arrests)
+bptest(model_drug.arrests)
 
-#####Total.crime#####
+#####total.crime#####
 ###model
-model_Total.crime0<-lm(Total.crime~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
+model_total.crime0<-lm(total.crime~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r)
 
 ###outliers and influential observations
-plot(cooks.distance(model_Total.crime0))
-cooks.distance(model_Total.crime0)[cooks.distance(model_Total.crime0)>4/140]
-sort(cooks.distance(model_Total.crime0))
-r_Total.crime <- r[-c(21, 73, 75, 76, 78, 79, 98, 121),]
-model_Total.crime<-lm(Assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_Total.crime)
-summary(model_Total.crime)
+plot(cooks.distance(model_total.crime0))
+cooks.distance(model_total.crime0)[cooks.distance(model_total.crime0)>4/140]
+sort(cooks.distance(model_total.crime0))
+r_total.crime <- r[-c(21, 73, 75, 76, 78, 79, 98, 121),]
+model_total.crime<-lm(assault~median.income+immigrants.perc+houses.perc+less.than.high.school.perc+unemployment.rate.males+male.youth.perc, data=r_total.crime)
+summary(model_total.crime)
 
 ###variable selection using backward aic
-step(model_Total.crime)
+step(model_total.crime)
 
 ###normality
-ad.test(residuals(model_Total.crime)) 
-shapiro.test(residuals(model_Total.crime)) 
-lillie.test(residuals(model_Total.crime))
+ad.test(residuals(model_total.crime)) 
+shapiro.test(residuals(model_total.crime)) 
+lillie.test(residuals(model_total.crime))
 
 ###homoscedasticity
-bptest(model_Total.crime)
+bptest(model_total.crime)
