@@ -414,7 +414,7 @@ agg.2016 <- cbind.data.frame(agg.2016, more.than.30per.on.shltr)
 more.than.30per.on.shltr.perc <- getData(df2, "Spending 30% or more of income on shelter costs") /
                                     getData(df2, "Total - Owner and tenant households with household total income greater than zero; in non-farm; non-reserve private dwellings by shelter-cost-to-income ratio - 25% sample data")
 
-colnames(more.than.30per.on.shltr.perc) <- "unaffordale.housing.perc"
+colnames(more.than.30per.on.shltr.perc) <- "unaffordable.housing.perc"
 agg.2016 <- cbind.data.frame(agg.2016, more.than.30per.on.shltr.perc)
 
 ###Education of residents-----
