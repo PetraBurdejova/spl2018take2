@@ -23,7 +23,12 @@ rm(list=ls())
 
 ###heatmap ####
 
-    source("heatmap_below.R")
+  #  source("heatmap_below.R")
+
+
+###regression analysis
+
+    source("REGRCODE.R")
 
 
 
