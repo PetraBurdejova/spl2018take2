@@ -1,3 +1,25 @@
+####Histogram of total crime commited
+ggplot(data=agg, aes(agg$total.crime)) + 
+  geom_histogram(breaks=seq(0, 1200, by = 50), col="black", fill="blue", alpha = .5) + 
+  labs(title="Histogram Total Crime") +
+  labs(x="Total Crime", y="Count") +
+  xlim(c(0,1200)) 
+
+###Histogram Assaults
+ggplot(data=agg, aes(agg$assault)) + 
+  geom_histogram(breaks=seq(0, 650, by = 25), col="black", fill="blue", alpha = .5) + 
+  labs(title="Histogram Assaults") +
+  labs(x="Assaults", y="Count") +
+  xlim(c(0,650)) 
+
+###Histogram Auto Thefts
+ggplot(data=agg, aes(agg$auto.theft)) + 
+  geom_histogram(breaks=seq(0, 280, by = 20), col="black", fill="blue", alpha = .5) + 
+  labs(title="Histogram Auto Thefts") +
+  labs(x="Auto Thefts", y="Count") +
+  xlim(c(0,300)) 
+
+
 
 ###Group crimes by MCI
 mci.group <- group_by(a.dt, MCI)
@@ -89,6 +111,26 @@ plot(ggplot(crime.count, aes(occurrencemonth, MCI, fill = Total)) +
   theme(plot.title = element_text(size = 16), 
         axis.title = element_text(size = 12, face = "bold")))
 
+###Use kmeans clustering to group neighbourhoods
+library("cluster")
+agg.kmeans <- join(neigh.codes, agg, by = "Hood_ID")
+agg.kmeans <- agg.kmeans[,-c(1, 2)]
+
+#Scale data
+m <- apply(agg.kmeans, 2, mean)
+s <- apply(agg.kmeans, 2, sd)
+z <- scale(agg.kmeans, m, s)
+
+
+wss <- (nrow(z)-1) * sum(apply(z, 2, var))
+for (i in 2:20) wss[i] <- sum(kmeans(z, centers=i)$withiness)
+plot(1:20, wss, type='b', xlab='Number of Clusters', ylab='Within groups sum of squares')
+
+kc <- kmeans(z, 2)
+kc
+
+z1 <- data.frame(z, kc$cluster)
+clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis')
 
 #Heatmap of toonto by population 
 # Read the neighborhood shapefile data and plot
