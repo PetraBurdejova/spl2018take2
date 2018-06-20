@@ -1,25 +1,51 @@
 ####Histogram of total crime commited
-ggplot(data=agg, aes(agg$total.crime)) + 
-  geom_histogram(breaks=seq(0, 1200, by = 50), col="black", fill="blue", alpha = .5) + 
-  labs(title="Histogram Total Crime") +
-  labs(x="Total Crime", y="Count") +
-  xlim(c(0,1200)) 
+print(ggplot(data=agg, aes(agg$total.crime)) + #Plot distribution of crimes committed
+  geom_histogram(breaks=seq(0, 1200, by = 50), col="black", fill="blue", alpha = .5) + #Set bin width to 50
+  labs(title="Histogram Total Crime") + #Add title
+  labs(x="Total Crime", y="Count") + #Add x and y labels
+  xlim(c(0,1200)))  #Set min and max values on x label
 
 ###Histogram Assaults
-ggplot(data=agg, aes(agg$assault)) + 
-  geom_histogram(breaks=seq(0, 650, by = 25), col="black", fill="blue", alpha = .5) + 
-  labs(title="Histogram Assaults") +
-  labs(x="Assaults", y="Count") +
-  xlim(c(0,650)) 
+print(ggplot(data=agg, aes(agg$assault)) + #Plot distribution of assaults committed
+  geom_histogram(breaks=seq(0, 650, by = 25), col="black", fill="blue", alpha = .5) + #Set bin width to 25
+  labs(title="Histogram Assaults") + #Add title
+  labs(x="Assaults", y="Count") + #Add x and y labels
+  xlim(c(0,650)))  #Set min and max values on x label
 
 ###Histogram Auto Thefts
-ggplot(data=agg, aes(agg$auto.theft)) + 
-  geom_histogram(breaks=seq(0, 280, by = 20), col="black", fill="blue", alpha = .5) + 
-  labs(title="Histogram Auto Thefts") +
-  labs(x="Auto Thefts", y="Count") +
-  xlim(c(0,300)) 
+print(ggplot(data=agg, aes(agg$auto.theft)) + #Plot distribution of autothefts
+  geom_histogram(breaks=seq(0, 280, by = 20), col="black", fill="blue", alpha = .5) + #Set bin width to 20
+  labs(title="Histogram Auto Thefts") + #Add title
+  labs(x="Auto Thefts", y="Count") + #Add x and y labels
+  xlim(c(0,300))) #Set min and max values on x label
 
+###Histogram Break and Enters
+print(ggplot(data=agg, aes(agg$break.and.enter)) + #Plot distribution of break and enters
+        geom_histogram(breaks=seq(0, 200, by = 20), col="black", fill="blue", alpha = .5) + #Set bin width to 20
+        labs(title="Histogram Break and Enters") + #Add title
+        labs(x="Break and Enters", y="Count") + #Add x and y labels
+        xlim(c(0,200))) #Set min and max values on x label
 
+###Histogram robberies
+print(ggplot(data=agg, aes(agg$robbery)) + #Plot distribution of robberies
+        geom_histogram(breaks=seq(0, 140, by = 10), col="black", fill="blue", alpha = .5) + #Set bin width to 10
+        labs(title="Histogram Robberies") + #Add title
+        labs(x="Robberies", y="Count") + #Add x and y labels
+        xlim(c(0,140))) #Set min and max values on x label
+
+###Histogram Thefts
+print(ggplot(data=agg, aes(agg$theft.over)) + #Plot distribution of Thefts
+        geom_histogram(breaks=seq(0, 50, by = 5), col="black", fill="blue", alpha = .5) + #Set bin width to 5
+        labs(title="Histogram Thefts") + #Add title
+        labs(x="Thefts", y="Count") + #Add x and y labels
+        xlim(c(0,50))) #Set min and max values on x label
+
+###Histogram Drug Arrests
+print(ggplot(data=agg, aes(agg$drug.arrests)) + #Plot distribution of drug arrests
+        geom_histogram(breaks=seq(0, 180, by = 10), col="black", fill="blue", alpha = .5) + #Set bin width to 10
+        labs(title="Histogram Drug Arrests") + #Add title
+        labs(x="Drug Arrests", y="Count") + #Add x and y labels
+        xlim(c(0,180))) #Set min and max values on x label
 
 ###Group crimes by MCI
 mci.group <- group_by(a.dt, MCI)
@@ -50,7 +76,7 @@ plot(ggplot(aes(x=occurrencehour, y=n), data = crime.hour) + geom_line(size = 2.
   theme(plot.title = element_text(size = 16),
         axis.title = element_text(size = 12, face = "bold")))
 
-###Crime types by hour
+###Crimes by MCI by hour
 crime.type.by.hour <- group_by(a.dt, occurrencehour, MCI)
 hour.crime <- dplyr::summarise(crime.type.by.hour, n=n()) #count of crime types by hour
 
@@ -111,27 +137,59 @@ plot(ggplot(crime.count, aes(occurrencemonth, MCI, fill = Total)) +
   theme(plot.title = element_text(size = 16), 
         axis.title = element_text(size = 12, face = "bold")))
 
-###Use kmeans clustering to group neighbourhoods
+###Use kmeans clustering to group neighbourhoods based on crime statistics
 library("cluster")
 agg.kmeans <- join(neigh.codes, agg, by = "Hood_ID")
-agg.kmeans <- agg.kmeans[,-c(1, 2)]
+agg.kmeans <- agg.kmeans[,-c(1,2,9)]
+set.seed(123)
 
-#Scale data
-m <- apply(agg.kmeans, 2, mean)
-s <- apply(agg.kmeans, 2, sd)
-z <- scale(agg.kmeans, m, s)
+# Test different numbers of clusters ####
+# Define a vector with candidate settings for k
+k.settings = 2:15
+
+obj.values = vector(mode="numeric", length = length(k.settings))
+
+my_kMeans <- function(data,k) {  
+  clu.sol <- kmeans(data, centers=k) 
+  return(clu.sol$tot.withinss)
+}
+obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans)
 
 
-wss <- (nrow(z)-1) * sum(apply(z, 2, var))
-for (i in 2:20) wss[i] <- sum(kmeans(z, centers=i)$withiness)
-plot(1:20, wss, type='b', xlab='Number of Clusters', ylab='Within groups sum of squares')
+k.clust <- data.frame(k.settings, obj.values)
+ggplot(k.clust, aes(k.settings,obj.values))+
+  geom_line(color = "red") + 
+  geom_point(color="red")  + 
+  xlab("k") + ylab("Total within-cluster SS") + 
+  ggtitle("Elbow curve for k selection")
 
-kc <- kmeans(z, 2)
-kc
+kc <- kmeans(agg.kmeans, 7)
+z1 <- data.frame(agg.kmeans, kc$cluster)
 
-z1 <- data.frame(z, kc$cluster)
+clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Crime')
+agg.2016$crime.clust <- as.factor(z1$kc.cluster)
+
+
+####Use kmeans to group variables based on neighbourhood characteristics
+vars <- c("male.youth", "youth", "population.2016", "density")
+agg.kmeans2 <- join(neigh.codes, agg.2016[,c("Hood_ID", vars)], by = "Hood_ID")
+agg.kmeans2 <- agg.kmeans2[-c(1,2)]
+agg.kmeans2 <- data.frame(lapply(agg.kmeans2, scale))
+
+obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
+
+k.clust <- data.frame(k.settings, obj.values)
+ggplot(k.clust, aes(k.settings,obj.values))+
+  geom_line(color = "red") + 
+  geom_point(color="red")  + 
+  xlab("k") + ylab("Total within-cluster SS") + 
+  ggtitle("Elbow curve for k selection")
+
+kc <- kmeans(agg.kmeans, 11)
+z1 <- data.frame(agg.kmeans, kc$cluster)
+
 clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis')
-
+agg.2016$neigh.clust <- as.factor(z1$kc.cluster)
 #Heatmap of toonto by population 
 # Read the neighborhood shapefile data and plot
 geo.data <- data.frame(agg.2016)
@@ -178,25 +236,26 @@ print(g.total.crime) # render the map
 
 #Plot neighbourhoods by density
 g.pop.density <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
-  geom_polygon(aes(fill= density)) +    # draw polygons and add fill with population variable
+  geom_polygon(aes(fill= density)) +    # draw polygons and add fill with density variable
   geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
-                      space = "Lab", na.value = "grey50",
-                      guide = "colourbar")+
-  labs(title="Density of Neighbourhoods")
-print(g.pop.density)
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444",  #Set colour scale
+                      space = "Lab", na.value = "grey50", limits = c(0, 25000), #Nas are grey, set upper and lower limits of scale
+                      guide = "colourbar")+ #Add colour scale on side
+  labs(title="Density of Neighbourhoods") #Add title
+print(g.pop.density) #Print map
+
 
 #Plot neighbourhoods by robberies
 g.robberies <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
-  geom_polygon(aes(fill= robbery)) +    # draw polygons and add fill with population variable
+  geom_polygon(aes(fill= robbery)) +    # draw polygons and add fill with robbery variable
   geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
-                      space = "Lab", na.value = "grey50",
-                      guide = "colourbar")+
-  labs(title="Roberries by Neighbourhood")
-print(g.robberies)
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", #Set colour scale
+                      space = "Lab", na.value = "grey50", #Na values show up as grey
+                      guide = "colourbar")+ #Add colour scale at side
+  labs(title="Roberries by Neighbourhood") #Add title
+print(g.robberies) #print map
 
 
 #Plot neighbourhoods by break and enters
