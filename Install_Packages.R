@@ -22,4 +22,5 @@ pacman::p_load("tidyverse",
                "lwgeom", 
                "nabor",
                "plyr",
-               "spdep")
+               "spdep",
+               "cluster")
