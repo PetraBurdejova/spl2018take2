@@ -53,8 +53,7 @@ regressiondata$unsuitable.housing.perc <- regressiondata$unsuitable.housing.perc
 regressiondata$hhlds.mjr.rprs <- NULL
 regressiondata$hhlds.mjr.rprs.perc <- regressiondata$hhlds.mjr.rprs.perc*100
 regressiondata$unaffordable.housing <- NULL
-regressiondata$unaffordale.housing.perc <- regressiondata$unaffordale.housing.perc*100
-colnames(regressiondata)[colnames(regressiondata)=="unaffordale.housing.perc"] <-"unaffordable.housing.perc"
+regressiondata$unaffordable.housing.perc <- regressiondata$unaffordable.housing.perc*100
 regressiondata$less.than.high.school <- NULL
 regressiondata$less.than.high.school.perc <- regressiondata$less.than.high.school.perc*100
 regressiondata$high.school.cert <- NULL

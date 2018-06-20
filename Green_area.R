@@ -46,3 +46,33 @@ W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
  ### -> check out which ones better -> Moran'S I test 
 
 #http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
+
+
+ols <- lm(robbery ~ youth +greenarea, data = agg.2016)
+summary(ols)
+#### in such a specification, greenarea is highly significant. But then, moran.lm cannot be rejected
+
+
+# moran's I test
+moran.lm <-lm.morantest(ols, W, alternative="two.sided")
+print(moran.lm)
+
+##Lagrange multiplier test
+LM<-lm.LMtests(ols, W, test="all")
+print(LM)
+
+
+sar<-lagsarlm(robbery ~ youth + greenarea, data = agg.2016, W)
+summary(sar)
+summary(ols)
+
+#not very high differences 
+
+
+#poisson regression 
+
+summary(m1 <- glm(robbery ~ youth + greenarea + non.citizens + lone.parent.families, family = "poisson", data = agg.2016))
+
+summary(ols_log <- lm(logrobbery ~ youth +greenarea, data = agg.2016))
+
+
