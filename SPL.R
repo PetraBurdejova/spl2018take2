@@ -28,7 +28,7 @@ rm(list=ls())
 
 ###regression analysis
 
-    source("REGRCODE.R")
+    source("REGRESSIONS.R")
 
 
 
