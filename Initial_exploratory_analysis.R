@@ -171,10 +171,9 @@ agg.2016$crime.clust <- as.factor(z1$kc.cluster)
 
 
 ####Use kmeans to group variables based on neighbourhood characteristics
-vars <- c("male.youth", "youth", "population.2016", "density")
-agg.kmeans2 <- join(neigh.codes, agg.2016[,c("Hood_ID", vars)], by = "Hood_ID")
+neigh.vars <- c("male.youth", "youth", "population.2016", "density", "lone.parent.families")
+agg.kmeans2 <- join(neigh.codes, agg.2016[,c("Hood_ID", neigh.vars)], by = "Hood_ID")
 agg.kmeans2 <- agg.kmeans2[-c(1,2)]
-agg.kmeans2 <- data.frame(lapply(agg.kmeans2, scale))
 
 obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
 
@@ -183,13 +182,95 @@ ggplot(k.clust, aes(k.settings,obj.values))+
   geom_line(color = "red") + 
   geom_point(color="red")  + 
   xlab("k") + ylab("Total within-cluster SS") + 
-  ggtitle("Elbow curve for k selection")
+  ggtitle("Elbow curve for k selection for pop characteristics of neighbourhoods")
 
-kc <- kmeans(agg.kmeans, 11)
-z1 <- data.frame(agg.kmeans, kc$cluster)
+kc <- kmeans(agg.kmeans2, 10)
+z1 <- data.frame(agg.kmeans2, kc$cluster)
 
-clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis')
-agg.2016$neigh.clust <- as.factor(z1$kc.cluster)
+clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Pop Char')
+agg.2016$neigh.pop.char.clust <- as.factor(z1$kc.cluster)
+
+####Use kmeans to group variables based on neighbourhood income characteristics
+inc.vars <- c("low.income", "middle.income", "high.income", "avg.income", "people.ei", "median.income",
+              "no.hholds.bottom.20per", "low.income.pop")
+agg.kmeans2 <- join(neigh.codes, agg.2016[,c("Hood_ID", inc.vars)], by = "Hood_ID")
+agg.kmeans2 <- agg.kmeans2[-c(1,2)]
+
+obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
+
+k.clust <- data.frame(k.settings, obj.values)
+ggplot(k.clust, aes(k.settings,obj.values))+
+  geom_line(color = "red") + 
+  geom_point(color="red")  + 
+  xlab("k") + ylab("Total within-cluster SS") + 
+  ggtitle("Elbow curve for k selection for income characteristics of neighbourhoods")
+
+kc <- kmeans(agg.kmeans2, 8)
+z1 <- data.frame(agg.kmeans2, kc$cluster)
+
+clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Income')
+agg.2016$inc.clust <- as.factor(z1$kc.cluster)
+
+####Use kmeans to group variables based on neighbourhood ethnicity characteristics
+ethnicity.vars <- c("non.citizens", "immigrants", "refugees", "vis.minorities")
+agg.kmeans2 <- join(neigh.codes, agg.2016[,c("Hood_ID", ethnicity.vars)], by = "Hood_ID")
+agg.kmeans2 <- agg.kmeans2[-c(1,2)]
+
+obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
+
+k.clust <- data.frame(k.settings, obj.values)
+ggplot(k.clust, aes(k.settings,obj.values))+
+  geom_line(color = "red") + 
+  geom_point(color="red")  + 
+  xlab("k") + ylab("Total within-cluster SS") + 
+  ggtitle("Elbow curve for k selection for ethnic characteristics of neighbourhoods")
+
+kc <- kmeans(agg.kmeans2, 4)
+z1 <- data.frame(agg.kmeans2, kc$cluster)
+
+clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Ethnicity')
+agg.2016$ethnicity.clust <- as.factor(z1$kc.cluster)
+
+####Use kmeans to group variables based on neighbourhood housing characteristics
+house.vars <- c("houses", "hhlds.mjr.rprs")
+agg.kmeans2 <- join(neigh.codes, agg.2016[,c("Hood_ID", house.vars)], by = "Hood_ID")
+agg.kmeans2 <- agg.kmeans2[-c(1,2)]
+
+obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
+
+k.clust <- data.frame(k.settings, obj.values)
+ggplot(k.clust, aes(k.settings,obj.values))+
+  geom_line(color = "red") + 
+  geom_point(color="red")  + 
+  xlab("k") + ylab("Total within-cluster SS") + 
+  ggtitle("Elbow curve for k selection for housing characteristics of neighbourhoods")
+
+kc <- kmeans(agg.kmeans2, 5)
+z1 <- data.frame(agg.kmeans2, kc$cluster)
+
+clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Housing')
+agg.2016$housing.clust <- as.factor(z1$kc.cluster)
+
+####Use kmeans to group variables based on neighbourhood education characteristics
+education.vars <- c("less.than.high.school", "high.school.cert", "post.sec.or.above")
+agg.kmeans2 <- join(neigh.codes, agg.2016[,c("Hood_ID", education.vars)], by = "Hood_ID")
+agg.kmeans2 <- agg.kmeans2[-c(1,2)]
+
+obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
+
+k.clust <- data.frame(k.settings, obj.values)
+ggplot(k.clust, aes(k.settings,obj.values))+
+  geom_line(color = "red") + 
+  geom_point(color="red")  + 
+  xlab("k") + ylab("Total within-cluster SS") + 
+  ggtitle("Elbow curve for k selection for education characteristics of neighbourhoods")
+
+kc <- kmeans(agg.kmeans2, 6)
+z1 <- data.frame(agg.kmeans2, kc$cluster)
+
+clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Education')
+agg.2016$education.clust <- as.factor(z1$kc.cluster)
+
 #Heatmap of toonto by population 
 # Read the neighborhood shapefile data and plot
 geo.data <- data.frame(agg.2016)
@@ -220,7 +301,7 @@ g.pop.2016 <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
             scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
                                  space = "Lab", na.value = "grey50",
                                  guide = "colourbar")+
-               labs(title="Population by Neighbourhood, 2016")
+               labs(title="Population by Neighbourhood, 2016") 
 print(g.pop.2016) # render the map
 
 # Plot neighbourhoods with highest total crime 
@@ -268,3 +349,63 @@ g.break.n.enter <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
                       guide = "colourbar")+
   labs(title="Break and Enters by Neighbourhood")
 print(g.break.n.enter)
+
+#Plot neighbourhoods by assault
+g.assault <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= assault)) +    # draw polygons and add fill with assault variable
+  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Assaults by Neighbourhood")
+print(g.assault)
+
+#Plot neighbourhoods by auto thefts
+g.auto.theft <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= auto.theft)) +    # draw polygons and add fill with assault variable
+  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Auto Thefts by Neighbourhood")
+print(g.auto.theft)
+
+#Plot neighbourhoods by drug arrests
+g.drug.arrests <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= drug.arrests)) +    # draw polygons and add fill with drug arrests variable
+  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Drug Arrests by Neighbourhood")
+print(g.drug.arrests)
+
+#Plot neighbourhoods by male youths
+g.male.youth <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= male.youth)) +    # draw polygons and add fill with assault variable
+  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Male Youth by Neighbourhood")
+print(g.male.youth)
+
+#Plot neighbourhoods by Average Income
+
+g.avg.income <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= avg.income, colour = "")) +    # draw polygons and add fill with assault variable
+  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+                      limits = c(20000, 100000),
+                      labels = c("20000", "40000", "60000", "80000", "100000"),
+                      space = "Lab", na.value = "#9b0a00",
+                      guide = "colourbar") +
+  scale_colour_manual(values = NA) +              
+  guides(colour=guide_legend(">100000", override.aes = list(fill="#9b0a00"))) + 
+  labs(title="Average Income by Neighbourhood")
+print(g.avg.income)
