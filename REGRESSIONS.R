@@ -1,5 +1,5 @@
 #####REGRESSION ANALYSIS#####
-r <- agg.2016.csv
+r <- agg.2016
 
 #####assault#####
 
