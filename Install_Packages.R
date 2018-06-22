@@ -23,4 +23,5 @@ pacman::p_load("tidyverse",
                "nabor",
                "plyr",
                "spdep",
-               "cluster")
+               "cluster",
+               "scales")
