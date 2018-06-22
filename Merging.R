@@ -152,11 +152,11 @@ colnames(lone.parent.families) <- "lone.parent.families"
 agg.2016 <- cbind.data.frame(agg.2016, lone.parent.families)
 
 ###percent of lone parent families
-lone.parent.families.perc <- getData(df2, "Total lone-parent families by sex of parent") / 
-                                getData(df2, "Total number of census families in private households")
+lone.parent.families.per <- getData(df2, "Total lone-parent families by sex of parent") / 
+                                getData(df2, "Total number of census families in private households") * 100
 
-colnames(lone.parent.families.perc) <- "lone.parent.families.perc"
-agg.2016 <- cbind.data.frame(agg.2016, lone.parent.families.perc)
+colnames(lone.parent.families.per) <- "lone.parent.families.per"
+agg.2016 <- cbind.data.frame(agg.2016, lone.parent.families.per)
 
 ###Get Income characteristices of each neighbourhood----
 #####Get income groups
@@ -194,14 +194,14 @@ avg.income <- getData(df2, "Total income: Average amount ($)")
 colnames(avg.income) <- "avg.income"
 agg.2016 <- cbind.data.frame(agg.2016, avg.income)
 
-###percent of people taking unemployment benefits (EI)
+###number of people taking unemployment benefits (EI)
 people.ei <- getData(df2, "Employment Insurance (EI) benefits: Population with an amount")
 colnames(people.ei) <- "people.ei" 
 agg.2016 <- cbind.data.frame(agg.2016, people.ei)
 
 ###percent of people taking unemployment benefits (EI)
 people.ei.per <- getData(df2, "Employment Insurance (EI) benefits: Population with an amount") /
-                    getData(df2, "Total income: Population with an amount")
+                    getData(df2, "Total income: Population with an amount") * 100
 colnames(people.ei.per) <- "people.ei.per"
 agg.2016 <- cbind.data.frame(agg.2016, people.ei.per)
 
@@ -253,7 +253,7 @@ colnames(no.hholds.bottom.20per) <- "no.hholds.bottom.20per"
 agg.2016 <- cbind.data.frame(agg.2016, no.hholds.bottom.20per)
 
 ##Calculate percentage of households in bottom 20% of income distribution
-hholds.bottom.20per.per <- round(no.hholds.bottom.20per / colSums(df2[,-1]), 2)
+hholds.bottom.20per.per <- round(no.hholds.bottom.20per / colSums(df2[,-1]), 2) * 100
 colnames(hholds.bottom.20per.per) <- "hholds.bottom.20per.per"
 agg.2016 <- cbind.data.frame(agg.2016, hholds.bottom.20per.per)
 
@@ -271,15 +271,15 @@ low.income.pop.18.to.64 <- getData(df2, "18 to 64 years")
 colnames(low.income.pop.18.to.64) <- c("low.income.pop.18.to.64")  
 agg.2016 <- cbind.data.frame(agg.2016, low.income.pop.18.to.64)
 
-###Perc of low income individuals according to low income measure
-low.income.pop.perc <- getData(df2, "Prevalence of low income based on the Low-income measure, after tax (LIM-AT) (%)")
-colnames(low.income.pop.perc) <- c("low.income.pop.perc")  
-agg.2016 <- cbind.data.frame(agg.2016, low.income.pop.perc)
+###Percentage of low income individuals according to low income measure
+low.income.pop.per <- getData(df2, "Prevalence of low income based on the Low-income measure, after tax (LIM-AT) (%)")
+colnames(low.income.pop.per) <- c("low.income.pop.per")  
+agg.2016 <- cbind.data.frame(agg.2016, low.income.pop.per)
 
-###Perc of low income individuals according to low income measure 18-64 years
-low.income.pop.perc.18.to.64 <- getData(df2, "18 to 64 years (%)")
-colnames(low.income.pop.perc.18.to.64) <- c("low.income.pop.perc.18.to.64")  
-agg.2016 <- cbind.data.frame(agg.2016, low.income.pop.perc.18.to.64)
+###Percenatage of low income individuals according to low income measure 18-64 years
+low.income.pop.per.18.to.64 <- getData(df2, "18 to 64 years (%)")
+colnames(low.income.pop.per.18.to.64) <- c("low.income.pop.per.18.to.64")  
+agg.2016 <- cbind.data.frame(agg.2016, low.income.pop.per.18.to.64)
 
 ###Citizenship and Immigration stats of residents----
 ###GEt number of non-Canadian citizens in each neighbourhood
@@ -292,9 +292,9 @@ colnames(non.citizens) <- "non.citizens"
 agg.2016 <- cbind.data.frame(agg.2016, non.citizens)
 
 ###Get percentage of non-citizens in neighbourhood
-non.citizens.perc <- getData(df2, "Not Canadian citizens") / getData(df2, "Total - Citizenship for the population in private households - 25% sample data")
-colnames(non.citizens.perc) <- "non.citizens.perc"
-agg.2016 <- cbind.data.frame(agg.2016, non.citizens.perc)
+non.citizens.per <- getData(df2, "Not Canadian citizens") / getData(df2, "Total - Citizenship for the population in private households - 25% sample data") * 100
+colnames(non.citizens.per) <- "non.citizens.per"
+agg.2016 <- cbind.data.frame(agg.2016, non.citizens.per)
 
 ###Get number of immigrants in each neighbourhood
 df2 <- as.data.frame(df1)
@@ -306,9 +306,9 @@ colnames(immigrants) <- "immigrants"
 agg.2016 <- cbind.data.frame(agg.2016, immigrants)
 
 ###Get percentage of immigrants in each neighbourhood
-immigrants.perc <- getData(df2, "Immigrants") / getData(df2, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data")
-colnames(immigrants.perc) <- "immigrants.perc"
-agg.2016 <- cbind.data.frame(agg.2016, immigrants.perc)
+immigrants.per <- getData(df2, "Immigrants") / getData(df2, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data") * 100
+colnames(immigrants.per) <- "immigrants.per"
+agg.2016 <- cbind.data.frame(agg.2016, immigrants.per)
 
 ####Number of immigrants in last 5 years as recent immigrants
 immigrants.recent <- getData(df2, "2011 to 2016")
@@ -316,9 +316,9 @@ colnames(immigrants.recent) <- "immigrants.recent"
 agg.2016 <- cbind.data.frame(agg.2016, immigrants.recent)
 
 ###percentage of population that are recent immigrants
-immigrants.recent.perc <- getData(df2, "2011 to 2016") / getData(df2, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data")
-colnames(immigrants.recent.perc) <- "immigrants.recent.perc"
-agg.2016 <- cbind.data.frame(agg.2016, immigrants.recent.perc)
+immigrants.recent.per <- getData(df2, "2011 to 2016") / getData(df2, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data") * 100
+colnames(immigrants.recent.per) <- "immigrants.recent.per"
+agg.2016 <- cbind.data.frame(agg.2016, immigrants.recent.per)
 
 ####Get number of refugees who landed from1986-2016 in each neighbourhood
 df2 <- as.data.frame(df1)
@@ -330,9 +330,9 @@ colnames(refugees) <- "refugees"
 agg.2016 <- cbind.data.frame(agg.2016, refugees)
 
 ####Get percent of refugees who landed from 1986-2016 in each neighbourhood
-refugees.perc <- getData(df2, "Refugees") / population.2016
-colnames(refugees.perc) <- "refugees.perc"
-agg.2016 <- cbind.data.frame(agg.2016, refugees.perc)
+refugees.per <- getData(df2, "Refugees") / population.2016 * 100 
+colnames(refugees.per) <- "refugees.per"
+agg.2016 <- cbind.data.frame(agg.2016, refugees.per)
 
 ####Get number of visible minorities in each neighbourhood
 df2 <- as.data.frame(df1)
@@ -344,9 +344,9 @@ colnames(vis.minorities) <- "vis.minorities"
 agg.2016 <- cbind.data.frame(agg.2016, vis.minorities)
 
 ###Get percent of pop that are visible minorities
-vis.minorities.perc <- getData(df2, "Total visible minority population") / getData(df2, "Total - Visible minority for the population in private households - 25% sample data")
-colnames(vis.minorities.perc) <- "vis.minorities.perc"
-agg.2016 <- cbind.data.frame(agg.2016, vis.minorities.perc)
+vis.minorities.per <- getData(df2, "Total visible minority population") / getData(df2, "Total - Visible minority for the population in private households - 25% sample data") * 100
+colnames(vis.minorities.per) <- "vis.minorities.per"
+agg.2016 <- cbind.data.frame(agg.2016, vis.minorities.per)
 
 ###Housing characteristics----
 ###Get number of renters
@@ -358,9 +358,9 @@ colnames(renters) <- "renters"
 agg.2016 <- cbind.data.frame(agg.2016, renters)
 
 ####Get percent of renters in each neighbourhood
-renters.perc <- getData(df2, "Renter") / getData(df2, "Total - Private households by tenure - 25% sample data")
-colnames(renters.perc) <- "renters.perc"
-agg.2016 <- cbind.data.frame(agg.2016, renters.perc)
+renters.per <- getData(df2, "Renter") / getData(df2, "Total - Private households by tenure - 25% sample data") * 100
+colnames(renters.per) <- "renters.per"
+agg.2016 <- cbind.data.frame(agg.2016, renters.per)
 
 ###Get number of dwellings that are not condominiums in each neighbourhood
 df2 <- as.data.frame(df1)
@@ -371,9 +371,9 @@ colnames(houses) <- "houses"
 agg.2016 <- cbind.data.frame(agg.2016, houses)
 
 ###Get percent of buildings that are not condominiums in each neighbourhood
-houses.perc <- getData(df2, "Not condominium") / getData(df2, "Total - Occupied private dwellings by condominium status - 25% sample data")
-colnames(houses.perc) <- "houses.perc"
-agg.2016 <- cbind.data.frame(agg.2016, houses.perc)
+houses.per <- getData(df2, "Not condominium") / getData(df2, "Total - Occupied private dwellings by condominium status - 25% sample data") * 100 
+colnames(houses.per) <- "houses.per"
+agg.2016 <- cbind.data.frame(agg.2016, houses.per)
 
 ###Get number of households living in unsuitable housing conditions for size and makeup of family, 
 ###according to statscanada definition
@@ -385,9 +385,9 @@ colnames(unsuitable.housing) <- "unsuitable.housing"
 agg.2016 <- cbind.data.frame(agg.2016, unsuitable.housing)
 
 ###percent hholds in unsuitable housing
-unsuitable.housing.perc <- getData(df2, "Not suitable") / getData(df2, "Total - Private households by housing suitability - 25% sample data")
-colnames(unsuitable.housing.perc) <- "unsuitable.housing.perc"
-agg.2016 <- cbind.data.frame(agg.2016, unsuitable.housing.perc)
+unsuitable.housing.per <- getData(df2, "Not suitable") / getData(df2, "Total - Private households by housing suitability - 25% sample data") * 100 
+colnames(unsuitable.housing.per) <- "unsuitable.housing.per"
+agg.2016 <- cbind.data.frame(agg.2016, unsuitable.housing.per)
 
 ###Get households that require major repairs
 df2 <- as.data.frame(df1)
@@ -398,9 +398,9 @@ colnames(hhlds.mjr.rprs) <- "hhlds.mjr.rprs"
 agg.2016 <- cbind.data.frame(agg.2016, hhlds.mjr.rprs)
 
 ###Get percent or hhlds that need major repairs
-hhlds.mjr.rprs.perc <- getData(df2, "Major repairs needed") / getData(df2, "Total - Occupied private dwellings by dwelling condition - 25% sample data")
-colnames(hhlds.mjr.rprs.perc) <- "hhlds.mjr.rprs.perc"
-agg.2016 <- cbind.data.frame(agg.2016, hhlds.mjr.rprs.perc)
+hhlds.mjr.rprs.per <- getData(df2, "Major repairs needed") / getData(df2, "Total - Occupied private dwellings by dwelling condition - 25% sample data") * 100
+colnames(hhlds.mjr.rprs.per) <- "hhlds.mjr.rprs.per"
+agg.2016 <- cbind.data.frame(agg.2016, hhlds.mjr.rprs.per)
 
 ###Get households that spend 30 percent or more of income on shelter costs
 df2 <- as.data.frame(df1)
@@ -411,11 +411,11 @@ colnames(more.than.30per.on.shltr) <- "unaffordable.housing"
 agg.2016 <- cbind.data.frame(agg.2016, more.than.30per.on.shltr)
 
 ###Get percent of households that spend more than 30 percent of income on shelter costs
-more.than.30per.on.shltr.perc <- getData(df2, "Spending 30% or more of income on shelter costs") /
-                                    getData(df2, "Total - Owner and tenant households with household total income greater than zero; in non-farm; non-reserve private dwellings by shelter-cost-to-income ratio - 25% sample data")
+more.than.30per.on.shltr.per <- getData(df2, "Spending 30% or more of income on shelter costs") /
+                                    getData(df2, "Total - Owner and tenant households with household total income greater than zero; in non-farm; non-reserve private dwellings by shelter-cost-to-income ratio - 25% sample data") * 100
 
-colnames(more.than.30per.on.shltr.perc) <- "unaffordable.housing.perc"
-agg.2016 <- cbind.data.frame(agg.2016, more.than.30per.on.shltr.perc)
+colnames(more.than.30per.on.shltr.per) <- "unaffordable.housing.per"
+agg.2016 <- cbind.data.frame(agg.2016, more.than.30per.on.shltr.per)
 
 ###Education of residents-----
 ###Get data on education level of residents of each neighbourhood
@@ -431,9 +431,9 @@ agg.2016 <- cbind.data.frame(agg.2016, less.than.high.school)
 
 ###percent of people with less than high school certificate
 
-less.than.high.school.perc <- getData(df2, "No certificate, diploma or degree") / getData(df2, "Total - Highest certificate, diploma or degree for the population aged 15 years and over in private households - 25% sample data") 
-colnames(less.than.high.school.perc) <- "less.than.high.school.perc"
-agg.2016 <- cbind.data.frame(agg.2016, less.than.high.school.perc)
+less.than.high.school.per <- getData(df2, "No certificate, diploma or degree") / getData(df2, "Total - Highest certificate, diploma or degree for the population aged 15 years and over in private households - 25% sample data") * 100
+colnames(less.than.high.school.per) <- "less.than.high.school.per"
+agg.2016 <- cbind.data.frame(agg.2016, less.than.high.school.per)
 
 ###number of people with high school or equivalent certificate
 
@@ -443,9 +443,9 @@ agg.2016 <- cbind.data.frame(agg.2016, high.school.cert)
 
 ###percent of people with less than high school certificate
 
-high.school.cert.perc <- getData(df2, "Secondary (high) school diploma or equivalency certificate") / getData(df2, "Total - Highest certificate, diploma or degree for the population aged 15 years and over in private households - 25% sample data") 
-colnames(high.school.cert.perc) <- "high.school.cert.perc"
-agg.2016 <- cbind.data.frame(agg.2016, high.school.cert.perc)
+high.school.cert.per <- getData(df2, "Secondary (high) school diploma or equivalency certificate") / getData(df2, "Total - Highest certificate, diploma or degree for the population aged 15 years and over in private households - 25% sample data") * 100 
+colnames(high.school.cert.per) <- "high.school.cert.per"
+agg.2016 <- cbind.data.frame(agg.2016, high.school.cert.per)
 
 ###number of people with post-secondary education or higher
 post.sec.or.above <- getData(df2, "Postsecondary certificate, diploma or degree")
@@ -453,9 +453,9 @@ colnames(post.sec.or.above) <- "post.sec.or.above"
 agg.2016 <- cbind.data.frame(agg.2016, post.sec.or.above)
 
 ###percent of people with post-secondary education or higher
-post.sec.or.above.perc <- getData(df2, "Postsecondary certificate, diploma or degree") / getData(df2, "Total - Highest certificate, diploma or degree for the population aged 15 years and over in private households - 25% sample data") 
-colnames(post.sec.or.above.perc) <- "post.sec.or.above.perc"
-agg.2016 <- cbind.data.frame(agg.2016, post.sec.or.above.perc)
+post.sec.or.above.per <- getData(df2, "Postsecondary certificate, diploma or degree") / getData(df2, "Total - Highest certificate, diploma or degree for the population aged 15 years and over in private households - 25% sample data") * 100 
+colnames(post.sec.or.above.per) <- "post.sec.or.above.per"
+agg.2016 <- cbind.data.frame(agg.2016, post.sec.or.above.per)
 
 ###Employment Data-----
 ###Get data on unemployment level of each neighbourhood
