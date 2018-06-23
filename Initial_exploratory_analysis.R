@@ -196,7 +196,6 @@ kc <- kmeans(agg.kmeans, 7)
 z1 <- data.frame(agg.kmeans, kc$cluster)
 
 clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Crime')
-
 agg.2016$crime.clust <- as.factor(z1$kc.cluster)
 
 
@@ -220,7 +219,6 @@ kc <- kmeans(agg.kmeans2, 10)
 z1 <- data.frame(agg.kmeans2, kc$cluster)
 
 clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Pop Char')
-
 agg.2016$neigh.pop.char.clust <- as.factor(z1$kc.cluster)
 
 ####Use kmeans to group variables based on neighbourhood income characteristics
