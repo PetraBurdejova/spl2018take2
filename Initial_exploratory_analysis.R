@@ -5,12 +5,16 @@ print(ggplot(data=agg, aes(agg$total.crime)) + #Plot distribution of crimes comm
   labs(x="Total Crime", y="Count") + #Add x and y labels
   xlim(c(0,1200)))  #Set min and max values on x label
 
+ggsave("plots_and_images/hist_total_crime.png", width=10, height=5, dpi=150)
+
 ###Histogram Assaults
 print(ggplot(data=agg, aes(agg$assault)) + #Plot distribution of assaults committed
   geom_histogram(breaks=seq(0, 650, by = 25), col="black", fill="blue", alpha = .5) + #Set bin width to 25
   labs(title="Histogram Assaults") + #Add title
   labs(x="Assaults", y="Count") + #Add x and y labels
   xlim(c(0,650)))  #Set min and max values on x label
+
+ggsave("plots_and_images/hist_assaults.png", width=10, height=5, dpi=150)
 
 ###Histogram Auto Thefts
 print(ggplot(data=agg, aes(agg$auto.theft)) + #Plot distribution of autothefts
@@ -19,12 +23,16 @@ print(ggplot(data=agg, aes(agg$auto.theft)) + #Plot distribution of autothefts
   labs(x="Auto Thefts", y="Count") + #Add x and y labels
   xlim(c(0,300))) #Set min and max values on x label
 
+ggsave("plots_and_images/hist_auto_thefts.png", width=10, height=5, dpi=150)
+
 ###Histogram Break and Enters
 print(ggplot(data=agg, aes(agg$break.and.enter)) + #Plot distribution of break and enters
         geom_histogram(breaks=seq(0, 200, by = 20), col="black", fill="blue", alpha = .5) + #Set bin width to 20
         labs(title="Histogram Break and Enters") + #Add title
         labs(x="Break and Enters", y="Count") + #Add x and y labels
         xlim(c(0,200))) #Set min and max values on x label
+
+ggsave("plots_and_images/hist_break_n_enters.png", width=10, height=5, dpi=150)
 
 ###Histogram robberies
 print(ggplot(data=agg, aes(agg$robbery)) + #Plot distribution of robberies
@@ -33,6 +41,8 @@ print(ggplot(data=agg, aes(agg$robbery)) + #Plot distribution of robberies
         labs(x="Robberies", y="Count") + #Add x and y labels
         xlim(c(0,140))) #Set min and max values on x label
 
+ggsave("plots_and_images/hist_robberies.png", width=10, height=5, dpi=150)
+
 ###Histogram Thefts
 print(ggplot(data=agg, aes(agg$theft.over)) + #Plot distribution of Thefts
         geom_histogram(breaks=seq(0, 50, by = 5), col="black", fill="blue", alpha = .5) + #Set bin width to 5
@@ -40,12 +50,16 @@ print(ggplot(data=agg, aes(agg$theft.over)) + #Plot distribution of Thefts
         labs(x="Thefts", y="Count") + #Add x and y labels
         xlim(c(0,50))) #Set min and max values on x label
 
+ggsave("plots_and_images/hist_thefts.png", width=10, height=5, dpi=150)
+
 ###Histogram Drug Arrests
 print(ggplot(data=agg, aes(agg$drug.arrests)) + #Plot distribution of drug arrests
         geom_histogram(breaks=seq(0, 180, by = 10), col="black", fill="blue", alpha = .5) + #Set bin width to 10
         labs(title="Histogram Drug Arrests") + #Add title
         labs(x="Drug Arrests", y="Count") + #Add x and y labels
         xlim(c(0,180))) #Set min and max values on x label
+
+ggsave("plots_and_images/hist_drug_arrests.png", width=10, height=5, dpi=150)
 
 ###Group crimes by MCI
 mci.group <- group_by(a.dt, MCI)
@@ -63,6 +77,8 @@ plot(ggplot(aes(x = reorder(MCI, n), y = n), data = crime.by.mci) +
   theme(plot.title = element_text(size = 16),
         axis.title = element_text(size = 12, face = "bold")))
 
+ggsave("plots_and_images/crimes_by_MCI.png", width=12, height=5, dpi=150)
+
 ###Group crimes by time of day
 hour.group <- group_by(a.dt, occurrencehour)
 crime.hour <- dplyr::summarise(hour.group, n=n()) #count of crimes by hour
@@ -76,11 +92,13 @@ plot(ggplot(aes(x=occurrencehour, y=n), data = crime.hour) + geom_line(size = 2.
   theme(plot.title = element_text(size = 16),
         axis.title = element_text(size = 12, face = "bold")))
 
+ggsave("plots_and_images/crime_by_hour.png", width=10, height=5, dpi=150)
+
 ###Crimes by MCI by hour
 crime.type.by.hour <- group_by(a.dt, occurrencehour, MCI)
 hour.crime <- dplyr::summarise(crime.type.by.hour, n=n()) #count of crime types by hour
 
-plot(ggplot(aes(x=occurrencehour, y=n, color=MCI), data =hour.crime) + 
+plot(ggplot(aes(x=occurrencehour, y=n, color=MCI, linetype = MCI), data =hour.crime) + 
   geom_line(size=1.5) + 
   ggtitle('Crime Types by Hour of Day in Toronto 2016') +
   ylab('Number of Occurrences') +
@@ -88,6 +106,8 @@ plot(ggplot(aes(x=occurrencehour, y=n, color=MCI), data =hour.crime) +
   theme_bw() +
   theme(plot.title = element_text(size = 16),
         axis.title = element_text(size = 12, face = "bold")))
+
+ggsave("plots_and_images/crime_by_MCI_by_hour.png", width=10, height=5, dpi=150)
 
 ##neighbourhoods with most crime
 location.group <- group_by(a.dt, Neighbourhood)
@@ -106,6 +126,8 @@ plot(ggplot(aes(x = reorder(Neighbourhood, n), y = n), data = crime.by.location.
   theme(plot.title = element_text(size = 16),
         axis.title = element_text(size = 12, face = "bold")))
 
+ggsave("plots_and_images/most_crime_neighbhoods.png", width=10, height=5, dpi=150)
+
 ##offence types by neighbourhood
 offence.location.group <- group_by(a.dt, Neighbourhood, MCI) #group crime by neighbourhod and offence
 offence.type.by.location <- dplyr::summarise(offence.location.group, n=n()) #get counts of crimes by neighbourhood
@@ -121,6 +143,8 @@ plot(ggplot(aes(x = Neighbourhood, y=n, fill = MCI), data=offence.type.by.locati
         axis.title = element_text(size = 12, face = "bold"),
         axis.text.x = element_text(angle = 90, hjust = 1, vjust = .4)))
 
+ggsave("plots_and_images/crime_type_by_neighbhood.png", width=10, height=5, dpi=150)
+
 ##Crime count by month
 crime.count <- group_by(a.dt, occurrencemonth, MCI) %>% dplyr::summarise(Total = n())
 crime.count$occurrencemonth <- ordered(crime.count$occurrencemonth, levels = c('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'))
@@ -128,14 +152,17 @@ crime.count$occurrencemonth <- ordered(crime.count$occurrencemonth, levels = c('
 plot(ggplot(crime.count, aes(occurrencemonth, MCI, fill = Total)) +
   geom_tile(size = 1, color = "white") +
   scale_fill_gradient(
-    low = "green",
-    high = "red"
+    low = "#7ff4f0",
+    high = "#000c8c"
   )  +
   geom_text(aes(label=Total), color='black') +
   ggtitle("Major Crime Indicators by Month 2016") +
   xlab('Month') +
   theme(plot.title = element_text(size = 16), 
         axis.title = element_text(size = 12, face = "bold")))
+
+
+ggsave("plots_and_images/crime_by_MCI_by_month.png", width=10, height=5, dpi=150)
 
 ###Use kmeans clustering to group neighbourhoods based on crime statistics
 library("cluster")
@@ -157,16 +184,19 @@ obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans)
 
 
 k.clust <- data.frame(k.settings, obj.values)
-ggplot(k.clust, aes(k.settings,obj.values))+
+plot(ggplot(k.clust, aes(k.settings,obj.values))+
   geom_line(color = "red") + 
   geom_point(color="red")  + 
   xlab("k") + ylab("Total within-cluster SS") + 
-  ggtitle("Elbow curve for k selection")
+  ggtitle("Elbow curve for k selection using crime statistics"))
+
+ggsave("plots_and_images/elbow_curve_crime_stats.png", width=10, height=5, dpi=150)
 
 kc <- kmeans(agg.kmeans, 7)
 z1 <- data.frame(agg.kmeans, kc$cluster)
 
 clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Crime')
+
 agg.2016$crime.clust <- as.factor(z1$kc.cluster)
 
 
@@ -178,16 +208,19 @@ agg.kmeans2 <- agg.kmeans2[-c(1,2)]
 obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
 
 k.clust <- data.frame(k.settings, obj.values)
-ggplot(k.clust, aes(k.settings,obj.values))+
+plot(ggplot(k.clust, aes(k.settings,obj.values))+
   geom_line(color = "red") + 
   geom_point(color="red")  + 
   xlab("k") + ylab("Total within-cluster SS") + 
-  ggtitle("Elbow curve for k selection for pop characteristics of neighbourhoods")
+  ggtitle("Elbow curve for k selection for pop characteristics of neighbourhoods"))
+
+ggsave("plots_and_images/elbow_curve_pop_char.png", width=10, height=5, dpi=150)
 
 kc <- kmeans(agg.kmeans2, 10)
 z1 <- data.frame(agg.kmeans2, kc$cluster)
 
 clusplot(z1, kc$cluster, color=TRUE, shade=F, labels=0, lines=0, main='k-Means Cluster Analysis Pop Char')
+
 agg.2016$neigh.pop.char.clust <- as.factor(z1$kc.cluster)
 
 ####Use kmeans to group variables based on neighbourhood income characteristics
@@ -199,11 +232,13 @@ agg.kmeans2 <- agg.kmeans2[-c(1,2)]
 obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
 
 k.clust <- data.frame(k.settings, obj.values)
-ggplot(k.clust, aes(k.settings,obj.values))+
+plot(ggplot(k.clust, aes(k.settings,obj.values))+
   geom_line(color = "red") + 
   geom_point(color="red")  + 
   xlab("k") + ylab("Total within-cluster SS") + 
-  ggtitle("Elbow curve for k selection for income characteristics of neighbourhoods")
+  ggtitle("Elbow curve for k selection for income characteristics of neighbourhoods"))
+
+ggsave("plots_and_images/elbow_curve_income_char.png", width=10, height=5, dpi=150)
 
 kc <- kmeans(agg.kmeans2, 8)
 z1 <- data.frame(agg.kmeans2, kc$cluster)
@@ -219,11 +254,13 @@ agg.kmeans2 <- agg.kmeans2[-c(1,2)]
 obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
 
 k.clust <- data.frame(k.settings, obj.values)
-ggplot(k.clust, aes(k.settings,obj.values))+
+plot(ggplot(k.clust, aes(k.settings,obj.values))+
   geom_line(color = "red") + 
   geom_point(color="red")  + 
   xlab("k") + ylab("Total within-cluster SS") + 
-  ggtitle("Elbow curve for k selection for ethnic characteristics of neighbourhoods")
+  ggtitle("Elbow curve for k selection for ethnic characteristics of neighbourhoods"))
+
+ggsave("plots_and_images/elbow_curve_income_char.png", width=10, height=5, dpi=150)
 
 kc <- kmeans(agg.kmeans2, 4)
 z1 <- data.frame(agg.kmeans2, kc$cluster)
@@ -239,11 +276,13 @@ agg.kmeans2 <- agg.kmeans2[-c(1,2)]
 obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
 
 k.clust <- data.frame(k.settings, obj.values)
-ggplot(k.clust, aes(k.settings,obj.values))+
+plot(ggplot(k.clust, aes(k.settings,obj.values))+
   geom_line(color = "red") + 
   geom_point(color="red")  + 
   xlab("k") + ylab("Total within-cluster SS") + 
-  ggtitle("Elbow curve for k selection for housing characteristics of neighbourhoods")
+  ggtitle("Elbow curve for k selection for housing characteristics of neighbourhoods"))
+
+ggsave("plots_and_images/elbow_curve_house_char.png", width=10, height=5, dpi=150)
 
 kc <- kmeans(agg.kmeans2, 5)
 z1 <- data.frame(agg.kmeans2, kc$cluster)
@@ -259,11 +298,13 @@ agg.kmeans2 <- agg.kmeans2[-c(1,2)]
 obj.values <- sapply(k.settings, my_kMeans, data = agg.kmeans2)
 
 k.clust <- data.frame(k.settings, obj.values)
-ggplot(k.clust, aes(k.settings,obj.values))+
+plot(ggplot(k.clust, aes(k.settings,obj.values))+
   geom_line(color = "red") + 
   geom_point(color="red")  + 
   xlab("k") + ylab("Total within-cluster SS") + 
-  ggtitle("Elbow curve for k selection for education characteristics of neighbourhoods")
+  ggtitle("Elbow curve for k selection for education characteristics of neighbourhoods"))
+
+ggsave("plots_and_images/elbow_curve_edu_char.png", width=10, height=5, dpi=150)
 
 kc <- kmeans(agg.kmeans2, 6)
 z1 <- data.frame(agg.kmeans2, kc$cluster)
@@ -302,6 +343,8 @@ g.pop.2016 <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
                labs(title="Population by Neighbourhood, 2016") 
 print(g.pop.2016) # render the map
 
+ggsave("plots_and_images/heat_map_pop.png", width=10, height=5, dpi=150)
+
 #Plot neighbourhoods by density
 g.pop.density <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= density, colour = "")) +    # draw polygons and add fill with density variable
@@ -315,8 +358,9 @@ g.pop.density <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
   labs(title="Density of Neighbourhoods") #Add title
 print(g.pop.density) #Print map
 
+ggsave("plots_and_images/heat_map_density.png", width=10, height=5, dpi=150)
 
-# Plot neighbourhoods with highest total crime 
+# Plot neighbourhoods with total crime 
 g.total.crime <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= total.crime)) +    # draw polygons and add fill with population variable
   geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
@@ -327,6 +371,7 @@ g.total.crime <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
   labs(title="Total crime")
 print(g.total.crime) # render the map
 
+ggsave("plots_and_images/heat_map_total_crime.png", width=10, height=5, dpi=150)
 
 #Plot neighbourhoods by robberies
 g.robberies <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
@@ -339,6 +384,7 @@ g.robberies <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
   labs(title="Roberries by Neighbourhood") #Add title
 print(g.robberies) #print map
 
+ggsave("plots_and_images/heat_map_robberies.png", width=10, height=5, dpi=150)
 
 #Plot neighbourhoods by break and enters
 g.break.n.enter <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
@@ -351,6 +397,8 @@ g.break.n.enter <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
   labs(title="Break and Enters by Neighbourhood")
 print(g.break.n.enter)
 
+ggsave("plots_and_images/heat_map_break_n_enter.png", width=10, height=5, dpi=150)
+
 #Plot neighbourhoods by assault
 g.assault <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= assault)) +    # draw polygons and add fill with assault variable
@@ -361,6 +409,8 @@ g.assault <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
                       guide = "colourbar")+
   labs(title="Assaults by Neighbourhood")
 print(g.assault)
+
+ggsave("plots_and_images/heat_map_assault.png", width=10, height=5, dpi=150)
 
 #Plot neighbourhoods by auto thefts
 g.auto.theft <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
@@ -373,6 +423,8 @@ g.auto.theft <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
   labs(title="Auto Thefts by Neighbourhood")
 print(g.auto.theft)
 
+ggsave("plots_and_images/heat_map_auto_theft.png", width=10, height=5, dpi=150)
+
 #Plot neighbourhoods by drug arrests
 g.drug.arrests <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= drug.arrests)) +    # draw polygons and add fill with drug arrests variable
@@ -383,6 +435,8 @@ g.drug.arrests <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
                       guide = "colourbar")+
   labs(title="Drug Arrests by Neighbourhood")
 print(g.drug.arrests)
+
+ggsave("plots_and_images/heat_map_drug_arrests.png", width=10, height=5, dpi=150)
 
 #Plot neighbourhoods by male youths
 g.male.youth <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
@@ -395,8 +449,9 @@ g.male.youth <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
   labs(title="Male Youth by Neighbourhood")
 print(g.male.youth)
 
-#Plot neighbourhoods by Average Income
+ggsave("plots_and_images/heat_map_male_youths.png", width=10, height=5, dpi=150)
 
+#Plot neighbourhoods by Average Income
 g.avg.income <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= avg.income, colour = "")) +    # draw polygons and add fill with avg income variable
   geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
@@ -404,12 +459,14 @@ g.avg.income <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
   scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
                       limits = c(20000, 100000),
                       labels = c("20000", "40000", "60000", "80000", "100000"),
-                      space = "Lab", na.value = "#9b0a00",
+                      space = "Lab", na.value = "#000647",
                       guide = "colourbar") +
   scale_colour_manual(values = NA) +              
   guides(colour=guide_legend(">100000", override.aes = list(fill="#000647"))) + 
   labs(title="Average Income by Neighbourhood")
 print(g.avg.income)
+
+ggsave("plots_and_images/heat_map_avg_income.png", width=10, height=5, dpi=150)
 
 #Plot neighbourhoods by Median Income
 g.median.income <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
@@ -422,6 +479,8 @@ g.median.income <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
   labs(title="Median Income by Neighbourhood")
 print(g.median.income)
 
+ggsave("plots_and_images/heat_map_med_income.png", width=10, height=5, dpi=150)
+
 #Plot neighbourhoods by percentage of households in bottom 20 percent
 g.hholds.bottom.20per.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= hholds.bottom.20per.per)) +    # draw polygons and add fill with medianincome variable
@@ -432,6 +491,8 @@ g.hholds.bottom.20per.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=g
                       guide = "colourbar")+
   labs(title="Percentage of Households in Bottom 20% by Neighbourhood")
 print(g.hholds.bottom.20per.per)
+
+ggsave("plots_and_images/heat_map_per_hholds_bottom20per.png", width=10, height=5, dpi=150)
 
 #Plot neighbourhoods by percentage of people in low income bracket
 g.low.income.pop.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
@@ -444,6 +505,8 @@ g.low.income.pop.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group)
   labs(title="Percentage of People Classified as Low-income by Neighbourhood")
 print(g.low.income.pop.per)
 
+ggsave("plots_and_images/heat_map_per_lowincome.png", width=10, height=5, dpi=150)
+
 #Plot neighbourhoods by percentage of immigrants
 g.immigrants.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= immigrants.per)) +    # draw polygons and add fill with immigrants percentage variable
@@ -454,6 +517,8 @@ g.immigrants.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
                       guide = "colourbar")+
   labs(title="Percentage of People Classified as Immigrants by Neighbourhood")
 print(g.immigrants.per)
+
+ggsave("plots_and_images/heat_map_per_immigrants.png", width=10, height=5, dpi=150)
 
 #Plot neighbourhoods by percentage of visible minorities
 g.vis.minorities.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
@@ -466,6 +531,8 @@ g.vis.minorities.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group)
   labs(title="Percentage of People Classified as Visible Minorities by Neighbourhood")
 print(g.vis.minorities.per)
 
+ggsave("plots_and_images/heat_map_per_vis_min.png", width=10, height=5, dpi=150)
+
 #Plot neighbourhoods by percentage of renters
 g.renters.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= renters.per)) +    # draw polygons and add fill with renters percentage variable
@@ -476,6 +543,8 @@ g.renters.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  +
                       guide = "colourbar")+
   labs(title="Percentage of People Renting by Neighbourhood")
 print(g.renters.per)
+
+ggsave("plots_and_images/heat_map_per_renters.png", width=10, height=5, dpi=150)
 
 #Plot neighbourhoods by percentage of households that require majour repairs
 g.hhlds.mjr.rprs.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
@@ -488,6 +557,8 @@ g.hhlds.mjr.rprs.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group)
   labs(title="Percentage of Households that Require Majour Repairs")
 print(g.hhlds.mjr.rprs.per)
 
+ggsave("plots_and_images/heat_map_per_hhlds_mjrrprs.png", width=10, height=5, dpi=150)
+
 #Plot neighbourhoods by percentage of households spending 30% or more of income on housing
 g.unaffordable.housing.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= unaffordable.housing.per)) +    # draw polygons and add fill with percentage of households spending more than 30% of income on rent variable
@@ -498,6 +569,8 @@ g.unaffordable.housing.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=
                       guide = "colourbar")+
   labs(title="Percentage of Households Spending More than 30% of Income on Rent")
 print(g.unaffordable.housing.per)
+
+ggsave("plots_and_images/heat_map_per_unaff_hsing.png", width=10, height=5, dpi=150)
 
 #Plot neighbourhoods by percentage of people with highschool certificate or less
 g.high.school.or.less.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
@@ -510,6 +583,8 @@ g.high.school.or.less.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=g
   labs(title="Percentage of People with High School Cert or Less", fill = "high school or less")
 print(g.high.school.or.less.per)
 
+ggsave("plots_and_images/heat_map_per_hghschl_orless.png", width=10, height=5, dpi=150)
+
 #Plot neighbourhoods by unemployment rate
 g.unemployment.rate <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= unemployment.rate)) +    # draw polygons and add fill with unemployment rate
@@ -520,3 +595,5 @@ g.unemployment.rate <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))
                       guide = "colourbar") +
   labs(title="Unemployment Rate by Neighbourhood", fill = "unemployment rate")
 print(g.unemployment.rate)
+
+ggsave("plots_and_images/heat_map_unemplymnt_rate.png", width=10, height=5, dpi=150)
