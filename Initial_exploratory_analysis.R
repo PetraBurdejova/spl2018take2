@@ -291,48 +291,49 @@ toronto.geo <- join(geo.data, toronto.geo, by = "Hood_ID")
 
 
 
-
-
 # Plot neighbourhoods with highest population 
 g.pop.2016 <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
         geom_polygon(aes(fill= population.2016)) +    # draw polygons and add fill with population variable
-          geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+          geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
            coord_equal() + 
-            scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+            scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
                                  space = "Lab", na.value = "grey50",
                                  guide = "colourbar")+
                labs(title="Population by Neighbourhood, 2016") 
 print(g.pop.2016) # render the map
 
+#Plot neighbourhoods by density
+g.pop.density <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= density, colour = "")) +    # draw polygons and add fill with density variable
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c",  #Set colour scale
+                      space = "Lab", na.value = "#000647", limits = c(0, 25000), #Nas are grey, set upper and lower limits of scale
+                      guide = "colourbar") + #Add colour scale on side
+  scale_colour_manual(values = NA) +              
+  guides(colour=guide_legend(">25000", override.aes = list(fill="#000647"))) +
+  labs(title="Density of Neighbourhoods") #Add title
+print(g.pop.density) #Print map
+
+
 # Plot neighbourhoods with highest total crime 
 g.total.crime <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= total.crime)) +    # draw polygons and add fill with population variable
-  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
                       space = "Lab", na.value = "grey50",
-                      guide = "colourbar")+
+                      guide = "colourbar") +
   labs(title="Total crime")
 print(g.total.crime) # render the map
-
-#Plot neighbourhoods by density
-g.pop.density <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
-  geom_polygon(aes(fill= density)) +    # draw polygons and add fill with density variable
-  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
-  coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444",  #Set colour scale
-                      space = "Lab", na.value = "grey50", limits = c(0, 25000), #Nas are grey, set upper and lower limits of scale
-                      guide = "colourbar")+ #Add colour scale on side
-  labs(title="Density of Neighbourhoods") #Add title
-print(g.pop.density) #Print map
 
 
 #Plot neighbourhoods by robberies
 g.robberies <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= robbery)) +    # draw polygons and add fill with robbery variable
-  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", #Set colour scale
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", #Set colour scale
                       space = "Lab", na.value = "grey50", #Na values show up as grey
                       guide = "colourbar")+ #Add colour scale at side
   labs(title="Roberries by Neighbourhood") #Add title
@@ -342,9 +343,9 @@ print(g.robberies) #print map
 #Plot neighbourhoods by break and enters
 g.break.n.enter <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= break.and.enter)) +    # draw polygons and add fill with break and enter variable
-  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
                       space = "Lab", na.value = "grey50",
                       guide = "colourbar")+
   labs(title="Break and Enters by Neighbourhood")
@@ -353,9 +354,9 @@ print(g.break.n.enter)
 #Plot neighbourhoods by assault
 g.assault <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= assault)) +    # draw polygons and add fill with assault variable
-  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
                       space = "Lab", na.value = "grey50",
                       guide = "colourbar")+
   labs(title="Assaults by Neighbourhood")
@@ -364,9 +365,9 @@ print(g.assault)
 #Plot neighbourhoods by auto thefts
 g.auto.theft <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= auto.theft)) +    # draw polygons and add fill with assault variable
-  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
                       space = "Lab", na.value = "grey50",
                       guide = "colourbar")+
   labs(title="Auto Thefts by Neighbourhood")
@@ -375,9 +376,9 @@ print(g.auto.theft)
 #Plot neighbourhoods by drug arrests
 g.drug.arrests <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= drug.arrests)) +    # draw polygons and add fill with drug arrests variable
-  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
                       space = "Lab", na.value = "grey50",
                       guide = "colourbar")+
   labs(title="Drug Arrests by Neighbourhood")
@@ -386,9 +387,9 @@ print(g.drug.arrests)
 #Plot neighbourhoods by male youths
 g.male.youth <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
   geom_polygon(aes(fill= male.youth)) +    # draw polygons and add fill with assault variable
-  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
                       space = "Lab", na.value = "grey50",
                       guide = "colourbar")+
   labs(title="Male Youth by Neighbourhood")
@@ -397,15 +398,125 @@ print(g.male.youth)
 #Plot neighbourhoods by Average Income
 
 g.avg.income <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
-  geom_polygon(aes(fill= avg.income, colour = "")) +    # draw polygons and add fill with assault variable
-  geom_path(color="grey" ) +  # draw boundaries of neighbourhoods
+  geom_polygon(aes(fill= avg.income, colour = "")) +    # draw polygons and add fill with avg income variable
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
   coord_equal() + 
-  scale_fill_gradient(low = "#ffffcc", high = "#ff4444", 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
                       limits = c(20000, 100000),
                       labels = c("20000", "40000", "60000", "80000", "100000"),
                       space = "Lab", na.value = "#9b0a00",
                       guide = "colourbar") +
   scale_colour_manual(values = NA) +              
-  guides(colour=guide_legend(">100000", override.aes = list(fill="#9b0a00"))) + 
+  guides(colour=guide_legend(">100000", override.aes = list(fill="#000647"))) + 
   labs(title="Average Income by Neighbourhood")
 print(g.avg.income)
+
+#Plot neighbourhoods by Median Income
+g.median.income <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= median.income)) +    # draw polygons and add fill with medianincome variable
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Median Income by Neighbourhood")
+print(g.median.income)
+
+#Plot neighbourhoods by percentage of households in bottom 20 percent
+g.hholds.bottom.20per.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= hholds.bottom.20per.per)) +    # draw polygons and add fill with medianincome variable
+  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Percentage of Households in Bottom 20% by Neighbourhood")
+print(g.hholds.bottom.20per.per)
+
+#Plot neighbourhoods by percentage of people in low income bracket
+g.low.income.pop.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= low.income.pop.per)) +    # draw polygons and add fill with medianincome variable
+  geom_path(color="light grey") +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Percentage of People Classified as Low-income by Neighbourhood")
+print(g.low.income.pop.per)
+
+#Plot neighbourhoods by percentage of immigrants
+g.immigrants.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= immigrants.per)) +    # draw polygons and add fill with immigrants percentage variable
+  geom_path(color="light grey") +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Percentage of People Classified as Immigrants by Neighbourhood")
+print(g.immigrants.per)
+
+#Plot neighbourhoods by percentage of visible minorities
+g.vis.minorities.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= vis.minorities.per)) +    # draw polygons and add fill with immigrants percentage variable
+  geom_path(color="light grey") +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Percentage of People Classified as Visible Minorities by Neighbourhood")
+print(g.vis.minorities.per)
+
+#Plot neighbourhoods by percentage of renters
+g.renters.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= renters.per)) +    # draw polygons and add fill with renters percentage variable
+  geom_path(color="light grey") +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Percentage of People Renting by Neighbourhood")
+print(g.renters.per)
+
+#Plot neighbourhoods by percentage of households that require majour repairs
+g.hhlds.mjr.rprs.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= hhlds.mjr.rprs.per)) +    # draw polygons and add fill with percentage of households requiring majour repairs variable
+  geom_path(color="light grey") +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Percentage of Households that Require Majour Repairs")
+print(g.hhlds.mjr.rprs.per)
+
+#Plot neighbourhoods by percentage of households spending 30% or more of income on housing
+g.unaffordable.housing.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= unaffordable.housing.per)) +    # draw polygons and add fill with percentage of households spending more than 30% of income on rent variable
+  geom_path(color="light grey") +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar")+
+  labs(title="Percentage of Households Spending More than 30% of Income on Rent")
+print(g.unaffordable.housing.per)
+
+#Plot neighbourhoods by percentage of people with highschool certificate or less
+g.high.school.or.less.per <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= less.than.high.school.per + high.school.cert.per)) +    # draw polygons and add fill with percentage of households spending more than 30% of income on rent variable
+  geom_path(color="light grey") +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar") +
+  labs(title="Percentage of People with High School Cert or Less", fill = "high school or less")
+print(g.high.school.or.less.per)
+
+#Plot neighbourhoods by unemployment rate
+g.unemployment.rate <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
+  geom_polygon(aes(fill= unemployment.rate)) +    # draw polygons and add fill with unemployment rate
+  geom_path(color="light grey") +  # draw boundaries of neighbourhoods
+  coord_equal() + 
+  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
+                      space = "Lab", na.value = "grey50",
+                      guide = "colourbar") +
+  labs(title="Unemployment Rate by Neighbourhood", fill = "unemployment rate")
+print(g.unemployment.rate)
