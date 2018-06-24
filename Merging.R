@@ -282,9 +282,9 @@ colnames(low.income.pop.per) <- c(colnames(neigh.codes), "low.income.pop.per")
 agg.2016 <- join(agg.2016, low.income.pop.per[, -1], by = "Hood_ID")
 
 ###Percenatage of low income individuals according to low income measure 18-64 years
-low.income.pop.per.18.to.64 <- cbind.data.frame(neigh.codes, getData(df2, "18 to 64 years (%)"))
-colnames(low.income.pop.per.18.to.64) <- c(colnames(neigh.codes), "low.income.pop.per.18.to.64")  
-agg.2016 <- join(agg.2016, low.income.pop.per.18.to.64[, -1], by = "Hood_ID")
+low.income.pop.18.to.64.per <- cbind.data.frame(neigh.codes, getData(df2, "18 to 64 years (%)"))
+colnames(low.income.pop.18.to.64.per) <- c(colnames(neigh.codes), "low.income.pop.18.to.64.per")  
+agg.2016 <- join(agg.2016, low.income.pop.18.to.64.per[, -1], by = "Hood_ID")
 
 ###Citizenship and Immigration stats of residents----
 ###GEt number of non-Canadian citizens in each neighbourhood
