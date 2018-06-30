@@ -1,0 +1,12 @@
+Name of Quantlet: test
+
+Published in: MUST NOT BE 
+
+Description: MUST NOT BE EMPT
+
+Keywords: plot
+
+Author: MUST NOT BE EMP
+
+Submitted:  SHOULD NOT
+
