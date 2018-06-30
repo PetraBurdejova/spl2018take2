@@ -1,6 +1,6 @@
 Name of Quantlet: test
 
-Published in: MUST NOT BE 
+Published in: this
 
 Description: MUST NOT BE EMPT
 
