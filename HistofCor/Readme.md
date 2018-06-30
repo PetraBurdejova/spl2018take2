@@ -1,3 +1,28 @@
+[<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/banner.png" width="888" alt="Visit QuantNet">](http://quantlet.de/)
+
+## [<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/qloqo.png" alt="Visit QuantNet">](http://quantlet.de/) **Test** [<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/QN2.png" width="60" alt="Visit QuantNet 2.0">](http://quantlet.de/)
+
+```yaml
+
+Name of QuantLet : HistofCor
+
+Published in : Psychological diagnostics
+
+Description: Plots a histogram of correlations to make Simpson's paradox visible.
+
+Keywords: plot, vizualization, random, histogram, correlation, clustering, confidence-interval, mean
+
+Author: Kai Horstmann [New], Caroline Wehner [New]
+
+
+```
+
+![Picture1](Histogram.png)
+
+
+### R Code
+```r
+
 # install and load packages
 libraries = c("multilevel", "data.table")
 lapply(libraries, function(x) if (!(x %in% installed.packages())) {
