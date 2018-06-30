@@ -24,55 +24,12 @@ greenarea$ID <- area$`Neighbourhood Id`
 greenarea$ratio <- (green_area$Area / area$`Total Area`) * 100
 
 agg.2016$greenarea <- greenarea$ratio
-regresso <- lm(Assault ~ greenarea, data = agg.2016)
+
 
 
 # 
 # knn1 <- knn( coordinates(crime.sp), coordinates(city_center), k=1)
 
-toronto_map <- get_map(location = "toronto", maptype = "satellite", zoom = 12)
-
-#defining neighbours
-shp <- readOGR(".", "NEIGHBORHOODS_WGS84")
-###based on queen approach
-neigh <- poly2nb(shp, queen = TRUE)
-W<-nb2listw(neigh, style="W", zero.policy=TRUE)
-W
-plot(W, coordinates(shp))
-
-##based on distance 
-coords<-coordinates(shp)
-W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
- ### -> check out which ones better -> Moran'S I test 
-
-#http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
-
-
-ols <- lm(robbery ~ youth +greenarea, data = agg.2016)
-summary(ols)
-#### in such a specification, greenarea is highly significant. But then, moran.lm cannot be rejected
-
-
-# moran's I test
-moran.lm <-lm.morantest(ols, W, alternative="two.sided")
-print(moran.lm)
-
-##Lagrange multiplier test
-LM<-lm.LMtests(ols, W, test="all")
-print(LM)
-
-
-sar<-lagsarlm(robbery ~ youth + greenarea, data = agg.2016, W)
-summary(sar)
-summary(ols)
-
-#not very high differences 
-
-
-#poisson regression 
-
-summary(m1 <- glm(robbery ~ youth + greenarea + non.citizens + lone.parent.families, family = "poisson", data = agg.2016))
-
-summary(ols_log <- lm(logrobbery ~ youth +greenarea, data = agg.2016))
+#toronto_map <- get_map(location = "toronto", maptype = "satellite", zoom = 12)
 
 

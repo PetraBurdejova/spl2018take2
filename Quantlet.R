@@ -431,6 +431,7 @@ qnames = yaml.debugger.get.qnames(d_init$RootPath)
 
 d_results = yaml.debugger.run(qnames[2], d_init)
 
-OverView = yaml.debugger.summary(qnames, d_results, summaryType = "mini")
+
+
 
 
