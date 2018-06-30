@@ -1,0 +1,10 @@
+Name of QuantLet : HistofCor
+
+Published in : Psychological diagnostics
+
+Description: Plots a histogram of correlations to make Simpson's paradox visible.
+
+Keywords: plot, vizualization, random, histogram, correlation, clustering, confidence-interval, mean
+
+Author: Kai Horstmann [New], Caroline Wehner [New]
+
