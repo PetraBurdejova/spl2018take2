@@ -4,10 +4,10 @@
 
 ```yaml
 
-Name of QuantLet : Total Crimes by Hour of Day in Toronto 2016
+Name of QuantLet : Heatmap by Assault
 
 
-Description: Plots the total crimes by hour of the day in Toronto 2016.
+Description: Plots a heatmap of number of assaults in each neighbourhood.
 
 Keywords: plot, vizualization, heatmap
 
