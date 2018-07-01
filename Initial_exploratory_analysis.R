@@ -315,6 +315,12 @@ agg.2016$education.clust <- as.factor(z1$kc.cluster)
 geo.data <- data.frame(agg.2016)
 geo.data$Hood_ID <- str_pad(geo.data$Hood_ID, width = 3, side = 'left', pad = '0')
 
+###above command does not work#######
+
+
+
+
+
 # the path to shape file
 
 toronto <- readOGR(dsn = "." ,"NEIGHBORHOODS_WGS84")

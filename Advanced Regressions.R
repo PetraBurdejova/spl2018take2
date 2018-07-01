@@ -8,6 +8,20 @@ agg.2016$log.assault <- log(agg.2016$assault)
 hist(agg.2016$log.assault)
 plot(density(agg.2016$log.assault))
 
+####robbery#####
+hist(agg.2016$robbery)
+plot(density(agg.2016$robbery))
+agg.2016$robbery[agg.2016$robbery == 0]
+agg.2016$robbery[agg.2016$robbery == 0] <- 1
+
+agg.2016$log.rob <- log(agg.2016$robbery)
+
+hist(agg.2016$log.rob)
+plot(density(agg.2016$log.rob))
+
+
+
+
 ###try first models####
 
 r <- agg.2016
@@ -39,15 +53,52 @@ shapiro.test(residuals(log_assault)) ### H0 <- normality ----> p>0.05 ---> norma
 lillie.test(residuals(log_assault)) ### same as above -> normally distributed
 
 
+
 ####test for heteroscedasticity
 library(lmtest)
 bptest(log_assault) ### H0 <- homoscedasticity no heteroscedasticity 
 ##achtung! very sensitive to violation of normal assumption
 
+####robbery#####
+
+
+log_rob <- lm(log.rob~male.youth+less.than.high.school+low.income+immigrants, data=r)
+summary(log_rob)
+
+log_plot <- plot(log_rob)
+
+# Residuals versus fitted values (for checking E(ε|X) = 0)  
+# 
+# QQ plot: ordered residuals versus normal quantiles (for checking normality).
+# 
+# Scale-location plot:  √ˆri| (of standardized residuals ri ) versus fitted valuesˆyi (for checking i.i.d. assumption, in particular  Var (ε|X) =σ2I).
+# 
+# Combinations of standardized residuals, leverage, and Cook’s
+# distance
+
+
+plot(residuals(log_rob))
+plot(density(residuals(log_rob)))
+
+
+
+###tests for normality
+library(nortest)
+shapiro.test(residuals(log_rob)) ### H0 <- normality ----> p>0.05 ---> normality
+
+lillie.test(residuals(log_rob)) ### same as above -> normally distributed
+
+
+
+####test for heteroscedasticity
+library(lmtest)
+bptest(log_rob) ### H0 <- homoscedasticity no heteroscedasticity 
+##achtung! very sensitive to violation of normal assumption
+
+
+
 
 ####spatial regression####
-
-
 #defining neighbours
 shp <- readOGR(".", "NEIGHBORHOODS_WGS84")
 ###based on queen approach
@@ -64,35 +115,40 @@ W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
 #http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
 
 
-ols <- lm(robbery ~ youth +greenarea, data = agg.2016)
-summary(ols)
-#### in such a specification, greenarea is highly significant. But then, moran.lm cannot be rejected
-
-
 # moran's I test
-moran.lm <-lm.morantest(ols, W, alternative="two.sided")
-print(moran.lm)
+moran.lm <-lm.morantest(log_rob, W, alternative="two.sided")
+print(moran.lm) ## H0 <- Data ist random
 
 ##Lagrange multiplier test
-LM<-lm.LMtests(ols, W, test="all")
+LM<-lm.LMtests(log_assault, W, test="all")
 print(LM)
 
 
-sar<-lagsarlm(robbery ~ youth + greenarea, data = agg.2016, W)
-summary(sar)
-summary(ols)
+spatial_log_rob  <-lagsarlm(log.rob~male.youth+less.than.high.school+low.income+immigrants, data=r, W)
+summary(spatial_log_rob)
+summary(log_rob)
 
 #not very high differences 
 
 
 #poisson regression 
 
-summary(m1 <- glm(robbery ~ youth + greenarea + non.citizens + lone.parent.families, family = "poisson", data = agg.2016))
+poisson_rob <- glm(robbery~male.youth+less.than.high.school+low.income+immigrants, family = "poisson", data = r)
+summary(poisson_rob)
+summary(spatial_log_rob)
+summary(log_rob)
 
-summary(ols_log <- lm(logrobbery ~ youth +greenarea, data = agg.2016))
+plot(residuals(poisson_rob))
 
+plot(residuals(spatial_log_rob))
+plot(residuals(log_rob))
 
+install.packages("stargazer")
+library(stargazer)
 
+stargazer(model_robbery, log_rob, spatial_log_rob, poisson_rob,
+          dep.var.labels = c("Robbery", "Robbery", "Robbery"), 
+          covariate.labels = c("Male youth", "Less than High School", "Low Income Households", "Visible immigrants"), out = "models.tex")
 
 
 

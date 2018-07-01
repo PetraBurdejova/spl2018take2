@@ -10,13 +10,13 @@ colnames(a)[1] <- "X"
 #Create aggregate data frame using data table
 a.dt <- as.data.frame(a)
 
+library(dplyr)
 #Remove duplicated event IDS
 a.dt <- subset(a.dt, !duplicated(a.dt$event_unique_id))
 
 #Filter out occurrence dates before so we only look at 2016
 a.dt[,c("occurrencedate", "reporteddate")] <- lapply(a.dt[,c("occurrencedate", "reporteddate")], as.Date)
-a.dt <- a.dt %>%
-           filter(occurrencedate >= as.Date("2016-01-01") & occurrencedate < as.Date("2017-01-01"))
+a.dt <- a.dt %>%  filter(occurrencedate >= as.Date("2016-01-01") & occurrencedate < as.Date("2017-01-01"))
 a.dt <- a.dt[complete.cases(a.dt), ]
 
 ####Aggregate crimes by type----
@@ -76,6 +76,7 @@ df1[,c("Topic", "City.of.Toronto")] <- NULL
 agg.2016 <- cbind.data.frame(Hood_ID = neigh.codes$Hood_ID)
 
 ###Age and Gender variables----
+library(forcats)
 ###Get number of males from 15 - 24 in 2016
 df2 <- as.data.frame(df1)
 df2 <- df2[c(14:55),]
