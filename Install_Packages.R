@@ -24,4 +24,5 @@ pacman::p_load("tidyverse",
                "plyr",
                "spdep",
                "cluster",
-               "scales")
+               "scales",
+               "caret")
