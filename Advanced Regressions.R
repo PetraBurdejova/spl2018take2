@@ -151,8 +151,15 @@ stargazer(model_robbery, log_rob, spatial_log_rob, poisson_rob,
           covariate.labels = c("Male youth", "Less than High School", "Low Income Households", "Visible immigrants"), out = "models.tex")
 
 
+#####additional spatial regressionnn######
+toronto_map1 <- readOGR(".", "NEIGHBORHOODS_WGS84")
+###hoodID 77 has most assaults -> calculate distance from every neighbourhood to neighbourhood 77
+# center <- sf::st_centroid(toronto_map$geometry)
 
+toronto_map_small <- subset(toronto_map1, toronto_map1@data$AREA_S_CD == "077")
+knn1 <- knn(coordinates(toronto_map_small), center , k = 1)
 
+knn.dist <- knn1$nn.dists
 
-
+###passt noch nicht ganz 
 
