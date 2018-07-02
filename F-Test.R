@@ -1,9 +1,9 @@
-reg1 <- lm(Assault ~ youth, data = agg.2016)
+reg1 <- lm(assault ~ youth, data = agg.2016)
 summary(reg1)
 
 
 
-RSS0 <- sum((agg.2016$Assault - mean(agg.2016$Assault))^2) #20181.97, this is same as TSS really
+RSS0 <- sum((agg.2016$assault - mean(agg.2016$assault))^2) #20181.97, this is same as TSS really
 RSS <- sum(reg1$residuals^2) #20181.64
 p <-  1 #predictors whos coefficient we are testing.
 n <- length(agg.2016$youth) #number of observations
@@ -13,7 +13,7 @@ F
 
 
 
-reg2 <- lm(Total.crime ~ youth + immigrants, data = agg.2016)
+reg2 <- lm(total.crime ~ youth + immigrants, data = agg.2016)
 summary(reg2)
 
 ###Can try to add density and add an if statemnt to say whethere ho is rejected or not
@@ -36,5 +36,5 @@ f.test <- function(data, y, x, model.name, no.pred) {
 }
 
 
-f.test(agg.2016, "Total.crime", c("youth", "immigrants"), reg2, 2)
+f.test(agg.2016, "total.crime", c("youth", "immigrants"), reg2, 2)
 

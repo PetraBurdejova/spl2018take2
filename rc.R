@@ -67,7 +67,8 @@ dwt(model_Theft.Over)
 
 
 #normailty
+install.packages("nortest")
 library(nortest)
-ad.test(residuals(model)) 
-shapiro.test(residuals(model)) 
-lillie.test(residuals(model))
+ad.test(residuals(model_Assault)) 
+shapiro.test(residuals(model_Assault)) 
+lillie.test(residuals(model_Assault))

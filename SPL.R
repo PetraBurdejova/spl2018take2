@@ -10,9 +10,7 @@ rm(list=ls())
 ####manipulate dataset####
     source("Merging.R") # code I deleted in SPL_X1 can be found in deleted_code
 
-####calculating the ratio of green parks etc. per neighbourhood ####
 
-    source("Green_area.R")
 #####Initial Exploratory Analysis###
 
     source("Initial_exploratory_analysis.R")
@@ -25,6 +23,9 @@ rm(list=ls())
 
   #  source("heatmap_below.R")
 
+####calculating the ratio of green parks etc. per neighbourhood ####
+
+    source("Green_area.R")
 
 ###regression analysis
 
