@@ -27,6 +27,11 @@ plot(density(bcPower(r_assault$assault,0.2734738)))
 
 r_assault$assault.bp <- bcPower(r_assault$assault, 0.2734738)
 
+#r_assault$male.youth <- scale(r_assault$male.youth)
+#r_assault$less.than.high.school <- scale(r_assault$less.than.high.school)
+#r_assault$low.income <- scale(r_assault$low.income)
+#r_assault$immigrants <- scale(r_assault$immigrants)
+
 ###first model
 model_assault<-lm(assault.bp~male.youth+less.than.high.school+low.income+immigrants, data=r_assault)
 summary(model_assault)
