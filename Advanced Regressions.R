@@ -44,6 +44,9 @@ log_plot <- plot(log_assault)
 plot(residuals(log_assault))
 plot(density(residuals(log_assault)))
 
+0.0002
+
+summary(model_assault)
 
 
 ###tests for normality
@@ -108,8 +111,8 @@ W
 plot(W, coordinates(shp))
 
 ##based on distance 
-coords<-coordinates(shp)
-W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
+# coords<-coordinates(shp)
+# W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
 ### -> check out which ones better -> Moran'S I test 
 
 #http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
@@ -158,6 +161,13 @@ neighbourhood.center <- st_centroid(toronto_map$geometry)
 toronto_map1 <- readOGR(".", "NEIGHBORHOODS_WGS84")
 toronto_small <- subset(toronto_map1, toronto_map1@data$AREA_S_CD == "077")
 
-knn1 <- knn( coordinates(toronto_small), coordinates(toronto_map1), k=)
+knn1 <- knn( coordinates(toronto_small), coordinates(toronto_map1), k=1)
 knn.dist <- knn1$nn.dists
+
+r$dist <- knn.dist
+
+log_rob1 <- lm(log.rob~male.youth+less.than.high.school+low.income+immigrants + knn.dist, data=r)
+summary(log_rob1)
+
+
 
