@@ -166,7 +166,7 @@ knn.dist <- knn1$nn.dists
 
 r$dist <- knn.dist
 
-log_rob1 <- lm(log.rob~male.youth+less.than.high.school+low.income+immigrants + knn.dist, data=r)
+log_rob1 <- lm(log.rob~., data=r)
 summary(log_rob1)
 
 
