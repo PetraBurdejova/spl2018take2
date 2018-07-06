@@ -98,6 +98,24 @@ library(lmtest)
 bptest(log_rob) ### H0 <- homoscedasticity no heteroscedasticity 
 ##achtung! very sensitive to violation of normal assumption
 
+####further transform variables#####
+
+
+agg.2016$rob.cap <- agg.2016$robbery / agg.2016$population.2016
+
+plot(density(agg.2016$rob.cap))
+plot(agg.2016$rob.cap)
+
+agg.2016$log.rob.cap <- log(agg.2016$rob.cap)
+plot(density(agg.2016$log.rob.cap))
+plot(agg.2016$log.rob.cap)
+
+agg.2016$male.youth.per <- agg.2016$male.youth / agg.2016$population.2016
+agg.2016$male.youth.cap <- agg.2016$male.youth / agg.2016$population.2016
+agg.2016$male.youth.cap <- agg.2016$male.youth / agg.2016$population.2016
+
+
+summary(model2 <- lm(rob.cap~unemployment.rate +male.youth.per+less.than.high.school.per+low.income.pop.per+greenarea+vis.minorities.per, data=agg.2016))
 
 
 
@@ -166,8 +184,10 @@ knn.dist <- knn1$nn.dists
 
 r$dist <- knn.dist
 
-log_rob1 <- lm(log.rob~., data=r)
-summary(log_rob1)
+
+
+
+
 
 
 
