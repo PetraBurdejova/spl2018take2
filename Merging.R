@@ -3,7 +3,7 @@ a <- read.csv("MCI_2014_to_2017.csv")
 b <- read.csv("2016_neighbourhood_profiles.csv")
 drugs <- read.csv("toronto_drug_arrests.csv")
 wbt <- read.csv("wellbeing_toronto.csv")
-area <- read_csv("toronto_area.csv")
+area <- readr::read_csv("toronto_area.csv")
 
 colnames(a)[1] <- "X"
 
