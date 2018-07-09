@@ -44,6 +44,9 @@ log_plot <- plot(log_assault)
 plot(residuals(log_assault))
 plot(density(residuals(log_assault)))
 
+0.0002
+
+summary(log_assault)
 
 
 ###tests for normality
@@ -95,6 +98,71 @@ library(lmtest)
 bptest(log_rob) ### H0 <- homoscedasticity no heteroscedasticity 
 ##achtung! very sensitive to violation of normal assumption
 
+####further transform variables#####
+
+
+agg.2016$rob.cap <- agg.2016$robbery / agg.2016$population.2016
+
+plot(density(agg.2016$rob.cap))
+plot(agg.2016$rob.cap)
+
+agg.2016$log.rob.cap <- log(agg.2016$rob.cap)
+plot(density(agg.2016$log.rob.cap))
+plot(agg.2016$log.rob.cap)
+
+agg.2016$male.youth.per <- agg.2016$male.youth / agg.2016$population.2016
+agg.2016$male.youth.cap <- agg.2016$male.youth / agg.2016$population.2016
+agg.2016$male.youth.cap <- agg.2016$male.youth / agg.2016$population.2016
+
+
+summary(model2 <- lm(rob.cap~ male.youth.per, data=agg.2016))
+
+
+m <- agg.2016
+m$pred <- predict(model2)
+m$res <- residuals(model2)
+
+plot(density(m$res))
+
+plot(m$pred)
+
+plot(m$rob.cap, add = T, col = "RED")
+
+
+
+library(ggplot2)
+
+ggplot(m, aes(x = male.youth.per, y = rob.cap)) +  # Set up canvas with outcome variable on y-axis
+  geom_point() +
+  geom_point(aes(y = pred), shape = 3)
+
+
+ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
+  geom_segment(aes(xend = male.youth.per, yend = pred)) +
+  geom_point() +
+  geom_point(aes(y = pred), shape = 1)
+
+
+ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") + 
+  geom_segment(aes(xend = male.youth.per, yend = pred), alpha = .2) +  
+  geom_point() +
+  geom_point(aes(y = pred), shape = 1) +
+  theme_bw()
+
+
+ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+  geom_segment(aes(xend = male.youth.per, yend = pred), alpha = .2) +
+  
+  # > Color AND size adjustments made here...
+  geom_point(aes(color = abs(res), size = abs(res))) + # size also mapped
+  scale_color_continuous(low = "black", high = "red") +
+  guides(color = FALSE, size = FALSE) +  # Size legend also removed
+  # <
+  
+  geom_point(aes(y = pred), shape = 1) +
+  theme_bw()
 
 
 
@@ -108,8 +176,8 @@ W
 plot(W, coordinates(shp))
 
 ##based on distance 
-coords<-coordinates(shp)
-W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
+# coords<-coordinates(shp)
+# W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
 ### -> check out which ones better -> Moran'S I test 
 
 #http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
@@ -158,6 +226,15 @@ neighbourhood.center <- st_centroid(toronto_map$geometry)
 toronto_map1 <- readOGR(".", "NEIGHBORHOODS_WGS84")
 toronto_small <- subset(toronto_map1, toronto_map1@data$AREA_S_CD == "077")
 
-knn1 <- knn( coordinates(toronto_small), coordinates(toronto_map1), k=)
+knn1 <- knn( coordinates(toronto_small), coordinates(toronto_map1), k=1)
 knn.dist <- knn1$nn.dists
+
+r$dist <- knn.dist
+
+
+
+
+
+
+
 

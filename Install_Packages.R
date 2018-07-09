@@ -23,6 +23,7 @@ pacman::p_load("tidyverse",
                "nabor",
                "plyr",
                "spdep",
+<<<<<<< HEAD
                "cluster",
              "scales",
                "caret",
@@ -38,3 +39,7 @@ if(!require("stingr")) install.packages("stingr", dependencies = TRUE); library(
 
 
 
+=======
+               "cluster")
+
+>>>>>>> bc84f60ddeff96317c06704c06cc407ff5873d60

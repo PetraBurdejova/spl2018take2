@@ -3,7 +3,7 @@ crime <- read.csv("MCI_2014_to_2017.csv")
 census <- read.csv("2016_neighbourhood_profiles.csv")
 drugs <- read.csv("toronto_drug_arrests.csv")
 wbt <- read.csv("wellbeing_toronto.csv")
-area <- read_csv("toronto_area.csv")
+area <- readr::read_csv("toronto_area.csv")
 
 ###Change name of X coordinate column to X
 colnames(crime)[which(names(crime) == "ï..X")] <- "X"
