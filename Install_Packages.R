@@ -23,7 +23,6 @@ pacman::p_load("tidyverse",
                "nabor",
                "plyr",
                "spdep",
-<<<<<<< HEAD
                "cluster",
              "scales",
                "caret",
@@ -35,11 +34,3 @@ if(!require("tidyverse")) install.packages("tidyverse", dependencies = TRUE); li
 if(!require("reshape2")) install.packages("reshape2", dependencies = TRUE); library("reshape2")
 if(!require("ggmap")) install.packages("ggmap", dependencies = TRUE); library("ggmap")
 if(!require("stingr")) install.packages("stingr", dependencies = TRUE); library("stingr")
-
-
-
-
-=======
-               "cluster")
-
->>>>>>> bc84f60ddeff96317c06704c06cc407ff5873d60
