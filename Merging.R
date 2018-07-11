@@ -355,7 +355,7 @@ agg.2016 <- join(agg.2016, renters[, -which(names(renters) %in% c("Neighbourhood
 
 ####Get percent of renters in each neighbourhood
 renters.per <- cbind.data.frame(neigh.codes, 
-                                getData(census.tmp, "Renter", "renters") / getData(census.tmp, "Total - Private households by tenure - 25% sample data") * 100)
+                                (getData(census.tmp, "Renter", "renters.per") / getData(census.tmp, "Total - Private households by tenure - 25% sample data")) * 100)
 agg.2016 <- join(agg.2016, renters.per[, -which(names(renters.per) %in% c("Neighbourhood"))], by = "Hood_ID")
 
 ###Get number of dwellings that are not condominiums in each neighbourhood
@@ -383,7 +383,7 @@ agg.2016 <- join(agg.2016, hhlds.mjr.rprs[, -which(names(hhlds.mjr.rprs) %in% c(
 
 ###Get percent or hhlds that need major repairs
 hhlds.mjr.rprs.per <- cbind.data.frame(neigh.codes, 
-                                       getData(census.tmp, "Major repairs needed", "hhlds.njr.rprs.per") / getData(census.tmp, "Total - Occupied private dwellings by dwelling condition - 25% sample data") * 100)
+                                       getData(census.tmp, "Major repairs needed", "hhlds.mjr.rprs.per") / getData(census.tmp, "Total - Occupied private dwellings by dwelling condition - 25% sample data") * 100)
 agg.2016 <- join(agg.2016, hhlds.mjr.rprs.per[, -which(names(hhlds.mjr.rprs.per) %in% c("Neighbourhood"))], by = "Hood_ID")
 
 ###Get households that spend 30 percent or more of income on shelter costs
