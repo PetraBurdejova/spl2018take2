@@ -7,12 +7,8 @@ swD <- function (p, x) {
   y <- bcPower(x, p)
   shapiro.test(y)$statistic
 }
-firstregressionresults <- list()
+#firstregressionresults <- list()
 regressionresults <- list()
-#firstdensity <- list()
-#firsthistogram <- list()
-#density <- list()
-#histogram <- list()
 means <- c()
 bptests <- c()
 swtests <- c()
@@ -20,11 +16,19 @@ vif1 <- c()
 vif2 <- c()
 vif3 <- c()
 vif4 <- c()
-cortests = matrix(nrow=4, ncol=7)
+cortest1 <- c()
+cortest2 <- c()
+cortest3 <- c()
+cortest4 <- c()
+
+firstdensity <- list()
+firsthistogram <- list()
+density <- list()
+histogram <- list()
 
 for (i in 2:8){
   r$tmp <- r[,i]
-  firstregressionresults[[i-1]]<-summary(lm(tmp~male.youth+less.than.high.school+low.income+immigrants, data=r))
+  #firstregressionresults[[i-1]]<-summary(lm(tmp~male.youth+less.than.high.school+low.income+immigrants, data=r))
   outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp),]$Hood_ID
   rtmp<-r[-outliers,]
   rtmp[rtmp$tmp==0,] <- 1
@@ -35,7 +39,8 @@ for (i in 2:8){
   regressionresults[[i-1]]<-summary(model)
   #Assumption: error term has a population mean of zero - irrelevant as we include an intercept
   means[i-1] <- mean(model$residuals)
-  #Assumption: no serial correlation of the error term - irrelevant as observation order is random
+  #Assumption: no serial correlation of the error term 
+  #irrelevant as observation order is random
   #Assumption: the error term is homoscedastic
   bptests[i-1] <- bptest(model)$p.value #sensitive to asumption of normality
   #Assumption: error term is normally distributed (optional: not required for OLS, but allows to performa statistical hypothesis testing and generate reliable confidence intervals)
@@ -49,15 +54,15 @@ for (i in 2:8){
   vif4[i-1] <- vif(model)[4]
 #     corrplot::corrplot(cor(r_assault[c(),]))
   #Assumption: no correlation of each independent variable with the error term
-  cortests[1,i-1] <- cor.test(rtmp$male.youth, model$residuals)$p.value
-  cortests[2,i-1] <- cor.test(rtmp$less.than.high.school, model$residuals)$p.value
-  cortests[3,i-1] <- cor.test(rtmp$low.income, model$residuals)$p.value
-  cortests[4,i-1] <- cor.test(rtmp$immigrants, model$residuals)$p.value
-#  firstdensity[[i-1]] <- plot(density(r$tmp))
-#  firsthistogram[[i-1]] <- plot(hist(r$tmp))
-#  density[[i-1]] <- plot(density(rtmp$tmp.bp))
-#  histogram[[i-1]] <- plot(hist(rtmp$tmp.bp)) 
+  cortest1[i-1] <- cor.test(rtmp$male.youth, model$residuals)$p.value
+  cortest2[i-1] <- cor.test(rtmp$less.than.high.school, model$residuals)$p.value
+  cortest3[i-1] <- cor.test(rtmp$low.income, model$residuals)$p.value
+  cortest4[i-1] <- cor.test(rtmp$immigrants, model$residuals)$p.value
+  firstdensity[[i-1]] <- density(r$tmp)
+  firsthistogram[[i-1]] <- hist(r$tmp)
+  density[[i-1]] <- density(rtmp$tmp.bp)
+  histogram[[i-1]] <- hist(rtmp$tmp.bp) 
 }
 rm(rtmp, exponent, i, outliers, model, swD)
-ols.assumptions <- data.frame(means, bptests, swtests, t(cortests), vif1, vif2, vif3, vif4)
-rm(means, bptests, swtests, cortests, vif1, vif2, vif3, vif4)
+ols.assumptions <- data.frame(means, bptests, swtests, cortest1, cortest2, cortest3, cortest4, vif1, vif2, vif3, vif4)
+rm(means, bptests, swtests, vif1, vif2, vif3, vif4, cortest1, cortest2, cortest3, cortest4)
