@@ -140,6 +140,18 @@ census.tmp$Characteristic <- fct_collapse(census.tmp$Characteristic,
 population.2016 <- cbind.data.frame(neigh.codes, getData(census.tmp, "population.2016")) #get population 2016 data for each neighbourhood
 agg.2016 <- join(agg.2016, population.2016[, -which(names(population.2016) %in% c("Neighbourhood"))], by = "Hood_ID") #join data population.2016 to agg.2016
 
+#create a function to turn crime variable into crime per hundred thousand rate
+crime.per.tenthsnd <- function (x) {
+  x / agg.2016[, "population.2016"] * 10000
+}
+
+#define crime variables
+crime.vars <- c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
+
+#use for loop to join crime per ten thousand rates to agg.2016
+for (i in crime.vars) {
+  agg.2016[, paste(i, ".per.tenthsnd", sep = "", collapse = NULL)] <- crime.per.tenthsnd(agg.2016[, i])
+}
 
 ###Get area and density of each neighbourhood
 colnames(area) <- c("Neighbourhood", "Hood_ID", "total.area")
