@@ -23,26 +23,21 @@ crime.dt <- crime.dt[complete.cases(crime.dt), ] #use only complete cases
 ####Aggregate crimes by type----
 crime.dt <- as.data.table(crime.dt) #Use data table
 setkey(crime.dt, "MCI", "Hood_ID") #set crime indicators and Hood_ID as keys
-agg <- crime.dt[, .(count = .N), by = c("MCI", "Hood_ID")] #aggregate crime by MCI count and Hood_ID
-agg <- dcast(agg, Hood_ID ~ MCI) #turn data from long format to wide
-agg$Hood_ID <- as.factor(agg$Hood_ID) #set Hood_ID as factor
+agg.crime <- crime.dt[, .(count = .N), by = c("MCI", "Hood_ID")] #aggregate crime by MCI count and Hood_ID
+agg.crime <- dcast(agg.crime, Hood_ID ~ MCI) #turn data from long format to wide
+agg.crime$Hood_ID <- as.factor(agg.crime$Hood_ID) #set Hood_ID as factor
 
 #Turn Nas to 0 for crimes that didn't occur in that neighbourhood
-agg[is.na(agg)] <- 0
+agg.crime[is.na(agg.crime)] <- 0
 
 
 ###Add Drug Arrests to aggregate dataset----
 drugs$Neighbourhood.Id <- as.factor(drugs$Neighbourhood.Id) #turn Neighbourhood.Id to factor
-agg <- merge(agg, drugs[,c("Neighbourhood.Id", "Drug.Arrests")], by.x = "Hood_ID", by.y = "Neighbourhood.Id" ) #merge agg and drugs dataset
+agg.crime <- merge(agg.crime, drugs[,c("Neighbourhood.Id", "Drug.Arrests")], by.x = "Hood_ID", by.y = "Neighbourhood.Id" ) #merge agg and drugs dataset
 
 ###Get crime totals for each neighbourhood and rename columns
-agg$Total.crime <- rowSums(agg[,!c("Hood_ID")])
-colnames(agg) <- c("Hood_ID", "assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
-
-##Merge agg with wbt to get crime and neighbourhood profiles in 1 data frame
-wbt$Neighbourhood.Id <- as.factor(wbt$Neighbourhood.Id)
-agg.2014 <- merge(agg, wbt, by.x = "Hood_ID", by.y = "Neighbourhood.Id")
-agg.2014[,c("Neighbourhood", "Combined.Indicators")] <- NULL
+agg.crime$Total.crime <- rowSums(agg.crime[,!c("Hood_ID")])
+colnames(agg.crime) <- c("Hood_ID", "assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
 
 ###Clean 2016 neighbourhood profile dataset to get variables---- 
 ###USing the 2016 neighbourhood profiles data to get 2016 data
@@ -139,19 +134,6 @@ census.tmp$Characteristic <- fct_collapse(census.tmp$Characteristic,
 
 population.2016 <- cbind.data.frame(neigh.codes, getData(census.tmp, "population.2016")) #get population 2016 data for each neighbourhood
 agg.2016 <- join(agg.2016, population.2016[, -which(names(population.2016) %in% c("Neighbourhood"))], by = "Hood_ID") #join data population.2016 to agg.2016
-
-#create a function to turn crime variable into crime per hundred thousand rate
-crime.per.tenthsnd <- function (x) {
-  x / agg.2016[, "population.2016"] * 10000
-}
-
-#define crime variables
-crime.vars <- c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
-
-#use for loop to join crime per ten thousand rates to agg.2016
-for (i in crime.vars) {
-  agg.2016[, paste(i, ".per.tenthsnd", sep = "", collapse = NULL)] <- crime.per.tenthsnd(agg.2016[, i])
-}
 
 ###Get area and density of each neighbourhood
 colnames(area) <- c("Neighbourhood", "Hood_ID", "total.area")
@@ -461,7 +443,17 @@ agg.2016 <- join(agg.2016, unemployed.males[, -which(names(unemployed.males) %in
 unemployment.rate.males <- cbind.data.frame(neigh.codes, getData(census.tmp, "Unemployment rate (Males)", "unemployment.rate.males"))
 agg.2016 <- join(agg.2016, unemployment.rate.males[, -which(names(unemployment.rate.males) %in% c("Neighbourhood"))], by = "Hood_ID")
 
-###Merge crime data with 2016 agg data
-agg.2016 <- as.data.frame(join(agg, agg.2016, by = "Hood_ID"))
+#create a function to turn crime variable into crime per hundred thousand rate
+crime.per.tenthsnd <- function (x) {
+  x / agg.2016[, "population.2016"] * 10000
+}
+
+#define crime variables
+crime.vars <- c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
+
+#use for loop to join crime per ten thousand rates to agg.2016
+for (i in crime.vars) {
+  agg.2016[, paste(i, ".per.tenthsnd", sep = "", collapse = NULL)] <- crime.per.tenthsnd(agg.crime[, i, with = FALSE])
+}
 
 
