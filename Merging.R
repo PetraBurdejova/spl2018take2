@@ -443,6 +443,9 @@ agg.2016 <- join(agg.2016, unemployed.males[, -which(names(unemployed.males) %in
 unemployment.rate.males <- cbind.data.frame(neigh.codes, getData(census.tmp, "Unemployment rate (Males)", "unemployment.rate.males"))
 agg.2016 <- join(agg.2016, unemployment.rate.males[, -which(names(unemployment.rate.males) %in% c("Neighbourhood"))], by = "Hood_ID")
 
+#join agg.crime data to agg.2016 dataset
+agg.2016 <- join(agg.crime, agg.2016, by = "Hood_ID")
+
 #create a function to turn crime variable into crime per hundred thousand rate
 crime.per.tenthsnd <- function (x) {
   x / agg.2016[, "population.2016"] * 10000
