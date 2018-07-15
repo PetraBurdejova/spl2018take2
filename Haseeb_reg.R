@@ -1,8 +1,9 @@
 reg.data <- agg.2016[, !names(agg.2016) %in% c("Hood_ID")]
 target.variables <- c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
 clust.variables <- c("crime.clust", "neigh.pop.char.clust", "inc.clust", "ethnicity.clust", "housing.clust", "education.clust")
-per.variables <- names(agg.2016[, grepl(".per", colnames(agg.2016))])
+per.variables <- names(agg.2016[, grepl(".per", colnames(agg.2016)), with = FALSE])
 
+per.variables
 #Find correlation between variables
 var.corr <- as.data.frame(round(cor(reg.data[, !names(reg.data) %in% c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", clust.variables, per.variables)]), 2))
 var.corr

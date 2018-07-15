@@ -9,31 +9,31 @@ hist_func <- function(x, y, bin.width) {
   }
 
 ####Histogram of total crime commited
-hist_func(agg, "total.crime", 50) #create histogram of total crime, bin width of 50
+hist_func(agg.crime, "total.crime", 50) #create histogram of total crime, bin width of 50
 ggsave("plots_and_images/hist_total_crime.png", width=10, height=5, dpi=150)
 
 ###Histogram Assaults
-hist_func(agg, "assault", 25) #create histogram of assaults, bin width of 25
+hist_func(agg.crime, "assault", 25) #create histogram of assaults, bin width of 25
 ggsave("plots_and_images/hist_assaults.png", width=10, height=5, dpi=150)
 
 ###Histogram Auto Thefts
-hist_func(agg, "auto.theft", 20) #create histogram of auto thefts, bin width of 20
+hist_func(agg.crime, "auto.theft", 20) #create histogram of auto thefts, bin width of 20
 ggsave("plots_and_images/hist_auto_thefts.png", width=10, height=5, dpi=150)
 
 ###Histogram Break and Enters
-hist_func(agg, "break.and.enter", 20) #create histogram of break and enters, bin width of 20
+hist_func(agg.crime, "break.and.enter", 20) #create histogram of break and enters, bin width of 20
 ggsave("plots_and_images/hist_break_n_enters.png", width=10, height=5, dpi=150)
 
 ###Histogram robberies
-hist_func(agg, "robbery", 10) #create histogram of robberies, bin width of 10
+hist_func(agg.crime, "robbery", 10) #create histogram of robberies, bin width of 10
 ggsave("plots_and_images/hist_robberies.png", width=10, height=5, dpi=150)
 
 ###Histogram Thefts
-hist_func(agg, "theft.over", 5) #create histogram of thefts, bin width of 5
+hist_func(agg.crime, "theft.over", 5) #create histogram of thefts, bin width of 5
 ggsave("plots_and_images/hist_thefts.png", width=10, height=5, dpi=150)
 
 ###Histogram Drug Arrests
-hist_func(agg, "drug.arrests", 10) #create histogram of drug arrests, bin width of 10
+hist_func(agg.crime, "drug.arrests", 10) #create histogram of drug arrests, bin width of 10
 ggsave("plots_and_images/hist_drug_arrests.png", width=10, height=5, dpi=150)
 
 ###Group crimes by MCI
@@ -179,7 +179,7 @@ clust_func <- function(x, no.of.clust, title) {
 }
 
 crime.vars <- c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests")
-agg.kmeans.crime <- agg.2016[, crime.vars]
+agg.kmeans.crime <- agg.2016[, crime.vars, with = FALSE]
 
 obj_values(agg.kmeans.crime, "crime statistics")
 
@@ -189,7 +189,7 @@ agg.2016$crime.clust <- clust_func(agg.kmeans.crime, 8, "Crime Statistics") #joi
 
 ####Use kmeans to group variables based on neighbourhood characteristics
 neigh.vars <- c("male.youth", "youth", "population.2016", "density", "lone.parent.families")
-agg.kmeans.neigh.vars <- agg.2016[, neigh.vars]
+agg.kmeans.neigh.vars <- agg.2016[, neigh.vars, with = FALSE]
 
 obj_values(agg.kmeans.neigh.vars, "pop characteristics") #find optimal number of clusters
 
@@ -200,7 +200,7 @@ agg.2016$neigh.clust <- clust_func(agg.kmeans.neigh.vars, 8, "Pop Characteristic
 ####Use kmeans to group variables based on neighbourhood income characteristics
 inc.vars <- c("low.income", "middle.income", "high.income", "avg.income", "people.ei", "median.income",
               "no.hholds.bottom.20per", "low.income.pop")
-agg.kmeans.inc <- agg.2016[, inc.vars]
+agg.kmeans.inc <- agg.2016[, inc.vars, with = FALSE]
 
 obj_values(agg.kmeans.inc, "income characteristics") #find optimal number of clusters
 
@@ -210,7 +210,7 @@ agg.2016$inc.clust <- clust_func(agg.kmeans.inc, 7, "Income Characteristics")
 
 ####Use kmeans to group variables based on neighbourhood ethnicity characteristics
 ethnicity.vars <- c("non.citizens", "immigrants", "refugees", "vis.minorities")
-agg.kmeans.ethnic <- agg.2016[, ethnicity.vars]
+agg.kmeans.ethnic <- agg.2016[, ethnicity.vars, with = FALSE]
 
 obj_values(agg.kmeans.ethnic, "ethnic characteristics")
 
@@ -220,7 +220,7 @@ agg.2016$ethnic.clust <- clust_func(agg.kmeans.ethnic, 4, "Ethnic Characteristic
 
 ####Use kmeans to group variables based on neighbourhood housing characteristics
 house.vars <- c("houses", "hhlds.mjr.rprs")
-agg.kmeans.hhlds <- agg.2016[, house.vars]
+agg.kmeans.hhlds <- agg.2016[, house.vars, with = FALSE]
 
 obj_values(agg.kmeans.hhlds, "house characteristics")
 
@@ -230,7 +230,7 @@ agg.2016$houses.clust <- clust_func(agg.kmeans.hhlds, 6, "House Characteristics"
 
 ####Use kmeans to group variables based on neighbourhood education characteristics
 education.vars <- c("less.than.high.school", "high.school.cert", "post.sec.or.above")
-agg.kmeans.edu <- agg.2016[, education.vars]
+agg.kmeans.edu <- agg.2016[, education.vars, with = FALSE]
 
 obj_values(agg.kmeans.edu, "education variables")
 
@@ -259,10 +259,10 @@ names(toronto.geo)[names(toronto.geo) == 'AREA_S_CD'] <- 'Hood_ID'
 toronto.geo <- join(geo.data, toronto.geo, by = "Hood_ID")
 
 
-
+#Define function to generate heat maps (input dataframe and desired column)
 heat_map <- function(data, x) {
-  a <- ggplot(data= data, aes(x=long, y=lat, group=group))  + 
-    geom_polygon(aes_string(fill= x)) +    # draw polygons and add fill with variable
+  a <- ggplot(data= data, aes(x=long, y=lat, group=group))  + #Choose dataframe and plot neighbourhood lines
+    geom_polygon(aes_string(fill= x)) +    # draw polygons and add fill with chosen variable
     geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
     coord_equal() + 
     scale_fill_gradient(low = "#7ff4f0", high = "#000c8c",  #set colour scale
@@ -272,64 +272,77 @@ heat_map <- function(data, x) {
   print(a) # render the map
 }
 
-heat.map.var <- c( "population.2016", "total.crime", "assault", "robbery", "break.and.enter",
-                   "drug.arrests", "male.youth", "median.income", "hholds.bottom.20per.per",
+#Define function to generate heat maps for cluster variables (input dataframe and desired cluster)
+heat_map_clust <- function(data, x) {
+  a <- ggplot(data= data, aes(x=long, y=lat, group=group))  + 
+    geom_polygon(aes_string(fill= x)) +    # draw polygons and add fill with variable
+    geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
+    coord_equal() +
+    geom_tile() + #plot fill as geom tiles
+    scale_fill_brewer(palette="Blues") + #choose colour palette
+    labs(title= x)  #set title
+  print(a) # render the map
+}
+
+#Define function to generate heat maps with an upper limit on scale (input dataframe and desired cluster)
+#for variables with an outlier that throws off the colour scale
+heat_map_limit <- function(data, x, lower, upper) {
+  a <- ggplot(data=data, aes(x=long, y=lat, group=group))  + 
+    geom_polygon(aes_string(fill= x, colour = shQuote(""))) +    # draw polygons and add fill with density variable
+    geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
+    coord_equal() + 
+    scale_fill_gradient(low = "#7ff4f0", high = "#000c8c",  #Set colour scale
+                        space = "Lab", 
+                        na.value = "#000647", 
+                        limits = c(lower, upper), #Nas are grey, set upper and lower limits of scale
+                        guide = "colourbar") + #Add colour scale on side
+    scale_colour_manual(values = NA) +              
+    guides(colour=guide_legend(paste(">", upper, sep = " ", collapse = NULL), override.aes = list(fill="#000647"))) + #label guide
+    labs(title= x) #Add title
+  print(a)
+}
+
+#Define crime variables that will be plotted as a heatmap
+crime.var <- c("total.crime", "assault", "robbery", "break.and.enter",
+               "drug.arrests", "theft.over", "auto.theft")
+
+for (i in crime.var) {
+  heat_map(toronto.geo, i)
+}
+
+heat_map_limit(toronto.geo, "auto.theft", 0, 100)
+heat_map_limit(toronto.geo, "drug.arrests", 0, 100)
+heat_map_limit(toronto.geo, "robbery", 0, 80)
+heat_map_limit(toronto.geo, "assault", 0, 500)
+heat_map_limit(toronto.geo, "total.crime", 0, 500)
+
+#Define crime rates that will be plotted as a heatmap
+crime.var.per.tenthsnd <- names(agg.2016[, grepl("per.tenthsnd", colnames(agg.2016)), with = FALSE])
+
+for (i in crime.var.per.tenthsnd) {
+  heat_map(toronto.geo, i)
+}
+
+heat_map_limit(toronto.geo, "auto.theft.per.tenthsnd", 0, 50)
+heat_map_limit(toronto.geo, "drug.arrests.per.tenthsnd", 0, 50)
+
+#define variables from census data to be plotted as a heatmap
+heat.map.var <- c( "population.2016", "male.youth", "median.income", "hholds.bottom.20per.per",
                    "low.income.pop.per", "immigrants.per", "vis.minorities.per",
                    "renters.per", "hhlds.mjr.rprs.per", "unaffordable.housing.per",
                    "unemployment.rate") #Define variables to be plotted as heat map
+
 for (i in heat.map.var) {
   heat_map(toronto.geo, i)
 }
 
-
-#Plot neighbourhoods by density
-g.pop.density <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
-  geom_polygon(aes(fill= density, colour = "")) +    # draw polygons and add fill with density variable
-  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
-  coord_equal() + 
-  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c",  #Set colour scale
-                      space = "Lab", na.value = "#000647", limits = c(0, 15000), #Nas are grey, set upper and lower limits of scale
-                      guide = "colourbar") + #Add colour scale on side
-  scale_colour_manual(values = NA) +              
-  guides(colour=guide_legend(">15000", override.aes = list(fill="#000647"))) +
-  labs(title="Density of Neighbourhoods") #Add title
-print(g.pop.density) #Print map
-
-ggsave("plots_and_images/heat_map_density.png", width=10, height=5, dpi=150)
+heat_map_limit(toronto.geo, "density", 0, 15000)
+heat_map_limit(toronto.geo, "avg.income", 25000, 100000)
 
 
+#Define cluster variabes to be plotted on heat map
+clust.var <- names(agg.2016[, grepl(".clust", colnames(agg.2016)), with = FALSE])
 
-
-
-#Plot neighbourhoods by auto thefts
-g.auto.theft <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
-  geom_polygon(aes(fill= auto.theft)) +    # draw polygons and add fill with assault variable
-  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
-  coord_equal() + 
-  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
-                      space = "Lab", na.value = "grey50",
-                      guide = "colourbar")+
-  labs(title="Auto Thefts by Neighbourhood")
-print(g.auto.theft)
-
-ggsave("plots_and_images/heat_map_auto_theft.png", width=10, height=5, dpi=150)
-
-
-
-#Plot neighbourhoods by Average Income
-g.avg.income <- ggplot(data=toronto.geo, aes(x=long, y=lat, group=group))  + 
-  geom_polygon(aes(fill= avg.income, colour = "")) +    # draw polygons and add fill with avg income variable
-  geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
-  coord_equal() + 
-  scale_fill_gradient(low = "#7ff4f0", high = "#000c8c", 
-                      limits = c(20000, 100000),
-                      labels = c("20000", "40000", "60000", "80000", "100000"),
-                      space = "Lab", na.value = "#000647",
-                      guide = "colourbar") +
-  scale_colour_manual(values = NA) +              
-  guides(colour=guide_legend(">100000", override.aes = list(fill="#000647"))) + 
-  labs(title="Average Income by Neighbourhood")
-print(g.avg.income)
-
-ggsave("plots_and_images/heat_map_avg_income.png", width=10, height=5, dpi=150)
-
+for (i in clust.var) {
+  heat_map_clust(toronto.geo, i)
+}
