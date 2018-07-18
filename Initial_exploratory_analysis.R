@@ -261,33 +261,31 @@ toronto.geo <- join(geo.data, toronto.geo, by = "Hood_ID")
 
 #Define function to generate heat maps (input dataframe and desired column)
 heat_map <- function(data, x) {
-  a <- ggplot(data= data, aes(x=long, y=lat, group=group))  + #Choose dataframe and plot neighbourhood lines
+  plot(ggplot(data= data, aes(x=long, y=lat, group=group))  + #Choose dataframe and plot neighbourhood lines
     geom_polygon(aes_string(fill= x)) +    # draw polygons and add fill with chosen variable
     geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
     coord_equal() + 
     scale_fill_gradient(low = "#7ff4f0", high = "#000c8c",  #set colour scale
                         space = "Lab", na.value = "grey50",
                         guide = "colourbar")+
-    labs(title= x)  #set title
-  print(a) # render the map
+    labs(title= x))  #set title # render the map
 }
 
 #Define function to generate heat maps for cluster variables (input dataframe and desired cluster)
 heat_map_clust <- function(data, x) {
-  a <- ggplot(data= data, aes(x=long, y=lat, group=group))  + 
+  plot(ggplot(data= data, aes(x=long, y=lat, group=group))  + 
     geom_polygon(aes_string(fill= x)) +    # draw polygons and add fill with variable
     geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
     coord_equal() +
     geom_tile() + #plot fill as geom tiles
     scale_fill_brewer(palette="Blues") + #choose colour palette
-    labs(title= x)  #set title
-  print(a) # render the map
+    labs(title= x))  #set title # render the map
 }
 
 #Define function to generate heat maps with an upper limit on scale (input dataframe and desired cluster)
 #for variables with an outlier that throws off the colour scale
 heat_map_limit <- function(data, x, lower, upper) {
-  a <- ggplot(data=data, aes(x=long, y=lat, group=group))  + 
+  plot(ggplot(data=data, aes(x=long, y=lat, group=group))  + 
     geom_polygon(aes_string(fill= x, colour = shQuote(""))) +    # draw polygons and add fill with density variable
     geom_path(color="light grey" ) +  # draw boundaries of neighbourhoods
     coord_equal() + 
@@ -298,17 +296,15 @@ heat_map_limit <- function(data, x, lower, upper) {
                         guide = "colourbar") + #Add colour scale on side
     scale_colour_manual(values = NA) +              
     guides(colour=guide_legend(paste(">", upper, sep = " ", collapse = NULL), override.aes = list(fill="#000647"))) + #label guide
-    labs(title= x) #Add title
-  print(a)
+    labs(title= x)) #Add title
+  
 }
 
 #Define crime variables that will be plotted as a heatmap
 crime.var <- c("total.crime", "assault", "robbery", "break.and.enter",
                "drug.arrests", "theft.over", "auto.theft")
 
-for (i in crime.var) {
-  heat_map(toronto.geo, i)
-}
+sapply(crime.var, function(x) {heat_map(toronto.geo, x)})
 
 heat_map_limit(toronto.geo, "auto.theft", 0, 100)
 heat_map_limit(toronto.geo, "drug.arrests", 0, 100)
@@ -319,9 +315,7 @@ heat_map_limit(toronto.geo, "total.crime", 0, 500)
 #Define crime rates that will be plotted as a heatmap
 crime.var.per.tenthsnd <- names(agg.2016[, grepl("per.tenthsnd", colnames(agg.2016)), with = FALSE])
 
-for (i in crime.var.per.tenthsnd) {
-  heat_map(toronto.geo, i)
-}
+sapply(crime.var.per.tenthsnd, function(x) {heat_map(toronto.geo, x)})
 
 heat_map_limit(toronto.geo, "auto.theft.per.tenthsnd", 0, 50)
 heat_map_limit(toronto.geo, "drug.arrests.per.tenthsnd", 0, 50)
@@ -332,9 +326,7 @@ heat.map.var <- c( "population.2016", "male.youth", "median.income", "hholds.bot
                    "renters.per", "hhlds.mjr.rprs.per", "unaffordable.housing.per",
                    "unemployment.rate") #Define variables to be plotted as heat map
 
-for (i in heat.map.var) {
-  heat_map(toronto.geo, i)
-}
+sapply(heat.map.var, function(x) {heat_map(toronto.geo, x)})
 
 heat_map_limit(toronto.geo, "density", 0, 15000)
 heat_map_limit(toronto.geo, "avg.income", 25000, 100000)
@@ -343,6 +335,4 @@ heat_map_limit(toronto.geo, "avg.income", 25000, 100000)
 #Define cluster variabes to be plotted on heat map
 clust.var <- names(agg.2016[, grepl(".clust", colnames(agg.2016)), with = FALSE])
 
-for (i in clust.var) {
-  heat_map_clust(toronto.geo, i)
-}
+sapply(clust.var, function(x) {heat_map_clust(toronto.geo, x)})
