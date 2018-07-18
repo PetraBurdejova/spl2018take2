@@ -14,6 +14,9 @@ swD <- function (p, x) {
   shapiro.test(y)$statistic
 }
 
+#names of the seven regressions
+crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
+
 #lists and data frames to store results of the regression loop
 firstregressionresults <- list()
 regressionresults <- list()
@@ -25,9 +28,6 @@ firsthistogram <- list()
 density <- list()
 histogram <- list()
 ceresplots <- list()
-
-#names of the seven regressions
-crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
 
 
 #####regression loop#####
