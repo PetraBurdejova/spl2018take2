@@ -20,15 +20,15 @@ summary(reg2)
 ###Wrote an F-test function in case you want to test it on multiple columns
 ###or on different variables
 f.test <- function(data, y, x, model.name, no.pred) {
-  RSS0 <- sum((data[,y] - mean(data[, y]))^2) #20181.97, this is same as TSS really
+  RSS0 <- sum((data[,y, with = FALSE] - mean(data[, y, with = FALSE]))^2) #20181.97, this is same as TSS really
   RSS <- sum(model.name$residuals^2) #20181.64
   p <-  no.pred #predictors whos coefficient we are testing.
-  n <- nrow(data[, x]) #number of observations
+  n <- nrow(data[, x, with = FALSE]) #number of observations
   
-  F <- ( (RSS0-RSS)/p ) / (RSS/(n-p-1))
+  f <- ( (RSS0-RSS)/p ) / (RSS/(n-p-1))
   
   ##use and if statement and pf function to reject or not reject null hypothesis
-  if(pf(F, p, n-p-1) >= 0.95) {
+  if(pf(f, p, n-p-1) >= 0.95) {
     print("You can reject the null hypothesis")
   }else{
     print("you can not reject the null hypothesis")
