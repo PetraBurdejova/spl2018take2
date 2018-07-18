@@ -7,7 +7,7 @@
 Name of QuantLet : Automated regression
 
 
-Description: Regressions for all crime types are automized in a for-loop
+Description: Regressions for all crime types are automated in a for-loop
 
 Keywords: regression
 
