@@ -2,7 +2,6 @@
 #head
 r <- as.data.frame(agg.2016)
 r$obsnumber <- r$Hood_ID
-r$Hood_ID <- NULL
 library(car)
 library(lmtest)
 library(nortest)
@@ -83,3 +82,6 @@ for (i in crimetypes){
 }
 
 rm(crimetypes, i, swD)
+
+plot(histogram[[3]], main="blub")
+ceresplots[[3]]
