@@ -24,7 +24,7 @@ firsthistogram <- list()
 density <- list()
 histogram <- list()
 ceresplots <- list()
-
+regressionstargazer <- list()
 
 #####regression loop#####
 for (i in crimetypes){
@@ -40,6 +40,7 @@ for (i in crimetypes){
   rtmp$tmp.bp <- bcPower(rtmp$tmp, 0.2734738)
   model <- lm(tmp.bp~male.youth+less.than.high.school+low.income+immigrants, data=rtmp)
   regressionresults[[i]]<-summary(model)
+  regressionstargazer[[i]] <- model
   
   ##Check for OLS-Assumptions
   
@@ -82,3 +83,10 @@ rm(crimetypes, i, swD)
 
 plot(histogram[[3]], main="blub")
 ceresplots[[3]]
+
+
+stargazer(regressionstargazer,
+          dep.var.labels = crimetypes, 
+          covariate.labels = "regressionstargazer$assault$coefficients")
+###or similar
+
