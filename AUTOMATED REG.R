@@ -2,10 +2,7 @@
 #head
 r <- as.data.frame(agg.2016)
 r$obsnumber <- r$Hood_ID
-library(car)
-library(lmtest)
-library(nortest)
-library(corrplot)
+
 
 #shapiro wilk p-value for basic power transformated variable
 swD <- function (p, x) {

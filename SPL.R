@@ -29,7 +29,7 @@ rm(list=ls())
 
 ###regression analysis
 
-    source("REGRESSIONS.R")
+    source("AUTOMATED REG.R")
 
 
 

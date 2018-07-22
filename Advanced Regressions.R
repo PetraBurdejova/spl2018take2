@@ -50,7 +50,7 @@ summary(log_assault)
 
 
 ###tests for normality
-library(nortest)
+
 shapiro.test(residuals(log_assault)) ### H0 <- normality ----> p>0.05 ---> normality
 
 lillie.test(residuals(log_assault)) ### same as above -> normally distributed
@@ -58,7 +58,7 @@ lillie.test(residuals(log_assault)) ### same as above -> normally distributed
 
 
 ####test for heteroscedasticity
-library(lmtest)
+
 bptest(log_assault) ### H0 <- homoscedasticity no heteroscedasticity 
 ##achtung! very sensitive to violation of normal assumption
 
@@ -86,7 +86,6 @@ plot(density(residuals(log_rob)))
 
 
 ###tests for normality
-library(nortest)
 shapiro.test(residuals(log_rob)) ### H0 <- normality ----> p>0.05 ---> normality
 
 lillie.test(residuals(log_rob)) ### same as above -> normally distributed
@@ -94,7 +93,6 @@ lillie.test(residuals(log_rob)) ### same as above -> normally distributed
 
 
 ####test for heteroscedasticity
-library(lmtest)
 bptest(log_rob) ### H0 <- homoscedasticity no heteroscedasticity 
 ##achtung! very sensitive to violation of normal assumption
 
@@ -130,7 +128,6 @@ plot(m$rob.cap, add = T, col = "RED")
 
 
 
-library(ggplot2)
 
 ggplot(m, aes(x = male.youth.per, y = rob.cap)) +  # Set up canvas with outcome variable on y-axis
   geom_point() +
@@ -211,8 +208,7 @@ plot(residuals(poisson_rob))
 plot(residuals(spatial_log_rob))
 plot(residuals(log_rob))
 
-install.packages("stargazer")
-library(stargazer)
+
 
 stargazer(model_robbery, log_rob, spatial_log_rob, poisson_rob,
           dep.var.labels = c("Robbery", "Robbery", "Robbery"), 

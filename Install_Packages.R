@@ -52,7 +52,12 @@ packages <- c("tidyverse",
               "scales",
               "caret",
               "readr",
-              "stringr")
+              "stringr",
+              "car",
+              "lmtest", 
+              "nortest",
+              "corrplot",
+              "stargazer")
 
 usePackage <-function(p){
   if (!is.element(p, installed.packages()[,1])){
