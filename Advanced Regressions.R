@@ -242,91 +242,79 @@ r$dist <- knn.dist
 
 ######automated regression####
 
-#####preparation for the regression loop#####
-#head
+
+#conversion to data frame
 r <- as.data.frame(agg.2016)
 r$obsnumber <- r$Hood_ID
 
-
-#shapiro wilk p-value for basic power transformated variable
+#swD-function
 swD <- function (p, x) {
   y <- bcPower(x, p)
   shapiro.test(y)$statistic
 }
 
-#names of the seven regressions
+#crimetypes vector
 crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
 
 #lists and data frames to store results of the regression loop
-firstregressionresults.log <- list()
-regressionresults.log <- list()
+regressionresults <- list()
+regressionstargazer.log <- list()
 ols.ass.log <- as.data.frame(matrix(nrow=7, ncol=11))
 colnames(ols.ass.log) <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3", "vif4", "cortest1", "cortest2", "cortest3", "cortest4")
 rownames(ols.ass.log) <- crimetypes
-firstdensity.log <- list()
-firsthistogram.log <- list()
-density.log <- list()
-histogram.log <- list()
 ceresplots.log <- list()
-regressionstargazer.log <- list()
 
-#####regression loop#####
+
+
+#regression loop for original data
 for (i in crimetypes){
   
-  ##Outlier detection, basic power transformation and regression
+  #storing the crime type in r$tmp
+  r[,i][r[,i] == 0] <- 1
   r$tmp <- r[,i]
-  firstregressionresults.log[[i]]<-summary(lm(tmp~male.youth+less.than.high.school+low.income+immigrants, data=r))
-  outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp),]$obsnumber
-  rtmp<-r[!r$obsnumber %in% outliers,]
-  rtmp[rtmp$tmp==0,] <- 1
-  exponent <- optimize(swD, c(-3,3), x=rtmp$tmp)$objective
-  shapiro.test(bcPower(rtmp$tmp,exponent))
-  rtmp$tmp.bp <- bcPower(rtmp$tmp, 0.2734738)
-  model <- lm(tmp.bp~male.youth+less.than.high.school+low.income+immigrants, data=rtmp)
-  regressionresults.log[[i]]<-summary(model)
-  regressionstargazer.log[[i]] <- model
   
-  ##Check for OLS-Assumptions
+  #first regression
+  log.model<-lm(log(tmp)~male.youth+less.than.high.school+low.income+immigrants, data=r)
+  regressionresults.log[[i]]<-summary(log.model)
+  regressionstargazer.log[[i]] <- log.model
   
-  #Assumption: error term has a population mean of zero - irrelevant as we include an intercept
-  ols.ass.log[i, "means"] <- mean(model$residuals)
+  #Assumption-check: error term has a mean of zero #irrelevant as we include an intercept
+  ols.ass.log[i, "means"] <- mean(log.model$residuals)
   
-  #Assumption: no serial correlation of the error term 
+  #Assumption-check: no serial correlation of the error term 
   #irrelevant as observation order is random
   
-  #Assumption: the error term is homoscedastic
-  ols.ass.log[i, "bptests"] <- bptest(model)$p.value #sensitive to asumption of normality
+  #Assumption-check: error term is homoscedastic
+  ols.ass.log[i, "bptests"] <- bptest(log.model)$p.value #sensitive to asumption of normality
   
-  #Assumption: error term is normally distributed (optional: not required for OLS, but allows to performa statistical hypothesis testing and generate reliable confidence intervals)
-  ols.ass.log[i, "swtests"] <- shapiro.test(residuals(model))$p.value
+  #Assumption-check: error term is normally distributed #optional: not required for OLS, but allows to performa statistical hypothesis testing and generate reliable confidence intervals)
+  ols.ass.log[i, "swtests"] <- shapiro.test(residuals(log.model))$p.value
   
-  #Assumption: regression model is linear in the coefficients and the error term
-  crPlots(model)
-  ceresplots.log[[i]] <- recordPlot() #ceresPlots(model)
-  
-  #Assumption: no (perfect) multicollinearity within the independent variables - variance inflation factors
-  ols.ass.log[i, "vif1"] <- vif(model)[1]
-  ols.ass.log[i, "vif2"] <- vif(model)[2]
-  ols.ass.log[i, "vif3"] <- vif(model)[3]
-  ols.ass.log[i, "vif4"] <- vif(model)[4]
+  #Assumption-check: no imperfect multicollinearity within the independent variables
+  ols.ass.log[i, "vif1"] <- vif(log.model)[1]
+  ols.ass.log[i, "vif2"] <- vif(log.model)[2]
+  ols.ass.log[i, "vif3"] <- vif(log.model)[3]
+  ols.ass.log[i, "vif4"] <- vif(log.model)[4]
   #corrplot::corrplot(cor(r_assault[c(),]))
   
-  #Assumption: no correlation of each independent variable with the error term
-  ols.ass.log[i, "cortest1"] <- cor.test(rtmp$male.youth, model$residuals)$p.value
-  ols.ass.log[i, "cortest2"] <- cor.test(rtmp$less.than.high.school, model$residuals)$p.value
-  ols.ass.log[i, "cortest3"] <- cor.test(rtmp$low.income, model$residuals)$p.value
-  ols.ass.log[i, "cortest4"] <- cor.test(rtmp$immigrants, model$residuals)$p.value
-  firstdensity.log[[i]] <- density(r$tmp)
-  firsthistogram.log[[i]] <- hist(r$tmp)
-  density.log[[i]] <- density(rtmp$tmp.bp)
-  histogram.log[[i]] <- hist(rtmp$tmp.bp)
-  rm(exponent, model, outliers, rtmp)
+  #Assumption-check: no correlation of each independent variable with the error term
+  ols.ass.log[i, "cortest1"] <- cor.test(r$male.youth, log.model$residuals)$p.value
+  ols.ass.log[i, "cortest2"] <- cor.test(r$less.than.high.school, log.model$residuals)$p.value
+  ols.ass.log[i, "cortest3"] <- cor.test(r$low.income, log.model$residuals)$p.value
+  ols.ass.log[i, "cortest4"] <- cor.test(r$immigrants, log.model$residuals)$p.value
+  
+  #Assumption-check: regression model is linear in the coefficients and the error term
+  crPlots(log.model)
+  ceresplots.log[[i]] <- recordPlot()
+  #ceresPlots(firstmodel)
+  
+  rm(log.model)
 }
 
-rm(crimetypes, i, swD)
+rm(crimetypes, i, swD, r)
 
-plot(histogram.log[[3]], main="blub")
-ceresplots[[3]]
+
+
 
 
 stargazer(regressionstargazer.log,
