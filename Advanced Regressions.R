@@ -233,97 +233,240 @@ r$dist <- knn.dist
 
 
 
+######automated advanced regression####
+##log transformed data
 
-
-
-
-
-
-
-######automated regression####
-
-
-#conversion to data frame
-r <- as.data.frame(agg.2016)
-r$obsnumber <- r$Hood_ID
-
-#swD-function
-swD <- function (p, x) {
-  y <- bcPower(x, p)
-  shapiro.test(y)$statistic
-}
-
-#crimetypes vector
-crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery", "theft.over", "drug.arrests", "total.crime")
-
+##crimetypes and r still existent
 #lists and data frames to store results of the regression loop
-regressionresults <- list()
+regressionresults.log <- list()
 regressionstargazer.log <- list()
 ols.ass.log <- as.data.frame(matrix(nrow=7, ncol=11))
-colnames(ols.ass.log) <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3", "vif4", "cortest1", "cortest2", "cortest3", "cortest4")
+colnames(ols.ass.log)  <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3",
+                            "vif4", "cortest1", "cortest2", "cortest3", "cortest4")
 rownames(ols.ass.log) <- crimetypes
 ceresplots.log <- list()
 
 
-
-#regression loop for original data
+# loop for the regressions using original data
 for (i in crimetypes){
   
   #storing the crime type in r$tmp
   r[,i][r[,i] == 0] <- 1
   r$tmp <- r[,i]
   
-  #first regression
-  log.model<-lm(log(tmp)~male.youth+less.than.high.school+low.income+immigrants, data=r)
-  regressionresults.log[[i]]<-summary(log.model)
-  regressionstargazer.log[[i]] <- log.model
+  # regression with original data
+  logmodel <- lm(log(tmp)~male.youth + less.than.high.school + low.income 
+                 + immigrants, data=r)
+  regressionresults.log[[i]]<-summary(logmodel)
+  regressionstargazer.log[[i]] <- (logmodel)
   
-  #Assumption-check: error term has a mean of zero #irrelevant as we include an intercept
-  ols.ass.log[i, "means"] <- mean(log.model$residuals)
+  # assumption-check: the error term has a mean of zero
+  ols.ass.log[i, "means"] <- mean(logmodel$residuals)
   
-  #Assumption-check: no serial correlation of the error term 
-  #irrelevant as observation order is random
+  # assumption-check: no serial correlation of the error term 
+  # irrelevant as the observation order is random
   
-  #Assumption-check: error term is homoscedastic
-  ols.ass.log[i, "bptests"] <- bptest(log.model)$p.value #sensitive to asumption of normality
+  # assumption-check: the error term is homoscedastic
+  ols.ass.log[i, "bptests"] <- bptest(logmodel)$p.value 
+  # caution: bptest is sensitive to asumption of normality
   
-  #Assumption-check: error term is normally distributed #optional: not required for OLS, but allows to performa statistical hypothesis testing and generate reliable confidence intervals)
-  ols.ass.log[i, "swtests"] <- shapiro.test(residuals(log.model))$p.value
+  # assumption-check: the error term is normally distribute (optional)
+  ols.ass.log[i, "swtests"] <- shapiro.test(residuals(logmodel))$p.value
   
-  #Assumption-check: no imperfect multicollinearity within the independent variables
-  ols.ass.log[i, "vif1"] <- vif(log.model)[1]
-  ols.ass.log[i, "vif2"] <- vif(log.model)[2]
-  ols.ass.log[i, "vif3"] <- vif(log.model)[3]
-  ols.ass.log[i, "vif4"] <- vif(log.model)[4]
+  # assumption-check: no imperfect multicollinearity within the regressors
+  ols.ass.log[i, "vif1"] <- vif(logmodel)[1]
+  ols.ass.log[i, "vif2"] <- vif(logmodel)[2]
+  ols.ass.log[i, "vif3"] <- vif(logmodel)[3]
+  ols.ass.log[i, "vif4"] <- vif(logmodel)[4]
   #corrplot::corrplot(cor(r_assault[c(),]))
   
-  #Assumption-check: no correlation of each independent variable with the error term
-  ols.ass.log[i, "cortest1"] <- cor.test(r$male.youth, log.model$residuals)$p.value
-  ols.ass.log[i, "cortest2"] <- cor.test(r$less.than.high.school, log.model$residuals)$p.value
-  ols.ass.log[i, "cortest3"] <- cor.test(r$low.income, log.model$residuals)$p.value
-  ols.ass.log[i, "cortest4"] <- cor.test(r$immigrants, log.model$residuals)$p.value
+  # assumption-check: no correlation of each regressor with the error term
+  ols.ass.log[i, "cortest1"] <- cor.test(r$male.youth, 
+                                         logmodel$residuals)$p.value
+  ols.ass.log[i, "cortest2"] <- cor.test(r$less.than.high.school, 
+                                         logmodel$residuals)$p.value
+  ols.ass.log[i, "cortest3"] <- cor.test(r$low.income, 
+                                         logmodel$residuals)$p.value
+  ols.ass.log[i, "cortest4"] <- cor.test(r$immigrants, 
+                                         logmodel$residuals)$p.value
   
-  #Assumption-check: regression model is linear in the coefficients and the error term
-  crPlots(log.model)
+  # assumption-check: linear relation between dependent variable and regressors
+  crPlots(logmodel)
   ceresplots.log[[i]] <- recordPlot()
-  #ceresPlots(firstmodel)
   
-  rm(log.model)
+  rm(logmodel)
 }
 
-rm(crimetypes, i, swD, r)
+
+# 
+# 
+# stargazer(regressionstargazer.log,
+#           dep.var.labels = crimetypes, 
+#           covariate.labels = "regressionstargazer$assault$coefficients")
+# ###or similar
+# 
+
+###################################################################
+#####spatial regressions
 
 
 
+##crimetypes and r still existent
+#lists and data frames to store results of the regression loop
+regressionresults.spa <- list()
+regressionstargazer.spa <- list()
+ols.ass.spa <- as.data.frame(matrix(nrow=7, ncol=11))
+colnames(ols.ass.spa)  <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3",
+                            "vif4", "cortest1", "cortest2", "cortest3", "cortest4")
+rownames(ols.ass.spa) <- crimetypes
+ceresplots.spa <- list()
+
+# loop for the regressions using original data
+for (i in crimetypes){
+  
+  #storing the crime type in r$tmp
+  r[,i][r[,i] == 0] <- 1
+  r$tmp <- r[,i]
+  
+  # regression with original data
+  spamodel  <- lagsarlm(tmp~male.youth+less.than.high.school
+                              +low.income+immigrants, data=r, W)
+  regressionresults.spa[[i]]<-summary(spamodel)
+  regressionstargazer.spa[[i]] <- (spamodel)
+  
+  # assumption-check: the error term has a mean of zero
+  ols.ass.spa[i, "means"] <- mean(spamodel$residuals)
+  
+  # assumption-check: no serial correlation of the error term 
+  # irrelevant as the observation order is random
+  
+  # assumption-check: the error term is homoscedastic
+  #######Error in terms.default(formula) : no terms component nor attribute
+  #ols.ass.spa[i, "bptests"] <- bptest(spamodel)$p.value 
+  # caution: bptest is sensitive to asumption of normality
+  
+  # assumption-check: the error term is normally distribute (optional)
+  ols.ass.spa[i, "swtests"] <- shapiro.test(residuals(spamodel))$p.value
+  
+  # assumption-check: no imperfect multicollinearity within the regressors
+  ######Error in terms.default(object) : no terms component nor attribute
+  # ols.ass.spa[i, "vif1"] <- vif(spamodel)[1]
+  # ols.ass.spa[i, "vif2"] <- vif(spamodel)[2]
+  # ols.ass.spa[i, "vif3"] <- vif(spamodel)[3]
+  # ols.ass.spa[i, "vif4"] <- vif(spamodel)[4]
+   #corrplot::corrplot(cor(r_assault[c(),]))
+  
+  # assumption-check: no correlation of each regressor with the error term
+  ols.ass.spa[i, "cortest1"] <- cor.test(r$male.youth, 
+                                         spamodel$residuals)$p.value
+  ols.ass.spa[i, "cortest2"] <- cor.test(r$less.than.high.school, 
+                                         spamodel$residuals)$p.value
+  ols.ass.spa[i, "cortest3"] <- cor.test(r$low.income, 
+                                         spamodel$residuals)$p.value
+  ols.ass.spa[i, "cortest4"] <- cor.test(r$immigrants, 
+                                         spamodel$residuals)$p.value
+  
+  # assumption-check: linear relation between dependent variable and regressors
+  ######
+  ######Error in eval(predvars, data, env) : object 'tmp' not found
+  # crPlots(spamodel)
+  # ceresplots.spa[[i]] <- recordPlot()
+  
+  rm(spamodel)
+}
 
 
-stargazer(regressionstargazer.log,
-          dep.var.labels = crimetypes, 
-          covariate.labels = "regressionstargazer$assault$coefficients")
-###or similar
+
+###################################################################
+#####poisson regressions
+
+##crimetypes and r still existent
+#lists and data frames to store results of the regression loop
+regressionresults.po <- list()
+regressionstargazer.po <- list()
+ols.ass.po <- as.data.frame(matrix(nrow=7, ncol=11))
+colnames(ols.ass.po)  <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3",
+                           "vif4", "cortest1", "cortest2", "cortest3", "cortest4")
+rownames(ols.ass.po) <- crimetypes
+ceresplots.po <- list()
+
+# loop for the regressions using original data
+for (i in crimetypes){
+  
+  #storing the crime type in r$tmp
+  r[,i][r[,i] == 0] <- 1
+  r$tmp <- r[,i]
+  
+  # regression with original data
+  pomodel  <- glm(robbery~male.youth+less.than.high.school+low.income+immigrants, family = "poisson", data = r)
+  regressionresults.po[[i]]<-summary(pomodel)
+  regressionstargazer.po[[i]] <- (pomodel)
+  
+  # assumption-check: the error term has a mean of zero
+  ols.ass.po[i, "means"] <- mean(pomodel$residuals)
+  
+  # assumption-check: no serial correlation of the error term 
+  # irrelevant as the observation order is random
+  
+  # assumption-check: the error term is homoscedastic
+  #######Error in terms.default(formula) : no terms component nor attribute
+  #ols.ass.spa[i, "bptests"] <- bptest(spamodel)$p.value 
+  # caution: bptest is sensitive to asumption of normality
+  
+  # assumption-check: the error term is normally distribute (optional)
+  ols.ass.po[i, "swtests"] <- shapiro.test(residuals(pomodel))$p.value
+  
+  # assumption-check: no imperfect multicollinearity within the regressors
+  ######Error in terms.default(object) : no terms component nor attribute
+  # ols.ass.spa[i, "vif1"] <- vif(spamodel)[1]
+  # ols.ass.spa[i, "vif2"] <- vif(spamodel)[2]
+  # ols.ass.spa[i, "vif3"] <- vif(spamodel)[3]
+  # ols.ass.spa[i, "vif4"] <- vif(spamodel)[4]
+  #corrplot::corrplot(cor(r_assault[c(),]))
+  
+  # assumption-check: no correlation of each regressor with the error term
+  ols.ass.po[i, "cortest1"] <- cor.test(r$male.youth, 
+                                        pomodel$residuals)$p.value
+  ols.ass.po[i, "cortest2"] <- cor.test(r$less.than.high.school, 
+                                        pomodel$residuals)$p.value
+  ols.ass.po[i, "cortest3"] <- cor.test(r$low.income, 
+                                        pomodel$residuals)$p.value
+  ols.ass.po[i, "cortest4"] <- cor.test(r$immigrants, 
+                                        pomodel$residuals)$p.value
+  
+  # assumption-check: linear relation between dependent variable and regressors
+  ######
+  ######Error in eval(predvars, data, env) : object 'tmp' not found
+  # crPlots(spamodel)
+  # ceresplots.spa[[i]] <- recordPlot()
+  
+  rm(pomodel)
+}
 
 
+####try to format regression results according to crimetype
+#desired format: 
+# assault <- list()
+# 
+# assault[["bp"]] <- regressionstargazer$assault
+# assault[["first"]] <- regressionstargazer.first$assault 
+# assault[["log"]] <- regressionstargazer.log$assault
+# assault[["spatial"]] <- regressionstargazer.spa$assault
+# assault[["poisson"]] <- regressionstargazer.po$assault
+# 
+# stargazer(assault)
 
+
+crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery",
+                "theft.over", "drug.arrests", "total.crime")
+
+assault <- list()
+auto.theft <- list()
+break.and.enter <- list()
+robbery <- list()
+theft.over <- list()
+drug.arrests <- list()
+total.crime <- list()
 
 
 
