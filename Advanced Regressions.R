@@ -163,69 +163,13 @@ ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
 
 
 
-####spatial regression####
-#defining neighbours
-shp <- readOGR(".", "NEIGHBORHOODS_WGS84")
-###based on queen approach
-neigh <- poly2nb(shp, queen = TRUE)
-W<-nb2listw(neigh, style="W", zero.policy=TRUE)
-W
-plot(W, coordinates(shp))
-
-##based on distance 
-# coords<-coordinates(shp)
-# W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
-### -> check out which ones better -> Moran'S I test 
-
-#http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
-
-
-# moran's I test
-moran.lm <-lm.morantest(log_rob, W, alternative="two.sided")
-print(moran.lm) ## H0 <- Data ist random
-
-##Lagrange multiplier test
-LM<-lm.LMtests(log_assault, W, test="all")
-print(LM)
-
-
-spatial_log_rob  <-lagsarlm(log.rob~male.youth+less.than.high.school+low.income+immigrants, data=r, W)
-summary(spatial_log_rob)
-summary(log_rob)
-
-#not very high differences 
-
-
-#poisson regression 
-
-poisson_rob <- glm(robbery~male.youth+less.than.high.school+low.income+immigrants, family = "poisson", data = r)
-summary(poisson_rob)
-summary(spatial_log_rob)
-summary(log_rob)
-
-plot(residuals(poisson_rob))
-
-plot(residuals(spatial_log_rob))
-plot(residuals(log_rob))
 
 
 
-stargazer(model_robbery, log_rob, spatial_log_rob, poisson_rob,
-          dep.var.labels = c("Robbery", "Robbery", "Robbery"), 
-          covariate.labels = c("Male youth", "Less than High School", "Low Income Households", "Visible immigrants"), out = "models.tex")
 
 
-#####additional spatial regressionnn######
-neighbourhood.center <- st_centroid(toronto_map$geometry)
-###hoodID 77 has most assaults -> calculate distance from every neighbourhood to neighbourhood 77
 
-toronto_map1 <- readOGR(".", "NEIGHBORHOODS_WGS84")
-toronto_small <- subset(toronto_map1, toronto_map1@data$AREA_S_CD == "077")
 
-knn1 <- knn( coordinates(toronto_small), coordinates(toronto_map1), k=1)
-knn.dist <- knn1$nn.dists
-
-r$dist <- knn.dist
 
 
 
@@ -468,6 +412,14 @@ theft.over <- list()
 drug.arrests <- list()
 total.crime <- list()
 
+
+for(i in crimetypes){
+  i[["bp"]] <- regressionstargazer["i"]
+  i[["first"]] <- regressionstargazer.first["i"]
+  i[["log"]] <- regressionstargazer.log["i"]
+  i[["spatial"]] <- regressionstargazer.spa["i"]
+  i[["poisson"]] <- regressionstargazer.po["i"]
+}
 
 
 

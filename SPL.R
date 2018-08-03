@@ -3,6 +3,7 @@ rm(list=ls())
 ####set working directory####
     setwd("C:/Users/Felix/Desktop/Uni/Berlin/2. Semester/SPL/spl2018take2")
 
+
 ####install all packages if needed####
     source("Install_packages.R")
 
@@ -15,13 +16,9 @@ rm(list=ls())
 
     source("Initial_exploratory_analysis.R")
 
-#####F-test####
+#####Construct F-test by hand to show if coefficients are jointly significant if needed####
 
     source("F-Test.R")
-
-###heatmap ####
-
-  #  source("heatmap_below.R")
 
 ####calculating the ratio of green parks etc. per neighbourhood ####
 
