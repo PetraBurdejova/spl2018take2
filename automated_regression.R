@@ -22,6 +22,7 @@ crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery",
 regressionresults.first <- list()
 regressionresults <- list()
 regressionstargazer.first <- list()
+regressionstargazer <- list()
 ols.ass <- as.data.frame(matrix(nrow=7, ncol=11))
 colnames(ols.ass) <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3",
                        "vif4", "cortest1", "cortest2", "cortest3", "cortest4")
