@@ -440,5 +440,8 @@ for(i in crimetypes){
   i[["poisson"]] <- regressionstargazer.po["i"]
 }
 
-stargazer(assault, )
+stargazer(assault, dep.var.caption = "Types of Regressions",
+          column.labels = c("Basic Power Transformation", "OLS", "Log-OLS", "Spatial Regression", "Poisson Regression"),
+          model.names = FALSE, multicolumn = FALSE, 
+          dep.var.labels.include = F)
 
