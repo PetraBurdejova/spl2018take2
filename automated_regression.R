@@ -84,7 +84,7 @@ for (i in crimetypes){
   ols.ass[i, "cortest4"] <- cor.test(rtmp$immigrants, model$residuals)$p.value
 
   # assumption-check: linear relation between dependent variable and regressors
-  crPlots(model)
+  crPlots(model, main = paste("component + residual plots", i, "(transformed data)"))
   ceresplots[[i]] <- recordPlot()
 
   rm(exponent, model, outliers, rtmp)
@@ -134,7 +134,7 @@ for (i in crimetypes){
                                            firstmodel$residuals)$p.value
 
   # assumption-check: linear relation between dependent variable and regressors
-  crPlots(firstmodel)
+  crPlots(firstmodel, main = paste("component + residual plots", i))
   ceresplots.first[[i]] <- recordPlot()
   
   rm(firstmodel)
