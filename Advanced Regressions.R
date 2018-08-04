@@ -254,7 +254,24 @@ for (i in crimetypes){
 ###################################################################
 #####spatial regressions
 
-
+#defining neighbours
+shp <- readOGR(".", "NEIGHBORHOODS_WGS84")
+###based on queen approach
+neigh <- poly2nb(shp, queen = TRUE)
+W<-nb2listw(neigh, style="W", zero.policy=TRUE)
+W
+plot(W, coordinates(shp))
+# ##based on distance 
+# # coords<-coordinates(shp)
+# # W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
+# ### -> check out which ones better -> Moran'S I test 
+# #http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
+# # moran's I test
+# moran.lm <-lm.morantest(log_rob, W, alternative="two.sided")
+# print(moran.lm) ## H0 <- Data ist random
+# ##Lagrange multiplier test
+# LM<-lm.LMtests(log_assault, W, test="all")
+# print(LM)
 
 ##crimetypes and r still existent
 #lists and data frames to store results of the regression loop
