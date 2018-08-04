@@ -198,7 +198,6 @@ r[,crime.var][r[, crime.var] == 0] <- 1
 for (i in crimetypes){
   
   #storing the crime type in r$tmp
-  r[, i]r[i == 0] <- 1
   r$tmp <- log(r[, i])
   
   # regression with original data
