@@ -191,7 +191,7 @@ rownames(ols.ass.log) <- crimetypes
 ceresplots.log <- list()
 
 ##overcome the problem of log(0) = infinity 
-r[, 2:8][r[, 2:8] == 0] <- 1
+r[, crime.var][r[, crime.var] == 0] <- 1
 
 #######
 
