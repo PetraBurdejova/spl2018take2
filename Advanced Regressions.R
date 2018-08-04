@@ -1,166 +1,166 @@
-#######basic stuff######
-####assault#####
-hist(agg.2016$assault)
-plot(density(agg.2016$assault))
-
-agg.2016$log.assault <- log(agg.2016$assault)
-
-hist(agg.2016$log.assault)
-plot(density(agg.2016$log.assault))
-
-####robbery#####
-hist(agg.2016$robbery)
-plot(density(agg.2016$robbery))
-agg.2016$robbery[agg.2016$robbery == 0]
-agg.2016$robbery[agg.2016$robbery == 0] <- 1
-
-agg.2016$log.rob <- log(agg.2016$robbery)
-
-hist(agg.2016$log.rob)
-plot(density(agg.2016$log.rob))
-
-
-
-
-###try first models####
-
-r <- as.data.frame(agg.2016)
-
-log_assault <- lm(log.assault~male.youth+less.than.high.school+low.income+immigrants, data=r)
-summary(log_assault)
-
-log_plot <- plot(log_assault)
-
-# Residuals versus fitted values (for checking E(ε|X) = 0)  
+# #######basic stuff######
+# ####assault#####
+# hist(agg.2016$assault)
+# plot(density(agg.2016$assault))
 # 
-# QQ plot: ordered residuals versus normal quantiles (for checking normality).
+# agg.2016$log.assault <- log(agg.2016$assault)
 # 
-# Scale-location plot:  √ˆri| (of standardized residuals ri ) versus fitted valuesˆyi (for checking i.i.d. assumption, in particular  Var (ε|X) =σ2I).
+# hist(agg.2016$log.assault)
+# plot(density(agg.2016$log.assault))
 # 
-# Combinations of standardized residuals, leverage, and Cook’s
-# distance
-
-
-plot(residuals(log_assault))
-plot(density(residuals(log_assault)))
-
-0.0002
-
-summary(log_assault)
-
-
-###tests for normality
-
-shapiro.test(residuals(log_assault)) ### H0 <- normality ----> p>0.05 ---> normality
-
-lillie.test(residuals(log_assault)) ### same as above -> normally distributed
-
-
-
-####test for heteroscedasticity
-
-bptest(log_assault) ### H0 <- homoscedasticity no heteroscedasticity 
-##achtung! very sensitive to violation of normal assumption
-
-####robbery#####
-
-
-log_rob <- lm(log.rob~male.youth+less.than.high.school+low.income+immigrants, data=r)
-summary(log_rob)
-
-log_plot <- plot(log_rob)
-
-# Residuals versus fitted values (for checking E(ε|X) = 0)  
+# ####robbery#####
+# hist(agg.2016$robbery)
+# plot(density(agg.2016$robbery))
+# agg.2016$robbery[agg.2016$robbery == 0]
+# agg.2016$robbery[agg.2016$robbery == 0] <- 1
 # 
-# QQ plot: ordered residuals versus normal quantiles (for checking normality).
+# agg.2016$log.rob <- log(agg.2016$robbery)
 # 
-# Scale-location plot:  √ˆri| (of standardized residuals ri ) versus fitted valuesˆyi (for checking i.i.d. assumption, in particular  Var (ε|X) =σ2I).
+# hist(agg.2016$log.rob)
+# plot(density(agg.2016$log.rob))
 # 
-# Combinations of standardized residuals, leverage, and Cook’s
-# distance
-
-
-plot(residuals(log_rob))
-plot(density(residuals(log_rob)))
-
-
-
-###tests for normality
-shapiro.test(residuals(log_rob)) ### H0 <- normality ----> p>0.05 ---> normality
-
-lillie.test(residuals(log_rob)) ### same as above -> normally distributed
-
-
-
-####test for heteroscedasticity
-bptest(log_rob) ### H0 <- homoscedasticity no heteroscedasticity 
-##achtung! very sensitive to violation of normal assumption
-
-####further transform variables#####
-
-
-agg.2016$rob.cap <- agg.2016$robbery / agg.2016$population.2016
-
-plot(density(agg.2016$rob.cap))
-plot(agg.2016$rob.cap)
-
-agg.2016$log.rob.cap <- log(agg.2016$rob.cap)
-plot(density(agg.2016$log.rob.cap))
-plot(agg.2016$log.rob.cap)
-
-agg.2016$male.youth.per <- agg.2016$male.youth / agg.2016$population.2016
-agg.2016$male.youth.cap <- agg.2016$male.youth / agg.2016$population.2016
-agg.2016$male.youth.cap <- agg.2016$male.youth / agg.2016$population.2016
-
-
-summary(model2 <- lm(rob.cap~ male.youth.per, data=agg.2016))
-
-
-m <- agg.2016
-m$pred <- predict(model2)
-m$res <- residuals(model2)
-
-plot(density(m$res))
-
-plot(m$pred)
-
-plot(m$rob.cap, add = T, col = "RED")
-
-
-
-
-ggplot(m, aes(x = male.youth.per, y = rob.cap)) +  # Set up canvas with outcome variable on y-axis
-  geom_point() +
-  geom_point(aes(y = pred), shape = 3)
-
-
-ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
-  geom_segment(aes(xend = male.youth.per, yend = pred)) +
-  geom_point() +
-  geom_point(aes(y = pred), shape = 1)
-
-
-ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
-  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") + 
-  geom_segment(aes(xend = male.youth.per, yend = pred), alpha = .2) +  
-  geom_point() +
-  geom_point(aes(y = pred), shape = 1) +
-  theme_bw()
-
-
-ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
-  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
-  geom_segment(aes(xend = male.youth.per, yend = pred), alpha = .2) +
-  
-  # > Color AND size adjustments made here...
-  geom_point(aes(color = abs(res), size = abs(res))) + # size also mapped
-  scale_color_continuous(low = "black", high = "red") +
-  guides(color = FALSE, size = FALSE) +  # Size legend also removed
-  # <
-  
-  geom_point(aes(y = pred), shape = 1) +
-  theme_bw()
-
+# 
+# 
+# 
+# ###try first models####
+# 
+# r <- as.data.frame(agg.2016)
+# 
+# log_assault <- lm(log.assault~male.youth+less.than.high.school+low.income+immigrants, data=r)
+# summary(log_assault)
+# 
+# log_plot <- plot(log_assault)
+# 
+# # Residuals versus fitted values (for checking E(ε|X) = 0)  
+# # 
+# # QQ plot: ordered residuals versus normal quantiles (for checking normality).
+# # 
+# # Scale-location plot:  √ˆri| (of standardized residuals ri ) versus fitted valuesˆyi (for checking i.i.d. assumption, in particular  Var (ε|X) =σ2I).
+# # 
+# # Combinations of standardized residuals, leverage, and Cook’s
+# # distance
+# 
+# 
+# plot(residuals(log_assault))
+# plot(density(residuals(log_assault)))
+# 
+# 0.0002
+# 
+# summary(log_assault)
+# 
+# 
+# ###tests for normality
+# 
+# shapiro.test(residuals(log_assault)) ### H0 <- normality ----> p>0.05 ---> normality
+# 
+# lillie.test(residuals(log_assault)) ### same as above -> normally distributed
+# 
+# 
+# 
+# ####test for heteroscedasticity
+# 
+# bptest(log_assault) ### H0 <- homoscedasticity no heteroscedasticity 
+# ##achtung! very sensitive to violation of normal assumption
+# 
+# ####robbery#####
+# 
+# 
+# log_rob <- lm(log.rob~male.youth+less.than.high.school+low.income+immigrants, data=r)
+# summary(log_rob)
+# 
+# log_plot <- plot(log_rob)
+# 
+# # Residuals versus fitted values (for checking E(ε|X) = 0)  
+# # 
+# # QQ plot: ordered residuals versus normal quantiles (for checking normality).
+# # 
+# # Scale-location plot:  √ˆri| (of standardized residuals ri ) versus fitted valuesˆyi (for checking i.i.d. assumption, in particular  Var (ε|X) =σ2I).
+# # 
+# # Combinations of standardized residuals, leverage, and Cook’s
+# # distance
+# 
+# 
+# plot(residuals(log_rob))
+# plot(density(residuals(log_rob)))
+# 
+# 
+# 
+# ###tests for normality
+# shapiro.test(residuals(log_rob)) ### H0 <- normality ----> p>0.05 ---> normality
+# 
+# lillie.test(residuals(log_rob)) ### same as above -> normally distributed
+# 
+# 
+# 
+# ####test for heteroscedasticity
+# bptest(log_rob) ### H0 <- homoscedasticity no heteroscedasticity 
+# ##achtung! very sensitive to violation of normal assumption
+# 
+# ####further transform variables#####
+# 
+# 
+# agg.2016$rob.cap <- agg.2016$robbery / agg.2016$population.2016
+# 
+# plot(density(agg.2016$rob.cap))
+# plot(agg.2016$rob.cap)
+# 
+# agg.2016$log.rob.cap <- log(agg.2016$rob.cap)
+# plot(density(agg.2016$log.rob.cap))
+# plot(agg.2016$log.rob.cap)
+# 
+# agg.2016$male.youth.per <- agg.2016$male.youth / agg.2016$population.2016
+# agg.2016$male.youth.cap <- agg.2016$male.youth / agg.2016$population.2016
+# agg.2016$male.youth.cap <- agg.2016$male.youth / agg.2016$population.2016
+# 
+# 
+# summary(model2 <- lm(rob.cap~ male.youth.per, data=agg.2016))
+# 
+# 
+# m <- agg.2016
+# m$pred <- predict(model2)
+# m$res <- residuals(model2)
+# 
+# plot(density(m$res))
+# 
+# plot(m$pred)
+# 
+# plot(m$rob.cap, add = T, col = "RED")
+# 
+# 
+# 
+# 
+# ggplot(m, aes(x = male.youth.per, y = rob.cap)) +  # Set up canvas with outcome variable on y-axis
+#   geom_point() +
+#   geom_point(aes(y = pred), shape = 3)
+# 
+# 
+# ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
+#   geom_segment(aes(xend = male.youth.per, yend = pred)) +
+#   geom_point() +
+#   geom_point(aes(y = pred), shape = 1)
+# 
+# 
+# ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
+#   geom_smooth(method = "lm", se = FALSE, color = "lightgrey") + 
+#   geom_segment(aes(xend = male.youth.per, yend = pred), alpha = .2) +  
+#   geom_point() +
+#   geom_point(aes(y = pred), shape = 1) +
+#   theme_bw()
+# 
+# 
+# ggplot(m, aes(x = male.youth.per, y = rob.cap)) +
+#   geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+#   geom_segment(aes(xend = male.youth.per, yend = pred), alpha = .2) +
+#   
+#   # > Color AND size adjustments made here...
+#   geom_point(aes(color = abs(res), size = abs(res))) + # size also mapped
+#   scale_color_continuous(low = "black", high = "red") +
+#   guides(color = FALSE, size = FALSE) +  # Size legend also removed
+#   # <
+#   
+#   geom_point(aes(y = pred), shape = 1) +
+#   theme_bw()
+# 
 
 
 
@@ -189,6 +189,9 @@ colnames(ols.ass.log)  <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3
                             "vif4", "cortest1", "cortest2", "cortest3", "cortest4")
 rownames(ols.ass.log) <- crimetypes
 ceresplots.log <- list()
+
+##overcome the problem of log(0) = infinity 
+r[, crime.var][r[, crime.var] == 0] <- 1
 
 #######
 r[, crime.var] 
@@ -255,7 +258,24 @@ for (i in crimetypes){
 ###################################################################
 #####spatial regressions
 
-
+#defining neighbours
+shp <- readOGR("Shapefiles/Neighbourhoods_Toronto", "NEIGHBORHOODS_WGS84")
+###based on queen approach
+neigh <- poly2nb(shp, queen = TRUE)
+W<-nb2listw(neigh, style="W", zero.policy=TRUE)
+W
+plot(W, coordinates(shp))
+# ##based on distance 
+# # coords<-coordinates(shp)
+# # W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
+# ### -> check out which ones better -> Moran'S I test 
+# #http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
+# # moran's I test
+# moran.lm <-lm.morantest(log_rob, W, alternative="two.sided")
+# print(moran.lm) ## H0 <- Data ist random
+# ##Lagrange multiplier test
+# LM<-lm.LMtests(log_assault, W, test="all")
+# print(LM)
 
 ##crimetypes and r still existent
 #lists and data frames to store results of the regression loop
@@ -314,7 +334,7 @@ for (i in crimetypes){
   # assumption-check: linear relation between dependent variable and regressors
   ######
   ######Error in eval(predvars, data, env) : object 'tmp' not found
-  crPlots(spamodel, main = paste("component + residual plots", i, "(spatial reg)"))
+  #crPlots(spamodel, main = paste("component + residual plots", i, "(spatial reg)"))
   ceresplots.spa[[i]] <- recordPlot()
   
   rm(spamodel)
@@ -421,7 +441,8 @@ for(i in crimetypes){
   i[["poisson"]] <- regressionstargazer.po["i"]
 }
 
-
-
-
+stargazer(assault, dep.var.caption = "Types of Regressions",
+          column.labels = c("Basic Power Transformation", "OLS", "Log-OLS", "Spatial Regression", "Poisson Regression"),
+          model.names = FALSE, multicolumn = FALSE, 
+          dep.var.labels.include = F)
 
