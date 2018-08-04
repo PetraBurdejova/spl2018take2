@@ -432,17 +432,17 @@ theft.over <- list()
 drug.arrests <- list()
 total.crime <- list()
 
-
+big <- list()
 for(i in crimetypes){
-  i[["bp"]] <- regressionstargazer["i"]
-  i[["first"]] <- regressionstargazer.first["i"]
-  i[["log"]] <- regressionstargazer.log["i"]
-  i[["spatial"]] <- regressionstargazer.spa["i"]
-  i[["poisson"]] <- regressionstargazer.po["i"]
+  big[["bp"]][i] <- regressionstargazer[[i]]
+  big[["first"]][i] <- regressionstargazer.first[[i]]
+  big[["log"]][i] <- regressionstargazer.log[[i]]
+  big[["spatial"]][i] <- regressionstargazer.spa[[i]]
+  big[["poisson"]][i] <- regressionstargazer.po[[i]]
 }
 
 stargazer(assault, dep.var.caption = "Types of Regressions",
           column.labels = c("Basic Power Transformation", "OLS", "Log-OLS", "Spatial Regression", "Poisson Regression"),
           model.names = FALSE, multicolumn = FALSE, 
-          dep.var.labels.include = F)
+          dep.var.labels.include = FALSE)
 
