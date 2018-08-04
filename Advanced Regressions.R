@@ -24,7 +24,7 @@ plot(density(agg.2016$log.rob))
 
 ###try first models####
 
-r <- agg.2016
+r <- as.data.frame(agg.2016)
 
 log_assault <- lm(log.assault~male.youth+less.than.high.school+low.income+immigrants, data=r)
 summary(log_assault)
@@ -190,16 +190,17 @@ colnames(ols.ass.log)  <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3
 rownames(ols.ass.log) <- crimetypes
 ceresplots.log <- list()
 
+#######
+
 
 # loop for the regressions using original data
 for (i in crimetypes){
   
   #storing the crime type in r$tmp
-  r[,i][r[,i] == 0] <- 1
-  r$tmp <- r[,i]
+  r$tmp <- log(r[, i])
   
   # regression with original data
-  logmodel <- lm(log(tmp)~male.youth + less.than.high.school + low.income 
+  logmodel <- lm(tmp~male.youth + less.than.high.school + low.income 
                  + immigrants, data=r)
   regressionresults.log[[i]]<-summary(logmodel)
   regressionstargazer.log[[i]] <- (logmodel)
@@ -235,7 +236,7 @@ for (i in crimetypes){
                                          logmodel$residuals)$p.value
   
   # assumption-check: linear relation between dependent variable and regressors
-  crPlots(logmodel)
+  crPlots(logmodel, main = paste("component + residual plots", i, "(log transformed data)"))
   ceresplots.log[[i]] <- recordPlot()
   
   rm(logmodel)
@@ -269,8 +270,7 @@ ceresplots.spa <- list()
 for (i in crimetypes){
   
   #storing the crime type in r$tmp
-  r[,i][r[,i] == 0] <- 1
-  r$tmp <- r[,i]
+    r$tmp <- r[,i]
   
   # regression with original data
   spamodel  <- lagsarlm(tmp~male.youth+less.than.high.school
@@ -313,8 +313,8 @@ for (i in crimetypes){
   # assumption-check: linear relation between dependent variable and regressors
   ######
   ######Error in eval(predvars, data, env) : object 'tmp' not found
-  # crPlots(spamodel)
-  # ceresplots.spa[[i]] <- recordPlot()
+  crPlots(spamodel, main = paste("component + residual plots", i, "(spatial reg)"))
+  ceresplots.spa[[i]] <- recordPlot()
   
   rm(spamodel)
 }
@@ -338,7 +338,6 @@ ceresplots.po <- list()
 for (i in crimetypes){
   
   #storing the crime type in r$tmp
-  r[,i][r[,i] == 0] <- 1
   r$tmp <- r[,i]
   
   # regression with original data
@@ -381,8 +380,8 @@ for (i in crimetypes){
   # assumption-check: linear relation between dependent variable and regressors
   ######
   ######Error in eval(predvars, data, env) : object 'tmp' not found
-  # crPlots(spamodel)
-  # ceresplots.spa[[i]] <- recordPlot()
+   crPlots(pomodel, main = paste("component + residual plots", i, "(poiss reg)"))
+   ceresplots.po[[i]] <- recordPlot()
   
   rm(pomodel)
 }
