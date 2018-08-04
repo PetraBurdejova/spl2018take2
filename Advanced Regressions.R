@@ -24,7 +24,7 @@
 # 
 # ###try first models####
 # 
-# r <- as.data.frame(agg.2016)
+# 
 # 
 # log_assault <- lm(log.assault~male.youth+less.than.high.school+low.income+immigrants, data=r)
 # summary(log_assault)
@@ -175,7 +175,10 @@
 
 
 
+r <- as.data.frame(agg.2016)
 
+crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery",
+                "theft.over", "drug.arrests", "total.crime")
 
 ######automated advanced regression####
 ##log transformed data
@@ -193,9 +196,6 @@ ceresplots.log <- list()
 ##overcome the problem of log(0) = infinity 
 r[, crime.var][r[, crime.var] == 0] <- 1
 
-#######
-r[, crime.var] 
-r[,crime.var][r[, crime.var] == 0] <- 1
 
 # loop for the regressions using original data
 for (i in crimetypes){
@@ -421,8 +421,7 @@ for (i in crimetypes){
 # stargazer(assault)
 
 
-crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery",
-                "theft.over", "drug.arrests", "total.crime")
+
 
 assault <- list()
 auto.theft <- list()
@@ -434,11 +433,11 @@ total.crime <- list()
 
 big <- list()
 for(i in crimetypes){
-  big[["bp"]][i] <- regressionstargazer[[i]]
-  big[["first"]][i] <- regressionstargazer.first[[i]]
-  big[["log"]][i] <- regressionstargazer.log[[i]]
-  big[["spatial"]][i] <- regressionstargazer.spa[[i]]
-  big[["poisson"]][i] <- regressionstargazer.po[[i]]
+  big[[i]]["bp"] <- regressionstargazer[[i]]
+  big[[i]]["first"] <- regressionstargazer.first[[i]]
+  big[[i]]["log"] <- regressionstargazer.log[[i]]
+  big[[i]]["spatial"] <- regressionstargazer.spa[[i]]
+  big[[i]]["poisson"] <- regressionstargazer.po[[i]]
 }
 
 stargazer(assault, dep.var.caption = "Types of Regressions",
