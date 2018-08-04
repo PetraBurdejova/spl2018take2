@@ -190,6 +190,9 @@ colnames(ols.ass.log)  <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3
 rownames(ols.ass.log) <- crimetypes
 ceresplots.log <- list()
 
+##overcome the problem of log(0) = infinity 
+r[, 2:8][r[, 2:8] == 0] <- 1
+
 #######
 
 
