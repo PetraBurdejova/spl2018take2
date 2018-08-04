@@ -334,3 +334,4 @@ heat_map_limit(toronto.geo, "avg.income", 25000, 100000)
 clust.var <- names(agg.2016[, grepl(".clust", colnames(agg.2016)), with = FALSE])
 
 sapply(clust.var, function(x) {heat_map_clust(toronto.geo, x)})
+
