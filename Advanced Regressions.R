@@ -333,7 +333,7 @@ for (i in crimetypes){
   # assumption-check: linear relation between dependent variable and regressors
   ######
   ######Error in eval(predvars, data, env) : object 'tmp' not found
-  crPlots(spamodel, main = paste("component + residual plots", i, "(spatial reg)"))
+  #crPlots(spamodel, main = paste("component + residual plots", i, "(spatial reg)"))
   ceresplots.spa[[i]] <- recordPlot()
   
   rm(spamodel)
@@ -440,7 +440,5 @@ for(i in crimetypes){
   i[["poisson"]] <- regressionstargazer.po["i"]
 }
 
-
-
-
+stargazer(assault, )
 
