@@ -433,15 +433,22 @@ total.crime <- list()
 
 big <- list()
 for(i in crimetypes){
-  big[[i]]["bp"] <- regressionstargazer[[i]]
-  big[[i]]["first"] <- regressionstargazer.first[[i]]
-  big[[i]]["log"] <- regressionstargazer.log[[i]]
-  big[[i]]["spatial"] <- regressionstargazer.spa[[i]]
-  big[[i]]["poisson"] <- regressionstargazer.po[[i]]
+  big[[i]]["bp"] <- regressionstargazer[i]
+  big[[i]]["first"] <- regressionstargazer.first[i]
+  big[[i]]["log"] <- regressionstargazer.log[i]
+  big[[i]]["spatial"] <- regressionstargazer.spa[i]
+  big[[i]]["poisson"] <- regressionstargazer.po[i]
 }
 
-stargazer(assault, dep.var.caption = "Types of Regressions",
-          column.labels = c("Basic Power Transformation", "OLS", "Log-OLS", "Spatial Regression", "Poisson Regression"),
-          model.names = FALSE, multicolumn = FALSE, 
-          dep.var.labels.include = FALSE)
+model.types = c("Basic Power Transformation", "OLS", "Log-OLS", "Spatial Regression", "Poisson Regression") 
+
+comparable.tables <- list()
+
+for(i in crimetypes){
+comparable.tables[[i]] <- stargazer(big[i], dep.var.caption = "Types of Regressions",
+            column.labels = model.types,
+            model.names = FALSE, multicolumn = FALSE, 
+            dep.var.labels.include = FALSE)
+}
+
 
