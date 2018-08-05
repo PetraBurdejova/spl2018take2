@@ -337,7 +337,7 @@ for (i in crimetypes){
   #crPlots(spamodel, main = paste("component + residual plots", i, "(spatial reg)"))
   ceresplots.spa[[i]] <- recordPlot()
   
-  rm(spamodel)
+  #rm(spamodel)
 }
 
 
