@@ -201,6 +201,10 @@ census.tmp <- census.tmp[census.tmp$Topic == "Income of individuals in 2015", ] 
 census.tmp <- census.tmp[c(35:47),] #need to subset by rows because characteristic is duplicated for other income groups
 census.tmp <- census.tmp[!census.tmp$Characteristic == "$100,000 and over",]
 
+#print table for latex output
+print(xtable(census.tmp[,2:5], type = "latex"), file= "med_inc_dist.tex")
+xtable(census.tmp[,2:5], type = "latex")
+
 ###Change Characteristic Vector to specific form
 census.tmp$Characteristic <- c("0-9999", "10000-19999", "20000-29999", "30000-39999", "40000-49999", "50000-59999",
                         "60000-69999", "70000-79999", "80000-89999", "90000-99999", "100000-149999", "150000-1000000") #create income intervals increasing by 10000, last interval has max of 1000000 as assumption 
@@ -233,6 +237,13 @@ median.income <- cbind.data.frame(neigh.codes,  #apply groued median function to
                                   as.data.frame(sapply(census.tmp[, -which(names(census.tmp) %in% c("Topic", "Characteristic"))], function(x) {Grouped_Median(x,intervals = census.tmp$Characteristic, sep = "-")})))
 colnames(median.income) <- c(colnames(neigh.codes), "median.income") #rename columns
 agg.2016 <- join(agg.2016, median.income[, -which(names(median.income) %in% c("Neighbourhood"))], by = "Hood_ID") #join median income to agg.2016
+
+#####Table of avg and median income to show income inequality in each neighbourhood
+avg.med.inc.dif <- join(avg.income, median.income, by = c("Hood_ID", "Neighbourhood"))
+
+#print table for latex output
+print(xtable(avg.med.inc.dif[1:8,], type = "latex"), file= "avg_med_inc_diff.tex")
+xtable(avg.med.inc.dif[1:8,], type = "latex")
 
 #####Calculate number of Households in bottom 20% of Income distribution
 census.tmp <- as.data.frame(census) #Create temp data frame for relabelling factors from census data frame

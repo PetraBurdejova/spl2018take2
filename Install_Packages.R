@@ -58,7 +58,8 @@ packages <- c("tidyverse",
               "nortest",
               "corrplot",
               "stargazer",
-              "sf")
+              "sf",
+              "xtable")
 
 usePackage <-function(p){
   if (!is.element(p, installed.packages()[,1])){

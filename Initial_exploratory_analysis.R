@@ -326,6 +326,7 @@ heat.map.var <- c( "population.2016", "male.youth", "median.income", "hholds.bot
 
 lapply(heat.map.var, function(x) {heat_map(toronto.geo, x)})
 
+heat_map(toronto.geo, "avg.income")
 heat_map_limit(toronto.geo, "density", 0, 15000)
 heat_map_limit(toronto.geo, "avg.income", 25000, 100000)
 
