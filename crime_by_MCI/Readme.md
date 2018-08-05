@@ -16,7 +16,7 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ```
 
-![Picture1](crime_by_MCI_by_month.png)
+![Picture1](crime_by_MCI.png)
 
 
 ### R Code
