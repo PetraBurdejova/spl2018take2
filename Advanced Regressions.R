@@ -362,7 +362,7 @@ for (i in crimetypes){
   r$tmp <- r[,i]
   
   # regression with original data
-  pomodel  <- glm(robbery~male.youth+less.than.high.school+low.income+immigrants, family = "poisson", data = r)
+  pomodel  <- glm(tmp~male.youth+less.than.high.school+low.income+immigrants, family = "poisson", data = r)
   regressionresults.po[[i]]<-summary(pomodel)
   regressionstargazer.po[[i]] <- (pomodel)
   
@@ -445,7 +445,7 @@ model.types = c("Basic Power Transformation", "OLS", "Log-OLS", "Spatial Regress
 comparable.tables <- list()
 
 for(i in crimetypes){
-comparable.tables[[i]] <- stargazer(big[i], dep.var.caption = "Types of Regressions",
+comparable.tables[[i]] <- stargazer(big[i], dep.var.caption = i,
             column.labels = model.types,
             model.names = FALSE, multicolumn = FALSE, 
             dep.var.labels.include = FALSE)
