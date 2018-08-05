@@ -337,7 +337,7 @@ for (i in crimetypes){
   #crPlots(spamodel, main = paste("component + residual plots", i, "(spatial reg)"))
   ceresplots.spa[[i]] <- recordPlot()
   
-  rm(spamodel)
+  #rm(spamodel)
 }
 
 
@@ -362,7 +362,7 @@ for (i in crimetypes){
   r$tmp <- r[,i]
   
   # regression with original data
-  pomodel  <- glm(robbery~male.youth+less.than.high.school+low.income+immigrants, family = "poisson", data = r)
+  pomodel  <- glm(tmp~male.youth+less.than.high.school+low.income+immigrants, family = "poisson", data = r)
   regressionresults.po[[i]]<-summary(pomodel)
   regressionstargazer.po[[i]] <- (pomodel)
   
@@ -433,15 +433,22 @@ total.crime <- list()
 
 big <- list()
 for(i in crimetypes){
-  big[[i]]["bp"] <- regressionstargazer[[i]]
-  big[[i]]["first"] <- regressionstargazer.first[[i]]
-  big[[i]]["log"] <- regressionstargazer.log[[i]]
-  big[[i]]["spatial"] <- regressionstargazer.spa[[i]]
-  big[[i]]["poisson"] <- regressionstargazer.po[[i]]
+  big[[i]]["bp"] <- regressionstargazer[i]
+  big[[i]]["first"] <- regressionstargazer.first[i]
+  big[[i]]["log"] <- regressionstargazer.log[i]
+  big[[i]]["spatial"] <- regressionstargazer.spa[i]
+  big[[i]]["poisson"] <- regressionstargazer.po[i]
 }
 
-stargazer(assault, dep.var.caption = "Types of Regressions",
-          column.labels = c("Basic Power Transformation", "OLS", "Log-OLS", "Spatial Regression", "Poisson Regression"),
-          model.names = FALSE, multicolumn = FALSE, 
-          dep.var.labels.include = FALSE)
+model.types = c("Basic Power Transformation", "OLS", "Log-OLS", "Spatial Regression", "Poisson Regression") 
+
+comparable.tables <- list()
+
+for(i in crimetypes){
+comparable.tables[[i]] <- stargazer(big[i], dep.var.caption = i,
+            column.labels = model.types,
+            model.names = FALSE, multicolumn = FALSE, 
+            dep.var.labels.include = FALSE)
+}
+
 
