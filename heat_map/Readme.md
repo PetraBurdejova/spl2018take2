@@ -15,8 +15,9 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 
 ```
-![Picture2](heat_map_unemplymnt_rate.png)
+
 ![Picture1](heat_map_assault.png)
+![Picture2](heat_map_unemplymnt_rate.png)
 
 
 
