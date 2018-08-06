@@ -28,4 +28,6 @@ print(ggplot(data=agg, aes(agg$total.crime)) + #Plot distribution of crimes comm
   labs(x="Total Crime", y="Count") + #Add x and y labels
   xlim(c(0,1200)))  #Set min and max values on x label
 
+hist_func(agg.crime, "total.crime", 50) #create histogram of total crime, bin width of 50
+
 ggsave("plots_and_images/hist_total_crime.png", width=10, height=5, dpi=150)
