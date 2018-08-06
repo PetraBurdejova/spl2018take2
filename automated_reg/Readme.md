@@ -15,8 +15,6 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 
 ```
-![Picture1](27.png)
-![Picture2](28.png)
 
 
 ### R Code
