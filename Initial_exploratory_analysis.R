@@ -334,5 +334,6 @@ heat_map_limit(toronto.geo, "avg.income", 25000, 100000)
 #Define cluster variabes to be plotted on heat map
 clust.var <- names(agg.2016[, grepl(".clust", colnames(agg.2016)), with = FALSE])
 
+#plot cluster variables on a heatmap
 lapply(clust.var, function(x) {heat_map_clust(toronto.geo, x)})
 heat_map_clust(toronto.geo, "edu.clust")
