@@ -302,7 +302,7 @@ heat_map_limit <- function(data, x, lower, upper) {
 crime.var <- c("total.crime", "assault", "robbery", "break.and.enter",
                "drug.arrests", "theft.over", "auto.theft")
 
-lapply(crime.var, function(x) {heat_map(toronto.geo, x)})
+lapply(crime.var, function(x) {heat_map(toronto.geo, x)}) #create heatmap of crime variables
 
 heat_map_limit(toronto.geo, "auto.theft", 0, 100)
 heat_map_limit(toronto.geo, "drug.arrests", 0, 100)
@@ -313,7 +313,7 @@ heat_map_limit(toronto.geo, "total.crime", 0, 500)
 #Define crime rates that will be plotted as a heatmap
 crime.var.per.tenthsnd <- names(agg.2016[, grepl("per.tenthsnd", colnames(agg.2016)), with = FALSE])
 
-lapply(crime.var.per.tenthsnd, function(x) {heat_map(toronto.geo, x)})
+lapply(crime.var.per.tenthsnd, function(x) {heat_map(toronto.geo, x)}) #create heatmap of crime rate variables
 
 heat_map_limit(toronto.geo, "auto.theft.per.tenthsnd", 0, 50)
 heat_map_limit(toronto.geo, "drug.arrests.per.tenthsnd", 0, 50)
@@ -324,7 +324,7 @@ heat.map.var <- c( "population.2016", "male.youth", "median.income", "hholds.bot
                    "renters.per", "hhlds.mjr.rprs.per", "unaffordable.housing.per",
                    "unemployment.rate") #Define variables to be plotted as heat map
 
-lapply(heat.map.var, function(x) {heat_map(toronto.geo, x)})
+lapply(heat.map.var, function(x) {heat_map(toronto.geo, x)}) #create heatmap of neighbourhood variables
 
 heat_map(toronto.geo, "avg.income")
 heat_map_limit(toronto.geo, "density", 0, 15000)
