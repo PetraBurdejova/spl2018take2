@@ -33,11 +33,11 @@ par(mfrow=c(4,4))
 #####ASSAULT#####
 #prep
 i <- "assault"
-r$tmp <- r[,i]
-outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp),]$obsnumber
+r$tmp <- r[, i]
+outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp), ]$obsnumber
 outliers
-rtmp<-r[!r$obsnumber %in% outliers,]
-rtmp[rtmp$tmp==0,] <- 1
+rtmp <- r[!r$obsnumber %in% outliers, ]
+rtmp[rtmp$tmp==0, ] <- 1
 exponent <- optimize(swD, c(-3,3), x=rtmp$tmp)$objective
 shapiro.test(bcPower(rtmp$tmp,exponent))
 rtmp$tmp.bp <- bcPower(rtmp$tmp, exponent)
@@ -62,11 +62,11 @@ mtext("p-value = 22.73%", line=0.4, cex=0.9, col="red", font=2)
 #####AUTO.THEFT#####
 #prep
 i <- "auto.theft"
-r$tmp <- r[,i]
-outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp),]$obsnumber
+r$tmp <- r[, i]
+outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp), ]$obsnumber
 outliers
-rtmp<-r[!r$obsnumber %in% outliers,]
-rtmp[rtmp$tmp==0,] <- 1
+rtmp<-r[!r$obsnumber %in% outliers, ]
+rtmp[rtmp$tmp==0, ] <- 1
 exponent <- optimize(swD, c(-3,3), x=rtmp$tmp)$objective
 shapiro.test(bcPower(rtmp$tmp,exponent))
 rtmp$tmp.bp <- bcPower(rtmp$tmp, exponent)
@@ -92,11 +92,11 @@ mtext("p-value = 8.96%", line=0.4, cex=0.9, col="red", font=2)
 #####BREAK.AND.ENTER#####
 #prep
 i <- "break.and.enter"
-r$tmp <- r[,i]
-outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp),]$obsnumber
+r$tmp <- r[, i]
+outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp), ]$obsnumber
 outliers
-rtmp<-r[!r$obsnumber %in% outliers,]
-rtmp[rtmp$tmp==0,] <- 1
+rtmp<-r[!r$obsnumber %in% outliers, ]
+rtmp[rtmp$tmp==0, ] <- 1
 exponent <- optimize(swD, c(-3,3), x=rtmp$tmp)$objective
 shapiro.test(bcPower(rtmp$tmp,exponent))
 rtmp$tmp.bp <- bcPower(rtmp$tmp, exponent)
@@ -122,11 +122,11 @@ mtext("p-value = 43.57%", line=0.4, cex=0.9, col="red", font=2)
 #####ROBBERY#####
 #prep
 i <- "robbery"
-r$tmp <- r[,i]
-outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp),]$obsnumber
+r$tmp <- r[, i]
+outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp), ]$obsnumber
 outliers
-rtmp<-r[!r$obsnumber %in% outliers,]
-rtmp[rtmp$tmp==0,] <- 1
+rtmp<-r[!r$obsnumber %in% outliers, ]
+rtmp[rtmp$tmp==0, ] <- 1
 exponent <- optimize(swD, c(-3,3), x=rtmp$tmp)$objective
 shapiro.test(bcPower(rtmp$tmp,exponent))
 rtmp$tmp.bp <- bcPower(rtmp$tmp, exponent)
@@ -151,11 +151,11 @@ mtext("p-value = 11.56%", line=0.4, cex=0.9, col="red", font=2)
 #####THEFT.OVER#####
 #prep
 i <- "theft.over"
-r$tmp <- r[,i]
-outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp),]$obsnumber
+r$tmp <- r[, i]
+outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp), ]$obsnumber
 outliers
-rtmp<-r[!r$obsnumber %in% outliers,]
-rtmp[rtmp$tmp==0,] <- 1
+rtmp<-r[!r$obsnumber %in% outliers, ]
+rtmp[rtmp$tmp==0, ] <- 1
 exponent <- optimize(swD, c(-3,3), x=rtmp$tmp)$objective
 shapiro.test(bcPower(rtmp$tmp,exponent))
 rtmp$tmp.bp <- bcPower(rtmp$tmp, exponent)
@@ -181,11 +181,11 @@ mtext("p-value = 0.00%", line=0.4, cex=0.9, col="red", font=2)
 #####DRUG.ARRESTS#####
 #prep
 i <- "drug.arrests"
-r$tmp <- r[,i]
-outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp),]$obsnumber
+r$tmp <- r[, i]
+outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp), ]$obsnumber
 outliers
-rtmp<-r[!r$obsnumber %in% outliers,]
-rtmp[rtmp$tmp==0,] <- 1
+rtmp<-r[!r$obsnumber %in% outliers, ]
+rtmp[rtmp$tmp==0, ] <- 1
 exponent <- optimize(swD, c(-3,3), x=rtmp$tmp)$objective
 shapiro.test(bcPower(rtmp$tmp,exponent))
 rtmp$tmp.bp <- bcPower(rtmp$tmp, exponent)
@@ -211,11 +211,11 @@ mtext("p-value = 22.72%", line=0.4, cex=0.9, col="red", font=2)
 #####TOTAL.CRIME#####
 #prep
 i <- "total.crime"
-r$tmp <- r[,i]
-outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp),]$obsnumber
+r$tmp <- r[, i]
+outliers <- r[r$tmp>mean(r$tmp)+2.5*IQR(r$tmp), ]$obsnumber
 outliers
-rtmp<-r[!r$obsnumber %in% outliers,]
-rtmp[rtmp$tmp==0,] <- 1
+rtmp<-r[!r$obsnumber %in% outliers, ]
+rtmp[rtmp$tmp==0, ] <- 1
 exponent <- optimize(swD, c(-3,3), x=rtmp$tmp)$objective
 shapiro.test(bcPower(rtmp$tmp,exponent))
 rtmp$tmp.bp <- bcPower(rtmp$tmp, exponent)
