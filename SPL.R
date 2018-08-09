@@ -32,17 +32,15 @@ rm(list=ls())
 
   source("Green_area.R")
 
-<<<<<<< HEAD
+
 ### regression analysis
 
   source("automated_regression.R")
 
 
+## further regression analysis
 
-=======
-##further regression analysis
+  source("advanced_regressions.R")
 
-    source("advanced_regressions.R")
->>>>>>> ec03062cf348b098f8f9819d74f9df6b0f14d047
 
 
