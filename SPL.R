@@ -30,17 +30,4 @@ rm(list=ls())
 
 
 
-# ###ideas#####
-# distance from city center for each neighbourhood
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# ####
-
-
 
