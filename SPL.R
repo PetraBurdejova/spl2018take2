@@ -9,7 +9,7 @@ rm(list=ls())
 
 
 ####manipulate dataset####
-    source("Merging.R") # code I deleted in SPL_X1 can be found in deleted_code
+    source("Merging.R") 
 
 
 #####Initial Exploratory Analysis###
@@ -28,6 +28,8 @@ rm(list=ls())
 
     source("automated_regression.R")
 
+##further regression analysis
 
+    source("advanced_regressions.R")
 
 
