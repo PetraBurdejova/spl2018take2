@@ -1,46 +1,37 @@
 rm(list=ls())
 
-####set working directory####
-    setwd("C:/Users/Felix/Desktop/Uni/Berlin/2. Semester/SPL/spl2018take2")
+#### set working directory
+
+  setwd("C:/Users/Felix/Desktop/Uni/Berlin/2. Semester/SPL/spl2018take2")
 
 
-####install all packages if needed####
-    source("Install_packages.R")
+#### install all packages if needed
+
+  source("Install_packages.R")
 
 
-####manipulate dataset####
-    source("Merging.R") # code I deleted in SPL_X1 can be found in deleted_code
+#### adding and manipulating datasets####
+  
+  source("Merging.R") 
 
 
-#####Initial Exploratory Analysis###
+#### Initial Exploratory Analysis - contains functions for graphs and kmeans###
 
-    source("Initial_exploratory_analysis.R")
+  source("Initial_exploratory_analysis.R")
 
-#####Construct F-test by hand to show if coefficients are jointly significant if needed####
+##### Construct F-test by hand to show if coefficients are jointly significant if needed####
 
-    source("F-Test.R")
+  source("F-Test.R")
 
-####calculating the ratio of green parks etc. per neighbourhood ####
+#### calculating the ratio of green parks etc. per neighbourhood ####
 
-    source("Green_area.R")
+  source("Green_area.R")
 
-###regression analysis
+### regression analysis
 
-    source("automated_regression.R")
+  source("automated_regression.R")
 
 
-
-# ###ideas#####
-# distance from city center for each neighbourhood
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# ####
 
 
 
