@@ -1,35 +1,4 @@
-# 
-# 
-# 
-# if(!require("pacman")) install.packages("pacman", dependencies = TRUE); library("pacman")
-# 
-# 
-# 
-# pacman::p_load("tidyverse", 
-#                "xts", 
-#                "zoo", 
-#                "chron", 
-#                "reshape2", 
-#                "ggplot2", 
-#                "ggmap", 
-#                "viridis", 
-#                "forecast",
-#                "sp",
-#                "rgdal",
-#                "data.table",
-#                "maptools",
-#                "sf",
-#                "lwgeom", 
-#                "nabor",
-#                "plyr",
-#                "spdep",
-#                "cluster",
-#              "scales",
-#                "caret",
-#              "scales", 
-#                "readr",
-#                "stingr")
-
+###create a vector with packages names
 packages <- c("tidyverse", 
               "xts", 
               "zoo", 
@@ -61,6 +30,7 @@ packages <- c("tidyverse",
               "sf",
               "xtable")
 
+#create a function that loads the package if it is needed
 usePackage <-function(p){
   if (!is.element(p, installed.packages()[,1])){
     print(paste('Package:',p,'Not found, Installing Now...'))
@@ -68,5 +38,5 @@ usePackage <-function(p){
   print(paste('Loading Package :',p))
   require(p, character.only = TRUE)  
 }
-
+#load the packages
 for(i in packages) {(usePackage(i))}
