@@ -7,13 +7,11 @@ rm(list=ls())
 
 #### install all packages if needed
 
-<<<<<<< HEAD
   source("Install_packages.R")
-=======
-####manipulate dataset####
-    source("Merging.R") 
->>>>>>> ec03062cf348b098f8f9819d74f9df6b0f14d047
-
+  
+#### manipulate dataset####
+  
+  source("Merging.R") 
 
 #### adding and manipulating datasets####
   
