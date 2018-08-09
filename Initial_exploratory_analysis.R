@@ -17,28 +17,28 @@ HistFunc <- function(x, y, bin.width) {
         xlim(c(0, Max)))  #Set min and max values on x label
 }
 
-#### Histogram of total crime commited
+# Histogram of total crime commited
 HistFunc(agg.crime, "total.crime", 50) # create histogram of total crime, bin width of 50
 
-### Histogram Assaults
+# Histogram Assaults
 HistFunc(agg.crime, "assault", 25) # create histogram of assaults, bin width of 25
 
-### Histogram Auto Thefts
+# Histogram Auto Thefts
 HistFunc(agg.crime, "auto.theft", 20) # create histogram of auto thefts, bin width of 20
 
-### Histogram Break and Enters
+# Histogram Break and Enters
 HistFunc(agg.crime, "break.and.enter", 20) # create histogram of break and enters, bin width of 20
 
-### Histogram robberies
+# Histogram robberies
 HistFunc(agg.crime, "robbery", 10) # create histogram of robberies, bin width of 10
 
-### Histogram Thefts
+# Histogram Thefts
 HistFunc(agg.crime, "theft.over", 5) # create histogram of thefts, bin width of 5
 
-### Histogram Drug Arrests
+# Histogram Drug Arrests
 HistFunc(agg.crime, "drug.arrests", 10) # create histogram of drug arrests, bin width of 10
 
-### Group crimes by MCI
+# Group crimes by MCI
 mci.group <- group_by(crime.dt, MCI)
 crime.by.mci <- dplyr::summarise(mci.group, n = n()) # count of events by MCI
 crime.by.mci <- crime.by.mci[order(crime.by.mci$n, decreasing = TRUE), ] # order crime by type from most to least 
@@ -56,7 +56,7 @@ crime.by.mci <- crime.by.mci[order(crime.by.mci$n, decreasing = TRUE), ] # order
         axis.title = element_text(size = 12, face = "bold")))
 
 
-### Group crimes by time of day
+# Group crimes by time of day
 hour.group <- group_by(crime.dt, occurrencehour)
 crime.hour <- dplyr::summarise(hour.group, n = n()) # count of crimes by hour
 
@@ -71,7 +71,7 @@ plot(ggplot(aes(x=occurrencehour, y = n), data = crime.hour) + geom_line(size = 
         axis.title = element_text(size = 12, face = "bold")))
 
 
-### Crimes by MCI by hour
+# Crimes by MCI by hour
 crime.type.by.hour <- group_by(crime.dt, occurrencehour, MCI) # group data by hour and MCI
 hour.crime <- dplyr::summarise(crime.type.by.hour, n = n()) # count of crime types by hour
 
@@ -85,7 +85,7 @@ plot(ggplot(aes(x = occurrencehour, y = n, color = MCI, linetype = MCI), data = 
         axis.title = element_text(size = 12, face = "bold")))
 
 
-## neighbourhoods with most crime
+# neighbourhoods with most crime
 location.group <- group_by(crime.dt, Neighbourhood) # group crime by neighbourhood
 crime.by.location <- dplyr::summarise(location.group, n = n()) # sum MCIs by neighbourhood
 crime.by.location <- crime.by.location[order(crime.by.location$n, decreasing = TRUE), ] # order neighbourhoods by crime
@@ -103,7 +103,7 @@ plot(ggplot(aes(x = reorder(Neighbourhood, n), y = n), data = crime.by.location.
         axis.title = element_text(size = 12, face = "bold")))
 
 
-## offence types by neighbourhood
+# offence types by neighbourhood
 offence.location.group <- group_by(crime.dt, Neighbourhood, MCI) # group crime by neighbourhod and offence
 offence.type.by.location <- dplyr::summarise(offence.location.group, n = n()) # get counts of crimes by neighbourhood
 offence.type.by.location <- offence.type.by.location[order(offence.type.by.location$n, decreasing = TRUE), ]
@@ -119,7 +119,7 @@ plot(ggplot(aes(x = Neighbourhood, y=n, fill = MCI), data = offence.type.by.loca
         axis.text.x = element_text(angle = 90, hjust = 1, vjust = .4)))
 
 
-## Crime count by month
+# Crime count by month
 crime.count <- group_by(crime.dt, occurrencemonth, MCI) %>% dplyr::summarise(Total = n())
 crime.count$occurrencemonth <- ordered(crime.count$occurrencemonth, 
                                        levels = c('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'))
@@ -139,7 +139,7 @@ plot(ggplot(subset(crime.count, MCI %in%
         axis.title = element_text(size = 12, face = "bold")))
 
 
-### Use kmeans clustering to group neighbourhoods based on crime statistics
+# Use kmeans clustering to group neighbourhoods based on crime statistics
 library("cluster")
 set.seed(123)
 
@@ -207,7 +207,7 @@ ObjValues(agg.kmeans.crime, "crime statistics") # find elbow curve for crime sta
 
 agg.2016$crime.clust <- ClustFunc(agg.kmeans.crime, 8, "Crime Statistics") # join crime clusters to agg.2016 data frame
 
-#### Use kmeans to group variables based on population characteristics
+# Use kmeans to group variables based on population characteristics
 # define population variables
 neigh.vars <- c("male.youth", "youth", "population.2016", "density", "lone.parent.families")
 agg.kmeans.neigh.vars <- agg.2016[, neigh.vars, with = FALSE] # subset agg.2016 by neighbourhood variables
@@ -216,7 +216,7 @@ ObjValues(agg.kmeans.neigh.vars, "pop characteristics") # find optimal number of
 
 agg.2016$neigh.clust <- ClustFunc(agg.kmeans.neigh.vars, 8, "Pop Characteristics") # join population clusters to agg.2016
 
-#### Use kmeans to group variables based on neighbourhood income characteristics
+# Use kmeans to group variables based on neighbourhood income characteristics
 # define income variables
 inc.vars <- c("low.income", "middle.income", "high.income", "avg.income", "people.ei", "median.income",
               "no.hholds.bottom.20per", "low.income.pop")
@@ -226,7 +226,7 @@ ObjValues(agg.kmeans.inc, "income characteristics") # find optimal number of clu
 
 agg.2016$inc.clust <- ClustFunc(agg.kmeans.inc, 7, "Income Characteristics") # join income clusters to agg.2016 
 
-#### Use kmeans to group variables based on neighbourhood ethnicity characteristics
+# Use kmeans to group variables based on neighbourhood ethnicity characteristics
 # define ethnicity variables
 ethnicity.vars <- c("non.citizens", "immigrants", "refugees", "vis.minorities")
 agg.kmeans.ethnic <- agg.2016[, ethnicity.vars, with = FALSE] # subset agg.2016 by ethnicity variables
@@ -235,7 +235,7 @@ ObjValues(agg.kmeans.ethnic, "ethnic characteristics") # find optiaml number of 
 
 agg.2016$ethnic.clust <- ClustFunc(agg.kmeans.ethnic, 4, "Ethnic Characteristics") # join ethnic clusters to agg.2016 
 
-#### Use kmeans to group variables based on neighbourhood housing characteristics
+# Use kmeans to group variables based on neighbourhood housing characteristics
 # define housing variables
 house.vars <- c("houses", "hhlds.mjr.rprs")
 agg.kmeans.hhlds <- agg.2016[, house.vars, with = FALSE] # subset agg.2016 by housing characteristics
@@ -244,7 +244,7 @@ ObjValues(agg.kmeans.hhlds, "house characteristics") # find optimal number fo cl
 
 agg.2016$houses.clust <- ClustFunc(agg.kmeans.hhlds, 6, "House Characteristics") # join housing clusters to agg.2016
 
-#### Use kmeans to group variables based on neighbourhood education characteristics
+# Use kmeans to group variables based on neighbourhood education characteristics
 # define education variables
 education.vars <- c("less.than.high.school", "high.school.cert", "post.sec.or.above")
 agg.kmeans.edu <- agg.2016[, education.vars, with = FALSE] # subset agg.2016 by education variables
