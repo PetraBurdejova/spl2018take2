@@ -1,39 +1,48 @@
-#histogram function- create cunction to quickly print ggplot histograms
-hist_func <- function(x, y, bin.width) {
-  Max <- max(x[[y]])
-  print(ggplot(data= x, aes_string(y)) + #set data parameter and aesthetic variable
-        geom_histogram(breaks = seq(0, Max, by = bin.width), col="black", fill="blue", alpha = .5) + #Set bin width 
-        labs(title= paste("Histogram of", y, sep = " ", collapse = NULL)) + #Add title
+# histogram function
+HistFunc <- function(x, y, bin.width) {
+  # function to quickly print ggplot histograms and specify bin widths
+  #
+  # Args:
+  #
+  #   x: data frame or table to be used
+  #   y: column with data to be plotted as histogram
+  #   bin.width: bin width to split continuous variable into intervals
+  #
+  #   Returns: a histogram of the specified variable
+  Max <- max(x[[y]]) # max value of variable
+  print(ggplot(data= x, aes_string(y)) + # select data frameto be used and aesthetic variable is variable to be plotted
+        geom_histogram(breaks = seq(0, Max, by = bin.width), col="black", fill="blue", alpha = .5) + # Set max value onn scale to be max value of variable and bin width 
+        labs(title= paste("Histogram of", y, sep = " ", collapse = NULL)) + # Add title
         labs(x= y, y= "Count") + #Add x and y labels
         xlim(c(0, Max)))  #Set min and max values on x label
-  }
+}
 
-####Histogram of total crime commited
-hist_func(agg.crime, "total.crime", 50) #create histogram of total crime, bin width of 50
-ggsave("plots_and_images/hist_total_crime.png", width=10, height=5, dpi=150)
+#### Histogram of total crime commited
+HistFunc(agg.crime, "total.crime", 50) # create histogram of total crime, bin width of 50
+pdf(file = "plots_and_images/hist_total_crime.pdf", width=11.69, height=8.27, paper = "a4r")
 
 ###Histogram Assaults
-hist_func(agg.crime, "assault", 25) #create histogram of assaults, bin width of 25
+HistFunc(agg.crime, "assault", 25) #create histogram of assaults, bin width of 25
 ggsave("plots_and_images/hist_assaults.png", width=10, height=5, dpi=150)
 
 ###Histogram Auto Thefts
-hist_func(agg.crime, "auto.theft", 20) #create histogram of auto thefts, bin width of 20
+HistFunc(agg.crime, "auto.theft", 20) #create histogram of auto thefts, bin width of 20
 ggsave("plots_and_images/hist_auto_thefts.png", width=10, height=5, dpi=150)
 
 ###Histogram Break and Enters
-hist_func(agg.crime, "break.and.enter", 20) #create histogram of break and enters, bin width of 20
+HistFunc(agg.crime, "break.and.enter", 20) #create histogram of break and enters, bin width of 20
 ggsave("plots_and_images/hist_break_n_enters.png", width=10, height=5, dpi=150)
 
 ###Histogram robberies
-hist_func(agg.crime, "robbery", 10) #create histogram of robberies, bin width of 10
+HistFunc(agg.crime, "robbery", 10) #create histogram of robberies, bin width of 10
 ggsave("plots_and_images/hist_robberies.png", width=10, height=5, dpi=150)
 
 ###Histogram Thefts
-hist_func(agg.crime, "theft.over", 5) #create histogram of thefts, bin width of 5
+HistFunc(agg.crime, "theft.over", 5) #create histogram of thefts, bin width of 5
 ggsave("plots_and_images/hist_thefts.png", width=10, height=5, dpi=150)
 
 ###Histogram Drug Arrests
-hist_func(agg.crime, "drug.arrests", 10) #create histogram of drug arrests, bin width of 10
+HistFunc(agg.crime, "drug.arrests", 10) #create histogram of drug arrests, bin width of 10
 ggsave("plots_and_images/hist_drug_arrests.png", width=10, height=5, dpi=150)
 
 ###Group crimes by MCI

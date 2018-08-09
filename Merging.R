@@ -63,10 +63,19 @@ census[, -which(names(census) %in% c("Topic", "Characteristic"))] <- lapply(cens
 census[census == "n/a"] <- NA
 
 ### Create function to get data from main dataset
-getData <- function(x, characteristic, new_col_name = characteristic) {
+getData <- function(x, characteristic, new.col.name = characteristic) {
+  # A function to quickly get data from census dataset
+  #
+  # Args: 
+  #
+  #   x: data frame or data table from whichto collect data
+  #   characteristic: column we are interested in getting from census data set
+  #   new.col.name: change columnname of variable. Default is same as name from census data set
+  #
+  # Returns: A vector of values from census data set
   a <- subset(x, Characteristic == characteristic) # subset dataframe by characteristic
   a <-  as.data.frame(colSums(a[,-which(names(a) %in% c("Characteristic", "Topic"))])) # Remove characteristic column, leaving only vector of values
-  colnames(a) <- new_col_name # rename colname to characteristic 
+  colnames(a) <- new.col.name # rename colname to characteristic 
   return(a)
 }
 
@@ -221,8 +230,8 @@ GroupedMedian <- function(frequencies, intervals, sep = NULL, trim = NULL) {
   # If "sep" is specified, the function will try to create the 
   #   required "intervals" matrix. "trim" removes any unwanted 
   #   characters before attempting to convert the ranges to numeric.
-  
-  
+  #
+  # Returns: a vector with median incomes for each neighbourhood
   if (!is.null(sep)) {
     if (is.null(trim)) pattern <- ""
     else if (trim == "cut") pattern <- "\\[|\\]|\\(|\\)"
@@ -474,7 +483,7 @@ CrimePerTenthsnd <- function (x, population) {
   #   x: vector to be converted into crime per ten thousand rate
   #   population: total population of neighbourhood
   #
-  #
+  # Returns: crime rate per ten thousand
   x / population * 10000
 }
 
