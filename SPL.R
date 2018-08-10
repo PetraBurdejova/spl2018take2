@@ -8,10 +8,6 @@ rm(list=ls())
 # install all packages if needed
 
   source("Install_packages.R")
-  
-# manipulate dataset
-  
-  source("Merging.R") 
 
 # adding and manipulating datasets
   
