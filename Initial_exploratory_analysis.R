@@ -302,7 +302,7 @@ HeatMapClust <- function(data, x) {
   # Returns: A geographical cluster plot of the cluster variables
   plot(ggplot(data = data, aes(x = long, y = lat, group = group))  + 
     geom_polygon(aes_string(fill = x)) +    # draw polygons and add fill with variable
-    geom_path(color = "white" ) +  # draw boundaries of neighbourhoods
+    geom_path(color = "light grey" ) +  # draw boundaries of neighbourhoods
     coord_equal() +
     geom_tile() + #plot fill as geom tiles
     scale_fill_brewer(palette = "Blues") + # choose colour palette
