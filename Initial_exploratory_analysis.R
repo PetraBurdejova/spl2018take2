@@ -15,6 +15,7 @@ HistFunc <- function(x, y, bin.width) {
         labs(title = paste("Histogram of", y, sep = " ", collapse = NULL)) + # Add title
         labs(x = y, y = "Count") + #Add x and y labels
         xlim(c(0, Max)))  #Set min and max values on x label
+  
 }
 
 # Histogram of total crime commited
@@ -301,7 +302,7 @@ HeatMapClust <- function(data, x) {
   # Returns: A geographical cluster plot of the cluster variables
   plot(ggplot(data = data, aes(x = long, y = lat, group = group))  + 
     geom_polygon(aes_string(fill = x)) +    # draw polygons and add fill with variable
-    geom_path(color = "light grey" ) +  # draw boundaries of neighbourhoods
+    geom_path(color = "white" ) +  # draw boundaries of neighbourhoods
     coord_equal() +
     geom_tile() + #plot fill as geom tiles
     scale_fill_brewer(palette = "Blues") + # choose colour palette
@@ -332,7 +333,7 @@ HeatMapLimit <- function(data, x, lower, upper) {
     scale_colour_manual(values = NA) +              
     guides(colour=guide_legend(paste(">", upper, sep = " ", collapse = NULL), override.aes = list(fill="#000647"))) + # label guide
     labs(title = x)) # Add title
-  
+ 
 }
 
 # Define crime variables that will be plotted as a heatmap
@@ -373,4 +374,6 @@ clust.var <- names(agg.2016[, grepl(".clust", colnames(agg.2016)), with = FALSE]
 
 # plot cluster variables on a heatmap
 lapply(clust.var, function(x) {HeatMapClust(toronto.geo, x)})
-HeatMapClust(toronto.geo, "edu.clust")
+HeatMapClust(toronto.geo, "crime.clust")
+
+HeatMap(toronto.geo, "unemployment.rate")
