@@ -217,8 +217,9 @@ print(xtable(census.tmp[,2:5], type = "latex"), file= "med_inc_dist.tex")
 xtable(census.tmp[,2:5], type = "latex")
 
 # Change Characteristic Vector to specific form
-census.tmp$Characteristic <- c("0-9999", "10000-19999", "20000-29999", "30000-39999", "40000-49999", "50000-59999",
-                        "60000-69999", "70000-79999", "80000-89999", "90000-99999", "100000-149999", "150000-1000000") #create income intervals increasing by 10000, last interval has max of 1000000 as assumption 
+census.tmp$Characteristic <- c("0-9999", "10000-19999", "20000-29999", "30000-39999", 
+                               "40000-49999", "50000-59999", "60000-69999", "70000-79999", 
+                               "80000-89999", "90000-99999", "100000-149999", "150000-1000000") #create income intervals increasing by 10000, last interval has max of 1000000 as assumption 
 
 
 GroupedMedian <- function(frequencies, intervals, sep = NULL, trim = NULL) {
