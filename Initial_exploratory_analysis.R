@@ -10,7 +10,7 @@ HistFunc <- function(x, y, bin.width) {
   #
   #   Returns: a histogram of the specified variable
   Max <- max(x[[y]]) # max value of variable
-  plot(ggplot(data = x, aes_string(y)) + # select data frameto be used and aesthetic variable is variable to be plotted
+  print(ggplot(data = x, aes_string(y)) + # select data frameto be used and aesthetic variable is variable to be plotted
         geom_histogram(breaks = seq(0, Max, by = bin.width), col="black", fill ="blue", alpha = .5) + # Set max value onn scale to be max value of variable and bin width 
         labs(title = paste("Histogram of", y, sep = " ", collapse = NULL)) + # Add title
         labs(x = y, y = "Count") + #Add x and y labels
