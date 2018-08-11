@@ -18,6 +18,7 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ![Picture1](heat_map_assaults.pdf)
 ![Picture2](heat_map_unemployment_rate.pdf)
+![Picture3](heat_map_robberies.pdf)
 
 
 
