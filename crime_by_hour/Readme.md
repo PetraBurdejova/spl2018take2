@@ -38,7 +38,7 @@ plot(ggplot(aes(x=occurrencehour, y = n), data = crime.hour) + geom_line(size = 
   theme(plot.title = element_text(size = 16),
         axis.title = element_text(size = 12, face = "bold")))
 
-```yaml
+```
 
 ![Picture2](crime_by_MCI_by_hour.pdf)
 
