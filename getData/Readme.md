@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 [<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/banner.png" width="888" alt="Visit QuantNet">](http://quantlet.de/)
 
 ## [<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/qloqo.png" alt="Visit QuantNet">](http://quantlet.de/) **Creating the getData Function to Gather Data** [<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/QN2.png" width="60" alt="Visit QuantNet 2.0">](http://quantlet.de/)
@@ -22,68 +21,46 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 ### R Code
 ```r
 
-###Create function to get data from main dataset
-getData <- function(x, characteristic, new_col_name = characteristic) {
-  a <- subset(x, Characteristic == characteristic) #subset dataframe by characteristic
-  a <-  as.data.frame(colSums(a[,-which(names(a) %in% c("Characteristic", "Topic"))])) #Remove characteristic column, leaving only vector of values
-  colnames(a) <- new_col_name #rename colname to characteristic 
+# Create function to get data from main dataset
+getData <- function(x, characteristic, new.col.name = characteristic) {
+  # A function to quickly get data from census dataset
+  #
+  # Args: 
+  #
+  #   x: data frame or data table from whichto collect data
+  #   characteristic: column we are interested in getting from census data set
+  #   new.col.name: change columnname of variable. Default is same as name from census data set
+  #
+  # Returns: A vector of values from census data set
+  a <- subset(x, Characteristic == characteristic) # subset dataframe by characteristic
+  a <-  as.data.frame(colSums(a[,-which(names(a) %in% c("Characteristic", "Topic"))])) # Remove characteristic column, leaving only vector of values
+  colnames(a) <- new.col.name # rename colname to characteristic 
   return(a)
-  }
+}
 
-####Get number of low income people in each neighbourhood
-low.income <- cbind.data.frame(neigh.codes, getData(census.tmp, "low.income")) #get no of people classified as low income
-agg.2016 <- join(agg.2016, low.income[, -which(names(low.income) %in% c("Neighbourhood"))], by = "Hood_ID") #join no of low income people to agg.2016
+census <- read.csv("2016_neighbourhood_profiles.csv") # read census data
 
-####Get number of middle income people in each neighbourhood
-middle.income <- cbind.data.frame(neigh.codes, getData(census.tmp, "middle.income")) #get no of people classified as middle income
-agg.2016 <- join(agg.2016, middle.income[, -which(names(middle.income) %in% c("Neighbourhood"))], by = "Hood_ID") #join no of middle income people to agg.2016
+# Clean 2016 neighbourhood profile dataset to get variables---- 
+# USing the 2016 neighbourhood profiles data to get 2016 data
+census <- as.data.frame(census)
 
-####Get number of high income people in each neighbourhood
-high.income <- cbind.data.frame(neigh.codes, getData(census.tmp, "high.income")) #get no of people classified as high income
-agg.2016 <- join(agg.2016, high.income[, -which(names(high.income) %in% c("Neighbourhood"))], by = "Hood_ID") #join no of high income people to agg.2016
+# Remove Hood_ID as row, and data source column
+census <- census[!(census$Characteristic == "TSNS2020 Designation"), -which(names(census) %in% c("Category", "Data.Source"))]
+str(census)
 
-=======
-[<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/banner.png" width="888" alt="Visit QuantNet">](http://quantlet.de/)
+# Create a dataframe of codes for each neighbourhood
+# Extract neighbouorhood names and Hood_Ids from census data, excluding necessary columns and rows
+neigh.codes <- as.data.frame(cbind(colnames(census[, -which(names(census) %in% c("Topic", "Characteristic", "City.of.Toronto"))]), as.vector(unlist(census[census$Characteristic == "Neighbourhood Number", -which(names(census) %in% c("Topic", "Characteristic", "City.of.Toronto"))]))))
+colnames(neigh.codes) <- c("Neighbourhood", "Hood_ID") # Rename columns
 
-## [<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/qloqo.png" alt="Visit QuantNet">](http://quantlet.de/) **Creating the getData Function to Gather Data** [<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/QN2.png" width="60" alt="Visit QuantNet 2.0">](http://quantlet.de/)
+# Remove thousands seperator commas from numbers and replace % sign eith e-2, 
+# so we can use as.numeric to convert from a character to a number
+census[, -which(names(census) %in% c("Topic", "Characteristic"))] <- lapply(census[,-which(names(census) %in% c("Topic", "Characteristic"))], function(x) {gsub(",", "", x)}) #remove commas as thousands seperator
+census[, -which(names(census) %in% c("Topic", "Characteristic"))] <- lapply(census[, -which(names(census) %in% c("Topic", "Characteristic"))], function(x) {gsub("%", "e-2", x)}) #turn %sign to e-2
 
-```yaml
+# Turn n/as into NA
+census[census == "n/a"] <- NA
 
-Name of QuantLet : getData Function
+# Get number of non-Canadian citizens in each neighborhood
+non.citizens <- cbind.data.frame(neigh.codes, getData(census.tmp, "Not Canadian citizens", "non.citizens"))
 
-
-Description: Creating the Function used to gather data from the census dataset
-
-Keywords: getData, function, data frame
-
-Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
-
-
-```
-
-
-
-### R Code
-```r
-
-###Create function to get data from main dataset
-getData <- function(x, characteristic, new_col_name = characteristic) {
-  a <- subset(x, Characteristic == characteristic) #subset dataframe by characteristic
-  a <-  as.data.frame(colSums(a[,-which(names(a) %in% c("Characteristic", "Topic"))])) #Remove characteristic column, leaving only vector of values
-  colnames(a) <- new_col_name #rename colname to characteristic 
-  return(a)
-  }
-
-####Get number of low income people in each neighbourhood
-low.income <- cbind.data.frame(neigh.codes, getData(census.tmp, "low.income")) #get no of people classified as low income
-agg.2016 <- join(agg.2016, low.income[, -which(names(low.income) %in% c("Neighbourhood"))], by = "Hood_ID") #join no of low income people to agg.2016
-
-####Get number of middle income people in each neighbourhood
-middle.income <- cbind.data.frame(neigh.codes, getData(census.tmp, "middle.income")) #get no of people classified as middle income
-agg.2016 <- join(agg.2016, middle.income[, -which(names(middle.income) %in% c("Neighbourhood"))], by = "Hood_ID") #join no of middle income people to agg.2016
-
-####Get number of high income people in each neighbourhood
-high.income <- cbind.data.frame(neigh.codes, getData(census.tmp, "high.income")) #get no of people classified as high income
-agg.2016 <- join(agg.2016, high.income[, -which(names(high.income) %in% c("Neighbourhood"))], by = "Hood_ID") #join no of high income people to agg.2016
-
->>>>>>> a1a9dc4b5b63bc174072d08f4f64fff59c1fb1a3
