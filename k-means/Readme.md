@@ -16,9 +16,9 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ```
 
-![Picture1](elbow_curve_crime_stats.png)
+![Picture1](elbow_curve_crime_stats.pdf)
 ![Picture2](clust_plot_crime_stats.pdf)
-![Picture3](heat_map_crime_clust.png)
+![Picture3](heat_map_crime_clust.pdf)
 
 ### R Code
 ```r
