@@ -28,7 +28,8 @@ packages <- c("tidyverse",
               "corrplot",
               "stargazer",
               "sf",
-              "xtable")
+              "xtable",
+              "ash")
 
 
 usePackage <-function(p){

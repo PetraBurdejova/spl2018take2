@@ -25,6 +25,8 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ### R Code
 ```r
+source("Merging.R")
+
 #Heatmap of toronto by population 
 # Read the neighborhood shapefile data and plot
 geo.data <- data.frame(agg.2016)

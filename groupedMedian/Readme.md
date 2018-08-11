@@ -7,7 +7,7 @@
 Name of QuantLet : Median Income
 
 
-Description: Calculating median income from grouped inocme data
+Description: Calculating median income from grouped income data
 
 Keywords: median income, function, Toronto
 

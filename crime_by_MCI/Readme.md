@@ -22,7 +22,7 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 ### R Code
 ```r
 
-source(Merging.R)
+source("Merging.R")
 
 # Group crimes by MCI
 mci.group <- group_by(crime.dt, MCI)

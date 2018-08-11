@@ -22,7 +22,7 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ### R Code
 ```r
-source(Merging.R)
+source("Merging.R")
 # Use kmeans clustering to group neighbourhoods based on crime statistics
 library("cluster")
 set.seed(123)

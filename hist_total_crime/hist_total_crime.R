@@ -1,4 +1,4 @@
-source(Merging.R)
+source("Merging.R")
 
 # histogram function
 HistFunc <- function(x, y, bin.width) {

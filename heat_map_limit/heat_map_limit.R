@@ -1,4 +1,4 @@
-source(Merging.R)
+source("Merging.R")
 
 # Heatmap of toronto by population 
 # Read the neighborhood shapefile data and plot
