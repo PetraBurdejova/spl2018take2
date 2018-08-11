@@ -134,7 +134,7 @@ for (i in crimetypes){
                                            firstmodel$residuals)$p.value
 
   # assumption-check: linear relation between dependent variable and regressors
-  crPlots(firstmodel)
+  crPlots(firstmodel, main = paste("component + residual plots", i, "(original data)"))
   ceresplots.first[[i]] <- recordPlot()
   
   rm(firstmodel)
