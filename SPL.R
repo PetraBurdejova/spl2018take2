@@ -26,15 +26,15 @@ rm(list=ls())
 
   source("../spl2018take2/All_scripts/Green_area/Green_area.R")
 
-
+# 
 # regression analysis
 
-  source("automated_regression.R")
+  source("../spl2018take2/All_scripts/automated_regression/automated_regression.R")
 
 
 # further regression analysis
 
-  source("advanced_regressions.R")
+  source("../spl2018take2/All_scripts/advanced_regressions/advanced_regressions.R")
 
 
 

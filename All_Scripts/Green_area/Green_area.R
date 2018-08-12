@@ -1,7 +1,8 @@
 # read the map of toronto 
-toronto_map <- st_read("Shapefiles/Neighbourhoods_Toronto", layer = "NEIGHBORHOODS_WGS84")
+toronto_map <- st_read("../spl2018take2/data/Shapefiles/Neighbourhoods_Toronto", layer = "NEIGHBORHOODS_WGS84")
+
 # read the "green area" (parks, forests, ...) of toronto
-green_shp <- st_read("Shapefiles/Green_Space_Toronto", layer = "CITY_GREEN_SPACE_WGS84")
+green_shp <- st_read("../spl2018take2/data/Shapefiles/Green_Space_Toronto", layer = "CITY_GREEN_SPACE_WGS84")
 
 
 # intersection + checking if it works
@@ -17,7 +18,7 @@ addArea <- int %>%
 
 # and area in km^2
 green_area <- addArea %>% group_by(AREA_S_CD) %>% summarise(Aream2 = sum(area)) %>% mutate(Area = Aream2/1000000)
-area <- read_csv("toronto_area.csv")
+area <- read_csv("../spl2018take2/data/toronto_area.csv")
 
 
 # calculate the ratio of green area in toronto to whole area
