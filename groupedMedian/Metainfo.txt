@@ -1,0 +1,11 @@
+Name of Quantlet: Grouped Median
+
+Published in: SPL
+
+Description: calculating the median value when given a distribution in a range of intervals
+
+Keywords: median
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted: Aug 12, 2018
