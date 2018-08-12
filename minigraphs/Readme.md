@@ -4,7 +4,7 @@
 
 ```yaml
 
-Name of QuantLet : Minigraphs
+Name of QuantLet : Histograms - Transformed vs Original Data
 
 
 Description: Create average shifted histograms for original and transformed dependent variables
