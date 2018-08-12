@@ -42,6 +42,8 @@ crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery",
 # create lists and data frames to store the results of the regression loop in
 regressionresults.first <- list()
 regressionresults <- list()
+regressionstargazer.first <- list()
+regressionstargazer <- list()
 ols.ass <- as.data.frame(matrix(nrow=7, ncol=11))
 colnames(ols.ass) <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3",
                        "vif4", "cortest1", "cortest2", "cortest3", "cortest4")
@@ -73,6 +75,8 @@ for (i in crimetypes){
   model <- lm(tmp.bp~male.youth + less.than.high.school + low.income 
               + immigrants, data=rtmp)
   regressionresults[[i]]<-summary(model)
+  regressionstargazer[[i]] <- (model)
+  
   
   # assumption-check: the error term has a mean of zero
   ols.ass[i, "means"] <- mean(model$residuals)
@@ -101,7 +105,7 @@ for (i in crimetypes){
   ols.ass[i, "cortest4"] <- cor.test(rtmp$immigrants, model$residuals)$p.value
 
   # assumption-check: linear relation between dependent variable and regressors
-  crPlots(model)
+  crPlots(model, main = paste("component + residual plots", i, "(transformed data)"))  
   ceresplots[[i]] <- recordPlot()
 
   rm(exponent, model, outliers, rtmp)
@@ -118,6 +122,7 @@ for (i in crimetypes){
   firstmodel <- lm(tmp~male.youth + less.than.high.school + low.income 
                    + immigrants, data=r)
   regressionresults.first[[i]]<-summary(firstmodel)
+  regressionstargazer.first[[i]] <- (firstmodel)
 
   # assumption-check: the error term has a mean of zero
   ols.ass.first[i, "means"] <- mean(firstmodel$residuals)
@@ -150,11 +155,11 @@ for (i in crimetypes){
                                            firstmodel$residuals)$p.value
 
   # assumption-check: linear relation between dependent variable and regressors
-  crPlots(firstmodel)
+  crPlots(firstmodel, main = paste("component + residual plots", i, "(original data)"))
   ceresplots.first[[i]] <- recordPlot()
   
   rm(firstmodel)
 }
 
 # remove unnecessary data and functions
-rm(crimetypes, i, FindBestExponent, r)
+rm(i, FindBestExponent)
