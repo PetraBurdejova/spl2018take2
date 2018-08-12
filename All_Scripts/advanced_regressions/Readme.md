@@ -16,9 +16,12 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ```
 
+![Picture1](ceresplot_log_total.png)
+![Picture2](ceresplot_po_total.png)
 
 ### R Code
 ```r
+
 
 r <- as.data.frame(agg.2016)
 
@@ -26,10 +29,10 @@ crimetypes <- c("assault", "auto.theft", "break.and.enter", "robbery",
                 "theft.over", "drug.arrests", "total.crime")
 
 ######automated advanced regression####
-##log transformed data
+# log transformed data
 
-##crimetypes and r still existent
-#lists and data frames to store results of the regression loop
+# crimetypes and r still existent
+# lists and data frames to store results of the regression loop
 regressionresults.log <- list()
 regressionstargazer.log <- list()
 ols.ass.log <- as.data.frame(matrix(nrow=7, ncol=11))
@@ -38,14 +41,14 @@ colnames(ols.ass.log)  <- c("means", "bptests", "swtests", "vif1", "vif2", "vif3
 rownames(ols.ass.log) <- crimetypes
 ceresplots.log <- list()
 
-##overcome the problem of log(0) = infinity 
+# overcome the problem of log(0) = infinity 
 r[, crime.var][r[, crime.var] == 0] <- 1
 
 
 # loop for the regressions using original data
 for (i in crimetypes){
   
-  #storing the crime type in r$tmp
+  # storing the crime type in r$tmp
   r$tmp <- log(r[, i])
   
   # regression with original data
@@ -72,7 +75,7 @@ for (i in crimetypes){
   ols.ass.log[i, "vif2"] <- vif(logmodel)[2]
   ols.ass.log[i, "vif3"] <- vif(logmodel)[3]
   ols.ass.log[i, "vif4"] <- vif(logmodel)[4]
-  #corrplot::corrplot(cor(r_assault[c(),]))
+  # corrplot::corrplot(cor(r_assault[c(),]))
   
   # assumption-check: no correlation of each regressor with the error term
   ols.ass.log[i, "cortest1"] <- cor.test(r$male.youth, 
@@ -92,35 +95,21 @@ for (i in crimetypes){
 }
 
 
-# 
-# 
-# stargazer(regressionstargazer.log,
-#           dep.var.labels = crimetypes, 
-#           covariate.labels = "regressionstargazer$assault$coefficients")
-# ###or similar
-# 
-
 ###################################################################
 #####spatial regressions
 
-#defining neighbours
+# defining neighbours
 shp <- readOGR("../spl2018take2/data/Shapefiles/Neighbourhoods_Toronto", "NEIGHBORHOODS_WGS84")
-###based on queen approach
+# based on queen approach
 neigh <- poly2nb(shp, queen = TRUE)
 W<-nb2listw(neigh, style="W", zero.policy=TRUE)
 W
 plot(W, coordinates(shp))
-# ##based on distance 
-# # coords<-coordinates(shp)
-# # W_dist<-dnearneigh(coords,0,2.5,longlat = TRUE)
-# ### -> check out which ones better -> Moran'S I test 
-# #http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
-# # moran's I test
+
+# # moran's I test for robbery 
 # moran.lm <-lm.morantest(log_rob, W, alternative="two.sided")
-# print(moran.lm) ## H0 <- Data ist random
-# ##Lagrange multiplier test
-# LM<-lm.LMtests(log_assault, W, test="all")
-# print(LM)
+# print(moran.lm) # H0 <- Data ist random
+
 
 ##crimetypes and r still existent
 #lists and data frames to store results of the regression loop
@@ -151,7 +140,7 @@ for (i in crimetypes){
   # irrelevant as the observation order is random
   
   # assumption-check: the error term is homoscedastic
-  #######Error in terms.default(formula) : no terms component nor attribute
+  # Error in terms.default(formula) : no terms component nor attribute
   #ols.ass.spa[i, "bptests"] <- bptest(spamodel)$p.value 
   # caution: bptest is sensitive to asumption of normality
   
@@ -159,12 +148,12 @@ for (i in crimetypes){
   ols.ass.spa[i, "swtests"] <- shapiro.test(residuals(spamodel))$p.value
   
   # assumption-check: no imperfect multicollinearity within the regressors
-  ######Error in terms.default(object) : no terms component nor attribute
+  # Error in terms.default(object) : no terms component nor attribute
   # ols.ass.spa[i, "vif1"] <- vif(spamodel)[1]
   # ols.ass.spa[i, "vif2"] <- vif(spamodel)[2]
   # ols.ass.spa[i, "vif3"] <- vif(spamodel)[3]
   # ols.ass.spa[i, "vif4"] <- vif(spamodel)[4]
-   #corrplot::corrplot(cor(r_assault[c(),]))
+  # corrplot::corrplot(cor(r_assault[c(),]))
   
   # assumption-check: no correlation of each regressor with the error term
   ols.ass.spa[i, "cortest1"] <- cor.test(r$male.youth, 
@@ -177,12 +166,11 @@ for (i in crimetypes){
                                          spamodel$residuals)$p.value
   
   # assumption-check: linear relation between dependent variable and regressors
-  ######
-  ######Error in eval(predvars, data, env) : object 'tmp' not found
-  #crPlots(spamodel, main = paste("component + residual plots", i, "(spatial reg)"))
+  # Error in eval(predvars, data, env) : object 'tmp' not found
+  # crPlots(spamodel, main = paste("component + residual plots", i, "(spatial reg)"))
   ceresplots.spa[[i]] <- recordPlot()
   
-  #rm(spamodel)
+ rm(spamodel)
 }
 
 
@@ -218,7 +206,7 @@ for (i in crimetypes){
   # irrelevant as the observation order is random
   
   # assumption-check: the error term is homoscedastic
-  #######Error in terms.default(formula) : no terms component nor attribute
+  # Error in terms.default(formula) : no terms component nor attribute
   #ols.ass.spa[i, "bptests"] <- bptest(spamodel)$p.value 
   # caution: bptest is sensitive to asumption of normality
   
@@ -226,7 +214,7 @@ for (i in crimetypes){
   ols.ass.po[i, "swtests"] <- shapiro.test(residuals(pomodel))$p.value
   
   # assumption-check: no imperfect multicollinearity within the regressors
-  ######Error in terms.default(object) : no terms component nor attribute
+  # Error in terms.default(object) : no terms component nor attribute
   # ols.ass.spa[i, "vif1"] <- vif(spamodel)[1]
   # ols.ass.spa[i, "vif2"] <- vif(spamodel)[2]
   # ols.ass.spa[i, "vif3"] <- vif(spamodel)[3]
@@ -244,11 +232,9 @@ for (i in crimetypes){
                                         pomodel$residuals)$p.value
   
   # assumption-check: linear relation between dependent variable and regressors
-  ######
-  ######Error in eval(predvars, data, env) : object 'tmp' not found
+  # Error in eval(predvars, data, env) : object 'tmp' not found
    crPlots(pomodel, main = paste("component + residual plots", i, "(poiss reg)"))
    ceresplots.po[[i]] <- recordPlot()
   
   rm(pomodel)
 }
-
