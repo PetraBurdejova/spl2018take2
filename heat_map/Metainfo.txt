@@ -1,0 +1,11 @@
+Name of Quantlet: Heat map 
+
+Published in: SPL
+
+Description: plotting heatmaps 
+
+Keywords: shape files, heat map, geo analysis
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted: Aug 12, 2018
