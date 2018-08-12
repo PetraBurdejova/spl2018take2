@@ -75,7 +75,7 @@ for (i in crimetypes){
 #####spatial regressions
 
 # defining neighbours
-shp <- readOGR("Shapefiles/Neighbourhoods_Toronto", "NEIGHBORHOODS_WGS84")
+shp <- readOGR("../spl2018take2/data/Shapefiles/Neighbourhoods_Toronto", "NEIGHBORHOODS_WGS84")
 # based on queen approach
 neigh <- poly2nb(shp, queen = TRUE)
 W<-nb2listw(neigh, style="W", zero.policy=TRUE)
