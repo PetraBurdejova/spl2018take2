@@ -1,0 +1,11 @@
+Name of Quantlet: Get Data
+
+Published in: SPL
+
+Description: A function to gather data from census data
+
+Keywords: gather, function
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted: Aug 12, 2018
