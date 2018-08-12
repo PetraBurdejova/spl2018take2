@@ -19,6 +19,8 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ### R Code
 ```r
+source("Merging.R")
+
 # conversion of agg.2016 to a data frame
 r <- as.data.frame(agg.2016)
 r$obsnumber <- r$Hood_ID
@@ -156,5 +158,4 @@ for (i in crimetypes){
   rm(firstmodel)
 }
 
-# remove unnecessary data and functions
-rm(crimetypes, i, FindBestExponent, r)
+
