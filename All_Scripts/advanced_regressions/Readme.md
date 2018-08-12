@@ -16,8 +16,8 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ```
 
-![Picture1](ceresplot_log_total.png)
-![Picture2](ceresplot_po_total.png)
+![Picture1](ceresplot_log_total.pdf)
+![Picture2](ceresplot_po_total.pdf)
 
 ### R Code
 ```r
