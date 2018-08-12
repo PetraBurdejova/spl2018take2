@@ -22,7 +22,7 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ### R Code
 ```r
-source("Merging.R")
+source("../spl2018take2/All_scripts/Merging/Merging.R")
 # Use kmeans clustering to group neighbourhoods based on crime statistics
 library("cluster")
 set.seed(123)
@@ -98,7 +98,7 @@ geo.data$Hood_ID <- str_pad(geo.data$Hood_ID, width = 3, side = 'left', pad = '0
 
 # the path to shape file
 
-toronto <- readOGR(dsn = "Shapefiles/Neighbourhoods_Toronto" ,"NEIGHBORHOODS_WGS84")
+toronto <- readOGR(dsn = "../spl2018take2/data/Shapefiles/Neighbourhoods_Toronto" ,"NEIGHBORHOODS_WGS84")
 
 
 # fortify and merge: muni.df is used in ggplot

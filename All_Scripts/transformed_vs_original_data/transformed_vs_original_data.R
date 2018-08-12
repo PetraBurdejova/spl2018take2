@@ -1,4 +1,4 @@
-source("Merging.R")
+source("../spl2018take2/All_scripts/Merging/Merging.R")
 
 r <- as.data.frame(agg.2016)
 r$obsnumber <- r$Hood_ID # set Hood_ID as observation number

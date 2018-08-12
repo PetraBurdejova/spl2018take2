@@ -1,4 +1,4 @@
-source("Merging.R")
+source("../spl2018take2/All_scripts/Merging/Merging.R")
 
 # Group crimes by time of day
 hour.group <- group_by(crime.dt, occurrencehour)

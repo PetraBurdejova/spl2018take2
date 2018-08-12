@@ -1,4 +1,4 @@
-census <- read.csv("2016_neighbourhood_profiles.csv") # read census data
+census <- read.csv("../spl2018take2/data/2016_neighbourhood_profiles.csv") # read census data
 
 # Clean 2016 neighbourhood profile dataset to get variables---- 
 # USing the 2016 neighbourhood profiles data to get 2016 data

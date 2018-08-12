@@ -21,7 +21,7 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ### R Code
 ```r
-source("Merging.R")
+source("../spl2018take2/All_scripts/Merging/Merging.R")
 
 # histogram function
 HistFunc <- function(x, y, bin.width) {

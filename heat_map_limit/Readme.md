@@ -27,7 +27,7 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 ### R Code
 ```r
-source("Merging.R")
+source("../spl2018take2/All_scripts/Merging/Merging.R")
 
 # Heatmap of toronto by population 
 # Read the neighborhood shapefile data and plot

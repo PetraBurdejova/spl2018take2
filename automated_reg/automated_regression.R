@@ -1,4 +1,4 @@
-source("Merging.R")
+source("../spl2018take2/All_scripts/Merging/Merging.R")
 
 # conversion of agg.2016 to a data frame
 r <- as.data.frame(agg.2016)
