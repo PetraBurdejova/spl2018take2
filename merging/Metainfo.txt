@@ -1,0 +1,11 @@
+Name of Quantlet: Merging
+
+Published in: SPL
+
+Description: A script to gather and join data from crime and census datasets
+
+Keywords: crime, Toronto, regression
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted:  Aug 12, 2018
