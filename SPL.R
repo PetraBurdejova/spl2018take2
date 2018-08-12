@@ -16,15 +16,15 @@ rm(list=ls())
 
 # Initial Exploratory Analysis - contains functions for graphs and kmeans
 
-  source("Initial_exploratory_analysis.R")
+  source("../spl2018take2/All_scripts/Initial_exploratory_analysis/Initial_exploratory_analysis.R")
 
 # Construct F-test by hand to show if coefficients are jointly significant if needed
 
-  source("F-Test.R")
+  source("../spl2018take2/All_scripts/F-Test/F-Test.R")
 
 # calculating the ratio of green parks etc. per neighbourhood 
 
-  source("Green_area.R")
+  source("../spl2018take2/All_scripts/Green_area/Green_area.R")
 
 
 # regression analysis
