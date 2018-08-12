@@ -1,0 +1,13 @@
+Name of Quantlet: K-Means Clustering Analysis
+
+Published in: SPL
+
+Description: Finding the optimal number of cluseters using the elbow method,
+             creating clusters using K-Means,
+             plotting clusters on a geographic map
+
+Keywords: K-Means, heat map, clustering
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted:  Aug 12, 2018
