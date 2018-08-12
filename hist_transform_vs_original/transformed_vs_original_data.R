@@ -3,11 +3,18 @@ source("Merging.R")
 r <- as.data.frame(agg.2016)
 r$obsnumber <- r$Hood_ID # set Hood_ID as observation number
 
-
+# create the FindBestExponent-function
 swD <- function (p, x) {
+  # finds the best exponent for a basic power transformation towards normality
+  # arguments:
+  # p: the exponent used for the basic power transformation
+  # x: the data we want to transform
+  # returns:
+  # the p-value of the Shapiro-Wilk test applied on the transformed data
   y <- bcPower(x, p)
   shapiro.test(y)$statistic
 }
+
 
 par(mfrow = c(3,3))
 
