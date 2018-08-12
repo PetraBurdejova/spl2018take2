@@ -1,0 +1,12 @@
+Name of Quantlet: Heat map Limit
+
+Published in: SPL
+
+Description: plotting heatmaps in the presence of outliers. Setting an upper limit to maintain an appropriate 
+             scale for the other variables
+
+Keywords: shape files, heat map, geo analysis
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted:  Aug 12, 2018
