@@ -1,0 +1,11 @@
+Name of Quantlet: Comparing Original and Transformed Data For OLS
+
+Published in: SPL
+
+Description: Comparing the distribution of dependent variables pre- and post- transformation in preparation for applying OLS
+
+Keywords: transformation, regression, distribution
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted:  Aug 12, 2018
