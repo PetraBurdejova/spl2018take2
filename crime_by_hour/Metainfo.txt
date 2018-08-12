@@ -1,0 +1,11 @@
+Name of Quantlet: Crime By Hour
+
+Published in: SPL
+
+Description: plotting a variable by time of day
+
+Keywords: plot, visualization
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted: Aug 12, 2018
