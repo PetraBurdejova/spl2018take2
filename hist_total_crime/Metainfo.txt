@@ -1,0 +1,11 @@
+Name of Quantlet: Plotting Histograms
+
+Published in: SPL
+
+Description: Creating a function to plot histograms, with the option to specify interval lengths as an argument of the function
+
+Keywords: histogram, distribution
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted:  Aug 12, 2018
