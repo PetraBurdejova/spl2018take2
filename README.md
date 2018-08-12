@@ -23,10 +23,9 @@ order to find the relationship between neighbourhood characteristics and crime s
 
 Using these files:
 
-The first step would be to open the project and download the zip file with all necessary files. After extracting them and
-placing them in the approriate folder, you can begin using R. The main file to be ised in ths project is SPL.R. SPL.R sources all 
-the other scripts with the analysis inthem. This was done in an effort to keep script lengths manageable and allow us the flexibility 
+The first step to using these files would be to open the project and download the data.zip file. After extracting them and
+placing them in the approriate folder, you can begin using R. The main file to be used in ths project is SPL.R. SPL.R sources all 
+the other scripts. This was done in an effort to keep script lengths manageable and allow us the flexibility 
 to work on multiple scripts the same time. Simply run SPL.R and all other scripts should be sourced correctly.
 
-It is possible to use much of this code for another city, provided the datasets come in a similar format. In the future we may 
-consider apply this code to another city.
+It is possible to use much of this code for another city, provided the datasets come in a similar format. In the future that is something we may consider.
