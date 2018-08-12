@@ -1,0 +1,18 @@
+Name of Quantlet: Merging Script
+
+Published in: SPL
+
+Description: A script to gether data from census and crime datasets and prepare it for analysis
+
+Keywords: script, crime, Toronto
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted:  Aug 12, 2018
+
+Datafile: 2016_neighbourhood_profiles.csv
+          MCI_2014-to-2017.csv
+          toronto_area.csv
+          toronto_drug_arrests.csv
+          wellbeing_toronto.csv
+
