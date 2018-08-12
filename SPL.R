@@ -7,11 +7,11 @@ rm(list=ls())
 
 # install all packages if needed
 
-  source("../All_scripts/Install_packages/Install_Packages.R")
+  source("../spl2018take2/All_scripts/Install_packages/Install_Packages.R")
 
 # adding and manipulating datasets
   
-  source("Merging.R") 
+  source("../spl2018take2/All_scripts/Merging/Merging.R") 
 
 
 # Initial Exploratory Analysis - contains functions for graphs and kmeans

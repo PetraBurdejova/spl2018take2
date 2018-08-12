@@ -1,10 +1,10 @@
 # load and filter datasets----
 
-crime <- read.csv("MCI_2014_to_2017.csv") # read crime dataset
-census <- read.csv("2016_neighbourhood_profiles.csv") # read census data
-drugs <- read.csv("toronto_drug_arrests.csv") # read drug arrests dataset
-wbt <- read.csv("wellbeing_toronto.csv") # read different census dataset
-area <- readr::read_csv("toronto_area.csv") # read area dataset
+crime <- read.csv("../spl2018take2/data/MCI_2014_to_2017.csv") # read crime dataset
+census <- read.csv("../spl2018take2/data/2016_neighbourhood_profiles.csv") # read census data
+drugs <- read.csv("../spl2018take2/data/toronto_drug_arrests.csv") # read drug arrests dataset
+wbt <- read.csv("../spl2018take2/data/wellbeing_toronto.csv") # read different census dataset
+area <- readr::read_csv("../spl2018take2/data/toronto_area.csv") # read area dataset
 
 # Change name of X coordinate column to X
 colnames(crime)[which(names(crime) == "ï..X")] <- "X"
@@ -12,7 +12,7 @@ colnames(crime)[which(names(crime) == "ï..X")] <- "X"
 # Create aggregate data frame 
 crime.dt <- as.data.frame(crime)
 
-library(dplyr)
+library("dplyr")
 # Remove duplicated event IDS
 crime.dt <- subset(crime.dt, !duplicated(crime.dt$event_unique_id))
 
@@ -212,9 +212,6 @@ census.tmp <- census.tmp[census.tmp$Topic == "Income of individuals in 2015", ] 
 census.tmp <- census.tmp[c(35:47),] # need to subset by rows because characteristic is duplicated for other income groups
 census.tmp <- census.tmp[!census.tmp$Characteristic == "$100,000 and over",]
 
-# print table for latex output
-print(xtable(census.tmp[,2:5], type = "latex"), file= "med_inc_dist.tex")
-xtable(census.tmp[,2:5], type = "latex")
 
 # Change Characteristic Vector to specific form
 census.tmp$Characteristic <- c("0-9999", "10000-19999", "20000-29999", "30000-39999", 
@@ -259,10 +256,6 @@ agg.2016 <- join(agg.2016, median.income[, -which(names(median.income) %in% c("N
 
 # Table of avg and median income to show income inequality in each neighbourhood
 avg.med.inc.dif <- join(avg.income, median.income, by = c("Hood_ID", "Neighbourhood"))
-
-# print table for latex output
-print(xtable(avg.med.inc.dif[1:8, ], type = "latex"), file = "avg_med_inc_diff.tex")
-xtable(avg.med.inc.dif[1:8, ], type = "latex")
 
 # Calculate number of Households in bottom 20% of Income distribution
 census.tmp <- as.data.frame(census) # Create temp data frame for relabelling factors from census data frame
