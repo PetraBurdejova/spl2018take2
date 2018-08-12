@@ -15,8 +15,8 @@ Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
 
 
 ```
-![Picture1](component_residual_plot_total_crime_transformed_data.pdf) 
-![Picture2](component_residual_plot_total_crime_original_data.pdf) 
+![Picture1](ceres_plot_break_and_enter_transform.pdf) 
+![Picture2](ceres_plot_break_and_enter_original.pdf) 
 
 ### R Code
 ```r
