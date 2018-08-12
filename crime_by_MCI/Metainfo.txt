@@ -1,0 +1,11 @@
+Name of Quantlet: Crime By MCI
+
+Published in: SPL
+
+Description: Plot crime grouped by type
+
+Keywords: plot, visualization
+
+Author: Gabriel Blumenstock, Felix Degenhardt, Haseeb Warsi
+
+Submitted: Aug 12, 2018
